@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+     <form method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
+        <label >Username</label>
+        <input type="username" class="form-control" id="username" name="username" placeholder="Enter username" required="true">
+        <label>Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="true">
+        <label >Email address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required="true">
+        <div style="position: relative; display: flex; flex-direction: row; margin-bottom: 10px;">
+            <div style="margin-right: 5px; width: 50%;">
+                <label>First name</label>
+                <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter first name" required="true">
+            </div>
+            <div style="margin-left: 5px; width: 50%;">
+                <label>Last name</label>
+                <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter last name" required="true">
+            </div>
+        </div>
+        <div style="position: relative; display: flex; flex-direction: row; margin-bottom: 10px;">
+            <div style="margin-right: 5px; width: 50%;">
+                <label>Student number</label>
+                <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter student number" required="true">
+            </div>
+            <div style="margin-left: 5px; width: 50%;">
+                <label>Phonenumber</label>
+                <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Enter phonenumber" required="true">
+            </div>
+        </div>
+        <div style="position: relative; display: flex; flex-direction: row; margin-bottom: 10px;">
+            <div style="margin-right: 5px; width: 50%;">
+                <label>Information</label>
+                <input type="text" class="form-control" id="information" name="information" placeholder="Enter information" required="true">
+            </div>
+            <div style="margin-left: 5px; width: 50%;">
+                <label>Img</label>
+                <input type="text" class="form-control" id="img" name="img" placeholder="Enter Img" required="true">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+        {% comment %} {% if error %}
+            <p style="color: red">Message: {{ error }}</p>
+        {% endif %} {% endcomment %}
+    </form>
+{% endblock %}
