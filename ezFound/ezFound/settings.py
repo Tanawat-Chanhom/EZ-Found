@@ -77,12 +77,8 @@ WSGI_APPLICATION = 'ezFound.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'alpha1@zeus-db-project-1',
-        'PASSWORD': 'zeus-db-project-1',
-        'HOST': 'zeus-db-project-1.postgres.database.azure.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

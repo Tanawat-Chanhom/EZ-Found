@@ -26,10 +26,8 @@ def signup(request):
             username=request.POST.get('username'),
             password=request.POST.get('password')
         )
+        
         if user:
-            userId = User.objects.filter(username = username)[0].id
-            # user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
-            # login(request, user)
             user_profile = Users(
                 user = user,
                 student_number = student_number,
