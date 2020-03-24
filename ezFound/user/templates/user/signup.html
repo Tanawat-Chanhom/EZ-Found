@@ -1,46 +1,210 @@
 {% extends "base.html" %}
 {% block content %}
-     <form method="POST" action="{% url 'signup' %}">
-        {% csrf_token %}
-        <label >Username</label>
-        <input type="username" class="form-control" id="username" name="username" placeholder="Enter username" required="true">
-        <label>Password</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="true">
-        <label >Email address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required="true">
-        <div style="position: relative; display: flex; flex-direction: row; margin-bottom: 10px;">
-            <div style="margin-right: 5px; width: 50%;">
-                <label>First name</label>
-                <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter first name" required="true">
+
+    <style>
+        .signup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 0.5em;
+            padding: 30px 60px 30px 60px;
+            width: 90%;
+            height: 90%;
+            max-width: 800px;
+            max-height: 900px;
+        }
+
+        .signup-title {
+            position: relative;
+            width: 100%;
+            text-align: center;
+            height: 20%;
+        }
+
+        .signup-title div {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .signup-title div p {
+                font-size: 5vmin;
+            }
+
+        .signup-form {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .form-detail {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .signup-buttom {
+            position: relative;
+            width: 100%;
+            height: 20%;
+        }
+
+        .signup-buttom div {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 100%;
+            max-height: 55px;
+        }
+
+        .two-cm {
+            position: relative; 
+            display: flex; 
+            flex-direction: row; 
+            margin-bottom: 10px;
+        }
+        .two-cm div:nth-child(1) {
+            margin-right: 5px; 
+            width: 50%;
+        }
+        .two-cm div:nth-child(2) {
+            margin-left: 5px;
+            width: 50%;
+        }
+
+        textarea {
+            max-height: 100px;
+        }
+
+        @media screen and (max-width: 700px) , screen and (max-height: 850px) {
+            .signup-container {
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 0.5em;
+                padding: 30px;
+                width: 90%;
+                height: unset;
+            }
+            .signup-form {
+                position: relative;
+                height: unset;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .signup-buttom {
+                position: relative;
+                margin-top: 10%;
+                width: 100%;
+                height: 20%;
+            }
+            .signup-buttom div {
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -0%);
+                width: 50%;
+                height: 100%;
+                max-height: 55px;
+            }
+            .signup-title {
+                position: relative;
+                width: 100%;
+                text-align: center;
+                height: 20%;
+                margin-top: 10%;
+            }
+            .signup-title div p {
+                font-size: 8vmin;
+            }
+        }
+
+    </style>
+
+    <div class="signup-container">
+        <form method="POST" action="{% url 'signup' %}" class="signup-form">
+            {% csrf_token %}
+            <div class="signup-title">
+                <div>
+                    <p style="color: #3CDBD7;">Sign Up</p>
+                </div>
             </div>
-            <div style="margin-left: 5px; width: 50%;">
-                <label>Last name</label>
-                <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter last name" required="true">
+
+            <div class="form-detail">
+
+                <div>
+                    <label>Username</label>
+                    <input type="text" class="form-control" id="usernmae" name="usernmae" placeholder="Enter username" required="true">
+                </div>
+
+                <div class="two-cm">
+                    <div>
+                        <label>Password</label>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter password" required="true">
+                    </div>
+                    <div>
+                        <label>Confirm Password</label>
+                        <input type="text" class="form-control" id="confirm-password" name="confirm-password" placeholder="Enter confirm Password" required="true">
+                    </div>
+                </div>
+
+                <div class="two-cm">
+                    <div>
+                        <label>First name</label>
+                        <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter first name" required="true">
+                    </div>
+                    <div>
+                        <label>Last name</label>
+                        <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter last name" required="true">
+                    </div>
+                </div>
+                <div class="two-cm">
+                    <div>
+                        <label >Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required="true">
+                    </div>
+                    <div>
+                        <label>Student number</label>
+                        <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter student number" required="true">
+                    </div>
+                </div>
+                <div class="two-cm">
+                    <div>
+                        <label>Phone number</label>
+                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Enter phonenumber" required="true">
+                    </div>
+                    <div>
+                        <label>Profile Image</label>
+                        <input type="file" class="" id="img" name="img" placeholder="Enter Img" required="true">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Information</label>
+                        <textarea class="form-control" id="information" name="information" placeholder="Enter more information" required="true" rows="4"></textarea>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div style="position: relative; display: flex; flex-direction: row; margin-bottom: 10px;">
-            <div style="margin-right: 5px; width: 50%;">
-                <label>Student number</label>
-                <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter student number" required="true">
+
+            <div class="signup-buttom">
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 100%; border-radius: 100em; background-color: #3CDBD7; border: none; font-weight: bold; font-size: 2.5vmin;">GET STARTED</button>
+                </div>
             </div>
-            <div style="margin-left: 5px; width: 50%;">
-                <label>Phonenumber</label>
-                <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Enter phonenumber" required="true">
-            </div>
-        </div>
-        <div style="position: relative; display: flex; flex-direction: row; margin-bottom: 10px;">
-            <div style="margin-right: 5px; width: 50%;">
-                <label>Information</label>
-                <input type="text" class="form-control" id="information" name="information" placeholder="Enter information" required="true">
-            </div>
-            <div style="margin-left: 5px; width: 50%;">
-                <label>Img</label>
-                <input type="text" class="form-control" id="img" name="img" placeholder="Enter Img" required="true">
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Sign up</button>
-        {% comment %} {% if error %}
-            <p style="color: red">Message: {{ error }}</p>
-        {% endif %} {% endcomment %}
-    </form>
+
+            {% comment %} {% if error %}
+                <p style="color: red">Message: {{ error }}</p>
+            {% endif %} {% endcomment %}
+        </form>
+    </div>
 {% endblock %}
