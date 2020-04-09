@@ -1,3 +1,548 @@
 {% extends "base.html" %}
 {% block content %}
+{% load static %}
+    <style>
+        .filter-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-container {
+            height: 60px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 0.5em;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .category-title {
+            position: relative;
+            background-color: #C7C7C7;
+            padding: 10px;
+            border-radius: 0.5em 0em 0em 0.5em;
+        }
+
+        .category-title div {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            color: white;
+        }
+
+        .category-items {
+            position: relative;
+            width: 100%;
+            border-radius: 0em 0.5em 0.5em 0em;
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+        }
+
+        .category-items::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .category-item {
+            position: relative;
+            margin: 10px;
+            background-color: white;
+            border: gray 2px solid; 
+            border-radius: 0.5em;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .category-item div {
+            position: relative;
+            z-index: 3;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .category-checkbox {
+            position: relative;
+            visibility: hidden;
+            position:absolute;
+        }
+
+        .category-span-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 0.3em;
+            transition: all 0.2s;
+        }
+
+        .category-checkbox:checked ~ .category-span-bg {
+            background-color: rgba(84, 193, 210, 0.479);
+        }
+
+        .location-status-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            /* flex-wrap: wrap; */
+        }
+
+        .location-container {
+            position: relative;
+            width: 50%;
+            height: 60px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 0.5em;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .location-items {
+            position: relative;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .location-items select {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .status-container {
+            position: relative;
+            width: 50%;
+            height: 60px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 0.5em;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .status-items {
+            position: relative;
+            width: 100%;
+            border-radius: 0em 0.5em 0.5em 0em;
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+        }
+
+        .status-items::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .status-item {
+            position: relative;
+            margin: 10px;
+            background-color: white;
+            border: gray 2px solid; 
+            border-radius: 0.5em;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .status-item div {
+            position: relative;
+            z-index: 3;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .status-checkbox {
+            position: relative;
+            visibility: hidden;
+            position:absolute;
+        }
+
+        .status-span-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 0.3em;
+            transition: all 0.2s;
+        }
+
+        .status-checkbox:checked ~ .status-span-bg {
+            background-color: rgba(84, 193, 210, 0.479);
+        }
+    </style>
+    <form action="">
+        <div class="filter-container">
+            <div data-aos="zoom-in" class="category-container">
+                <div class="category-title">
+                    <div>
+                        <span>Category</span>
+                    </div>
+                </div>
+                <div class="category-items">
+                    {% for C in Category %}
+                        <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="filter-category-{{C.id}}" class="category-item">
+                            <input type="checkbox" class="category-checkbox" name="category-checkbox-{{C.id}}" id="filter-category-{{C.id}}" value="option1">
+                            <span class="category-span-bg"></span>
+                            <div>
+                                <p>{{C.value}}</p>
+                            </div>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="location-status-container">
+                <div data-aos="zoom-in" data-aos-delay="100" class="location-container">
+                    <div class="category-title">
+                        <div>
+                            <span>Location</span>
+                        </div>
+                    </div>
+                    <div class="location-items">
+                        <select class="form-control" id="filter-location">
+                            <option selected>--> Location <--</option>
+                            {% for L in Locations %}
+                                <option>{{L.value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div data-aos="zoom-in" data-aos-delay="200" class="status-container">
+                    <div class="category-title">
+                        <div>
+                            <span>Status</span>
+                        </div>
+                    </div>
+                    <div class="category-items">
+                        {% for S in Status %}
+                            <label data-aos="zoom-in" data-aos-delay="{{S.id}}00" for="filter-status-{{S.id}}" class="status-item">
+                                <input type="checkbox" class="status-checkbox" name="status-checkbox-{{S.id}}" id="filter-status-{{S.id}}" value="option1">
+                                <span class="status-span-bg"></span>
+                                <div>
+                                    <p>{{S.value}}</p>
+                                </div>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <style>
+        .new-post-container {
+            position: relative;
+            height: 200px;
+            margin: 20px;
+        }
+
+        .new-post-label {
+            position: relative;
+            background-color: #D2F1F4;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5em;
+            cursor: pointer;
+        }
+
+        .new-post {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 75%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .new-post-plus-icon {
+            position: relative;
+            height: 50%;
+        }
+        .new-post-plus-icon img {
+            position: relative;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .new-post-text {
+            position: relative;
+            width: 100%;
+            height: 50%;
+            font-weight: bold;
+            color: #B5B5B5;
+            text-align: center;
+            font-size: 48px;
+        }
+
+        .new-post-text span {
+            position: relative;
+        }
+    </style>
+
+    <input type="checkbox" id="new-post-checkbox" style="position: absolute; visibility: hidden;">
+    <div data-aos="zoom-in" data-aos-delay="200" class="new-post-container">
+        <label for="new-post-checkbox" class="new-post-label">
+            <div class="new-post">
+                <div class="new-post-plus-icon">
+                    <img src="{% static "images/add.png" %}">
+                </div>
+                <div class="new-post-text">
+                    <span>Make a new Post</span>
+                </div>
+            </div>
+        </label>
+    </div>
+    <style>
+        .new-post-form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 90%;
+            max-width: 700px;
+            /* height: 90%; */
+            min-height: 800px;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            display: none;
+        }
+
+        #new-post-checkbox:checked ~ .new-post-form{
+            display: unset;
+        }
+
+        .close-new-post-label {
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            background-color: rgba(128, 128, 128, 0.5);
+            width: 100%;
+            height: 100%;
+            display: none;
+            cursor: pointer;
+        }
+
+        #new-post-checkbox:checked ~ .close-new-post-label{
+            display: unset;
+        }
+
+        .drag-and-drop-container {
+            position: relative;
+            width: 100%;
+            height: 40%;
+            background-color: gray;
+            border-radius: 0.5em 0.5em 0em 0em;
+        }
+
+        .new-post-form-detail {
+            position: relative;
+            width: 100%;
+            height: 60%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 0em 0em 0.5em 0.5em;
+        }
+
+        .from-category {
+            position: relative;
+            /* height: 30px; */
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+        .form-category-title {
+            position: relative;
+            padding: 0px 10px 0px 0px;
+            border-radius: 0.5em 0em 0em 0.5em;
+        }
+
+        .form-category-title div {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            color: #B5B5B5;
+        }
+        .form-category-items {
+            position: relative;
+            width: 100%;
+            border-radius: 0.5em;
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+            background-color: #E1E1E1;
+        }
+
+        .form-category-items::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .form-category-item {
+            position: relative;
+            margin: 10px;
+            background-color: white;
+            border: gray 2px solid; 
+            border-radius: 0.5em;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .form-category-item div {
+            position: relative;
+            z-index: 3;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .form-category-checkbox {
+            position: relative;
+            visibility: hidden;
+            position:absolute;
+        }
+
+        .form-category-span-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 0.3em;
+            transition: all 0.2s;
+        }
+        .form-category-checkbox:checked ~ .form-category-span-bg {
+            background-color: rgba(84, 193, 210, 0.479);
+        }
+
+        .form-location {
+            position: relative;
+            width: 100%;
+            /* height: 30px; */
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+        .form-location-items {
+            position: relative;
+            width: 100%;
+            padding: 5px;
+            background-color: #E1E1E1;
+            border-radius: 0.5em;
+        }
+
+        .form-status {
+            position: relative;
+            width: 100%;
+            /* height: 30px; */
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .form-des {
+            position: relative;
+            /* width: 100%; */
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-des-title {
+            position: relative;
+            padding: 10px 0px;
+            font-weight: bold;
+            color: #B5B5B5;
+        }
+        .form-des-detail textarea{
+            resize: vertical;
+            min-height: 200px;
+            max-height: 200px;
+        }
+        .new-post-form-submit-btn {
+            position: relative;
+            bottom: 0%;
+            right: 0%;
+            margin: 20px 0px 0px 0px;
+        }
+        .new-post-form-submit-btn div {
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+    <label for="new-post-checkbox" class="close-new-post-label"></label>
+    <form action="" class="new-post-form">
+        <div class="drag-and-drop-container">
+            <input type="file" id="input-file-now-custom-1" class="file-upload" data-default-file="https://mdbootstrap.com/img/Photos/Others/images/89.jpg" />
+        </div>
+        <div class="new-post-form-detail">
+            <div class="from-category">
+                <div class="form-category-title">
+                    <div>
+                        <span>Category</span>
+                    </div>
+                </div>
+                <div class="form-category-items">
+                    {% for C in Category %}
+                        <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="new-post-form-category-{{C.id}}" class="form-category-item">
+                            <input type="checkbox" class="form-category-checkbox" name="form-category-checkbox-{{C.id}}" id="new-post-form-category-{{C.id}}" value="{{C.value}}">
+                            <span class="form-category-span-bg"></span>
+                            <div>
+                                <p>{{C.value}}</p>
+                            </div>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="location-status-container">
+                <div class="form-location">
+                    <div class="form-category-title">
+                        <div>
+                            <span>Location</span>
+                        </div>
+                    </div>
+                    <div class="form-location-items">
+                        <select class="form-control" id="new-post-form-location">
+                            <option selected>--> Location <--</option>
+                            {% for L in Locations %}
+                                <option>{{L.value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-status">
+                    <div class="form-category-title">
+                        <div>
+                            <span>Status</span>
+                        </div>
+                    </div>
+                    <div class="form-location-items">
+                        <select class="form-control" id="new-post-form-status">
+                            <option selected>--> Status <--</option>
+                            <option value="Lost">Lost</option>
+                            <option value="Found">Found</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-des">
+                <div class="form-des-title">
+                    <div>
+                        <span>Description</span>
+                    </div>
+                </div>
+                <div class="form-des-detail">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="new-post-form-submit-btn">
+                <div>
+                    <button type="submit" class="btn btn-primary mb-2" style="border-radius: 100em; width: 100px;">Post</button>
+                </div>
+            </div>
+        </div>
+    </form>
 {% endblock %}
