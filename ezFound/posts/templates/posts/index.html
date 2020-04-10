@@ -333,8 +333,9 @@
         .drag-and-drop-container {
             position: relative;
             width: 100%;
-            height: 40%;
-            background-color: gray;
+            height: 350px;
+            padding: 10px;
+            background: linear-gradient(0deg, rgba(64,242,130,1) 0%, rgba(84,193,210,1) 100%);;
             border-radius: 0.5em 0.5em 0em 0em;
         }
 
@@ -472,11 +473,57 @@
             display: flex;
             justify-content: flex-end;
         }
+
+        #myDropzone {
+            padding: 20px;
+        }
+
+        #myDropzone img {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 100%;
+        }
+
+        #myDropzone input[type="file"] {
+            position: absolute;
+            bottom: 0%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(225, 225, 225, 0.4);
+            padding: 10px;
+            margin: 10px;
+            border-radius: 0.5em;
+        }
     </style>
     <label for="new-post-checkbox" class="close-new-post-label"></label>
-    <form action="" class="new-post-form">
+    <form action="{% url 'upload' %}" method="POST" class="new-post-form" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="drag-and-drop-container">
-            <input type="file" id="input-file-now-custom-1" class="file-upload" data-default-file="https://mdbootstrap.com/img/Photos/Others/images/89.jpg" />
+            <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;" id="myDropzone">
+                <img src='#' id='base64Img' style='display: none;'>
+                <input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>
+            </div>
+            <script>
+                 function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (e.target.result.split("/")[0] == "data:image") {
+                                document.getElementById('base64Img').src = e.target.result;
+                                document.getElementById('base64Img').style.display = 'unset';
+                            } else {
+                                alert('Image only')
+                                document.getElementById('dropzone').remove();
+                                document.getElementById('myDropzone').innerHTML = 
+                                "<img src='#' id='base64Img' style='display: none;'><input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>";
+                            }
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            </script>
         </div>
         <div class="new-post-form-detail">
             <div class="from-category">
@@ -505,10 +552,10 @@
                         </div>
                     </div>
                     <div class="form-location-items">
-                        <select class="form-control" id="new-post-form-location">
+                        <select class="form-control" name="new-post-form-location">
                             <option selected>--> Location <--</option>
                             {% for L in Locations %}
-                                <option>{{L.value}}</option>
+                                <option value="{{L.value}}">{{L.value}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -520,7 +567,7 @@
                         </div>
                     </div>
                     <div class="form-location-items">
-                        <select class="form-control" id="new-post-form-status">
+                        <select class="form-control" name="new-post-form-status">
                             <option selected>--> Status <--</option>
                             <option value="Lost">Lost</option>
                             <option value="Found">Found</option>

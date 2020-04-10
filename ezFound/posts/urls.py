@@ -18,5 +18,6 @@ from django.urls import path, include
 from posts import views
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name='index'),
+    path('upload', views.uploadTest, name="upload")
 ]
