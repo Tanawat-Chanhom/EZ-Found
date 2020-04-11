@@ -299,7 +299,7 @@
     </div>
     <style>
         .new-post-form {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             width: 90%;
@@ -324,6 +324,7 @@
             height: 100%;
             display: none;
             cursor: pointer;
+            z-index: 999;
         }
 
         #new-post-checkbox:checked ~ .close-new-post-label{
@@ -506,7 +507,7 @@
                 <input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>
             </div>
             <script>
-                 function readURL(input) {
+                function readURL(input) {
                     if (input.files && input.files[0]) {
                         var reader = new FileReader();
                         reader.onload = function (e) {
@@ -587,9 +588,225 @@
             </div>
             <div class="new-post-form-submit-btn">
                 <div>
-                    <button type="submit" class="btn btn-primary mb-2" style="border-radius: 100em; width: 100px;">Post</button>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;">Post</button>
                 </div>
             </div>
         </div>
     </form>
+
+    <style>
+        .post-container {
+            position: relative;
+            /* height: 800px; */
+            background-color: thistle;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.5em;
+            overflow: hidden;
+        }
+
+        .post-bar-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            height: 65px;
+            padding: 5px;
+            background-color: white;
+        }
+
+        .post-profile-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+            border-radius: 0.5em;
+            transition: all 0.2s;
+            margin-right: 5px;
+        }
+
+        .post-profile-container:hover {
+            background-color: rgba(128, 128, 128, 0.4);
+        }
+
+        .post-profile-img {
+            position: relative;
+            /* height: 100%;
+            max-height: 45px; */
+            width: 100%;
+            max-width: 45px;
+        }
+
+        .post-profile-name {
+            position: relative;
+            margin-left: 5px;
+        }
+
+        .post-profile-name p {
+            position: relative; 
+            top: 50%; 
+            transform: translateY(-50%);
+            color: #707070;
+        }
+
+        .post-date-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .post-date-img {
+            position: relative;
+            padding: 10px;
+        }
+
+        .post-date-img img{
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .post-date-text p {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #B5B5B5;
+        }
+
+        .post-img-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .post-img-container img {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .post-detail-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;            
+            background-color: white;
+            padding: 10px;
+        }
+
+        .post-detail {
+            position: relative;   
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .post-detail-category-items {
+            position: relative;
+            background-color: white;
+            padding: 0px 5px 0px 5px;
+            margin: 5px;
+            border-radius: 0.5em;
+        }
+
+        .post-detail-category-items p {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .post-description {
+            position: relative;
+            width: 100%;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .post-comment-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            border-top: #B5B5B5 2px solid;
+            padding: 10px;
+            background-color: white;
+        }
+    </style>
+    <div data-aos="zoom-in" data-aos-delay="200" class="post-container">
+        <div class="post-bar-container">
+            <a href="#" class="post-profile-container" style="text-decoration: none;">
+                <div style="position: relative;">
+                    <div class="profile-img" style="background-image: url({% static "images/bg.jpeg" %});"></div>
+                    <img class="post-profile-img" style="border-radius: 100%;"  src="{% static "images/icon.webp" %}">
+                </div>
+                <div class="post-profile-name">
+                    <p>100%Not DummyAcc</p>
+                </div>
+            </a>
+            <div class="post-date-container">
+                <div class="post-date-img">
+                    <img style="border-radius: 100%;"  src="{% static "images/clock.png" %}">
+                </div>
+                <div class="post-date-text">
+                    <p> 10 Mar 2020 at 11.20 AM</p>
+                </div>
+            </div>
+        </div>
+        <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">
+            <img src="{% static "images/bg.jpeg" %}">
+            <!-- <img src="{% static "images/22127.jpg" %}"> -->
+        </div>
+        <div class="post-detail-container">
+            <div class="post-detail">
+                <div class="form-category-items" style="max-width: 200px; height: 50px;">
+                    {% for C in Category %}
+                        <div class="post-detail-category-items">
+                            <p >{{C.value}}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="post-date-container">
+                    <div class="post-date-img">
+                        <img style="border-radius: 100%;"  src="{% static "images/location.png" %}">
+                    </div>
+                    <div class="post-date-text">
+                        <p>Faculty of Information Technology</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style=
+                "
+                    border-radius: 100em;
+                    width: 100px; 
+                    position: relative; 
+                    top: 50%;
+                    transform: translateY(-50%);
+                " 
+                disabled>Lost</button>
+            </div>
+        </div>
+        <div class="post-description">
+            <p>
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+            </p>
+        </div>
+        <div class="post-comment-container">
+            <form action="#" method="POST" style="margin: 0; width: 100%;">
+                {% csrf_token %}
+                <div class="post-commit">
+                    <input type="text" class="form-control" style="border-radius: 100em;" name="post-comment" placeholder="Enter comment">
+                </div>
+            </form>
+            <div>
+                <button type="button" style="border-radius: 100em; margin-left: 10px;" class="btn btn-primary">Show comment</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
