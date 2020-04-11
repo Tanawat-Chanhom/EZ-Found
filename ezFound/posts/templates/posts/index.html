@@ -734,7 +734,8 @@
             background-color: white;
         }
     </style>
-    <div data-aos="zoom-in" data-aos-delay="200" class="post-container">
+    {% for C in Category %}
+    <div data-aos="zoom-in" class="post-container">
         <div class="post-bar-container">
             <a href="#" class="post-profile-container" style="text-decoration: none;">
                 <div style="position: relative;">
@@ -756,7 +757,6 @@
         </div>
         <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">
             <img src="{% static "images/bg.jpeg" %}">
-            <!-- <img src="{% static "images/22127.jpg" %}"> -->
         </div>
         <div class="post-detail-container">
             <div class="post-detail">
@@ -784,6 +784,9 @@
                     position: relative; 
                     top: 50%;
                     transform: translateY(-50%);
+                    font-weight: bold;
+                    background-color: red;
+                    border: unset;
                 " 
                 disabled>Lost</button>
             </div>
@@ -797,16 +800,70 @@
                 ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
             </p>
         </div>
+        <style>
+            .post-comment-detail {
+                position: relative;
+                width: 100%;
+                max-height: 500px;
+                background-color: white;
+                border-top: #B5B5B5 2px solid;
+                display: none;
+                padding: 10px;
+                overflow-y: scroll;
+            }
+
+            .show-comment:checked ~ .post-comment-detail {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .post-comment {
+                position: relative;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .post-comment-description {
+                position: relative;
+                background-color: #DFDFDF;
+                margin: 0px 0px 10px 50px;
+                padding: 10px;
+                border-radius: 0.5em;
+            }
+        </style>
+        <input type="checkbox" id="show-comment-{{C.id}}" class="show-comment" style="position: absolute; visibility: hidden;">
+        <div class="post-comment-detail">
+            {% for L in Locations %}
+            <div class="post-comment">
+                <a href="#" class="post-profile-container" style="text-decoration: none; width: fit-content;">
+                    <div style="position: relative;">
+                        <div class="profile-img" style="background-image: url({% static "images/asw.png" %});"></div>
+                        <img class="post-profile-img" style="border-radius: 100%;"  src="{% static "images/icon.webp" %}">
+                    </div>
+                    <div class="post-profile-name">
+                        <p>ANSWER ME</p>
+                    </div>
+                </a>
+                <div class="post-comment-description">
+                    <p>
+                        ใช่ค่ะ ขอบคุณมากๆค่ะ UwU
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         <div class="post-comment-container">
-            <form action="#" method="POST" style="margin: 0; width: 100%;">
+            <form action="" method="POST" style="margin: 0; width: 100%;">
                 {% csrf_token %}
                 <div class="post-commit">
                     <input type="text" class="form-control" style="border-radius: 100em;" name="post-comment" placeholder="Enter comment">
                 </div>
             </form>
             <div>
-                <button type="button" style="border-radius: 100em; margin-left: 10px;" class="btn btn-primary">Show comment</button>
+                <label style="border-radius: 100em; margin-left: 10px; margin-bottom: 0;" class="btn btn-primary" for="show-comment-{{C.id}}">Show comment</label>
             </div>
         </div>
     </div>
+    {% endfor %}
 {% endblock %}
