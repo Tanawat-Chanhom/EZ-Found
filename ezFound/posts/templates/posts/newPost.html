@@ -1,0 +1,297 @@
+{% load static %}
+<style>
+        .new-post-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 90%;
+            max-width: 700px;
+            /* height: 90%; */
+            min-height: 800px;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            display: none;
+        }
+
+        #new-post-checkbox:checked ~ .new-post-form{
+            display: unset;
+        }
+
+        .close-new-post-label {
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            background-color: rgba(128, 128, 128, 0.5);
+            width: 100%;
+            height: 100%;
+            display: none;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        #new-post-checkbox:checked ~ .close-new-post-label{
+            display: unset;
+        }
+
+        .drag-and-drop-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            padding: 10px;
+            background: linear-gradient(0deg, rgba(64,242,130,1) 0%, rgba(84,193,210,1) 100%);;
+            border-radius: 0.5em 0.5em 0em 0em;
+        }
+
+        .new-post-form-detail {
+            position: relative;
+            width: 100%;
+            height: 60%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 0em 0em 0.5em 0.5em;
+        }
+
+        .from-category {
+            position: relative;
+            /* height: 30px; */
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+        .form-category-title {
+            position: relative;
+            padding: 0px 10px 0px 0px;
+            border-radius: 0.5em 0em 0em 0.5em;
+        }
+
+        .form-category-title div {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            color: #B5B5B5;
+        }
+        .form-category-items {
+            position: relative;
+            width: 100%;
+            border-radius: 0.5em;
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+            background-color: #E1E1E1;
+        }
+
+        .form-category-items::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .form-category-item {
+            position: relative;
+            margin: 10px;
+            background-color: white;
+            border: gray 2px solid; 
+            border-radius: 0.5em;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .form-category-item div {
+            position: relative;
+            z-index: 3;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .form-category-checkbox {
+            position: relative;
+            visibility: hidden;
+            position:absolute;
+        }
+
+        .form-category-span-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 0.3em;
+            transition: all 0.2s;
+        }
+        .form-category-checkbox:checked ~ .form-category-span-bg {
+            background-color: rgba(84, 193, 210, 0.479);
+        }
+
+        .form-location {
+            position: relative;
+            width: 100%;
+            /* height: 30px; */
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+        .form-location-items {
+            position: relative;
+            width: 100%;
+            padding: 5px;
+            background-color: #E1E1E1;
+            border-radius: 0.5em;
+        }
+
+        .form-status {
+            position: relative;
+            width: 100%;
+            /* height: 30px; */
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .form-des {
+            position: relative;
+            /* width: 100%; */
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-des-title {
+            position: relative;
+            padding: 10px 0px;
+            font-weight: bold;
+            color: #B5B5B5;
+        }
+        .form-des-detail textarea{
+            resize: vertical;
+            min-height: 200px;
+            max-height: 200px;
+        }
+        .new-post-form-submit-btn {
+            position: relative;
+            bottom: 0%;
+            right: 0%;
+            margin: 20px 0px 0px 0px;
+        }
+        .new-post-form-submit-btn div {
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #myDropzone {
+            padding: 20px;
+        }
+
+        #myDropzone img {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 100%;
+        }
+
+        #myDropzone input[type="file"] {
+            position: absolute;
+            bottom: 0%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(225, 225, 225, 0.4);
+            padding: 10px;
+            margin: 10px;
+            border-radius: 0.5em;
+        }
+    </style>
+    <label for="new-post-checkbox" class="close-new-post-label"></label>
+    <form action="{% url 'upload' %}" method="POST" class="new-post-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="drag-and-drop-container">
+            <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;" id="myDropzone">
+                <img src='#' id='base64Img' style='display: none;'>
+                <input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>
+            </div>
+            <script>
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (e.target.result.split("/")[0] == "data:image") {
+                                document.getElementById('base64Img').src = e.target.result;
+                                document.getElementById('base64Img').style.display = 'unset';
+                            } else {
+                                alert('Image only')
+                                document.getElementById('dropzone').remove();
+                                document.getElementById('myDropzone').innerHTML = 
+                                "<img src='#' id='base64Img' style='display: none;'><input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>";
+                            }
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            </script>
+        </div>
+        <div class="new-post-form-detail">
+            <div class="from-category">
+                <div class="form-category-title">
+                    <div>
+                        <span>Category</span>
+                    </div>
+                </div>
+                <div class="form-category-items">
+                    {% for C in dataCategory %}
+                        <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="new-post-form-category-{{C.id}}" class="form-category-item">
+                            <input type="checkbox" class="form-category-checkbox" name="form-category-checkbox-{{C.id}}" id="new-post-form-category-{{C.id}}" value="{{C.value}}">
+                            <span class="form-category-span-bg"></span>
+                            <div>
+                                <p>{{C.value}}</p>
+                            </div>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="location-status-container">
+                <div class="form-location">
+                    <div class="form-category-title">
+                        <div>
+                            <span>Location</span>
+                        </div>
+                    </div>
+                    <div class="form-location-items">
+                        <select class="form-control" name="new-post-form-location">
+                            <option selected>--> Location <--</option>
+                            {% for L in dataLocations %}
+                                <option value="{{L.value}}">{{L.value}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-status">
+                    <div class="form-category-title">
+                        <div>
+                            <span>Status</span>
+                        </div>
+                    </div>
+                    <div class="form-location-items">
+                        <select class="form-control" name="new-post-form-status">
+                            <option selected>--> Status <--</option>
+                            <option value="Lost">Lost</option>
+                            <option value="Found">Found</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-des">
+                <div class="form-des-title">
+                    <div>
+                        <span>Description</span>
+                    </div>
+                </div>
+                <div class="form-des-detail">
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="new-post-form-submit-btn">
+                <div>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;">Post</button>
+                </div>
+            </div>
+        </div>
+    </form>

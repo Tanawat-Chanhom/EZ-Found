@@ -35,11 +35,14 @@
         }
 
         .navber-title {
-            color: white;
             position: relative;
             text-align: center;
             font-size: 4vmin;
             font-weight: bold;
+        }
+
+        .navber-title a {
+            color: white;
         }
 
         .sign-in-container {
@@ -136,9 +139,9 @@
 
         </div>
         <div class="navber-item navber-title">
-            <span>
+            <a href="{% url 'index' %}" style="text-decoration: none;">
                 EZ-FOUND
-            </span>
+            </a>
         </div>
         <div class="navber-item" style="display: flex; justify-content: flex-end; align-items: center;">
             <!-- <div class="sign-in-container">
