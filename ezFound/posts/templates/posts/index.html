@@ -830,6 +830,7 @@
                 margin: 0px 0px 10px 50px;
                 padding: 10px;
                 border-radius: 0.5em;
+                width: fit-content;
             }
         </style>
         <input type="checkbox" id="show-comment-{{C.id}}" class="show-comment" style="position: absolute; visibility: hidden;">
@@ -854,7 +855,7 @@
             {% endfor %}
         </div>
         <div class="post-comment-container">
-            <form action="" method="POST" style="margin: 0; width: 100%;">
+            <form action="#" method="POST" style="margin: 0; width: 100%;">
                 {% csrf_token %}
                 <div class="post-commit">
                     <input type="text" class="form-control" style="border-radius: 100em;" name="post-comment" placeholder="Enter comment">
