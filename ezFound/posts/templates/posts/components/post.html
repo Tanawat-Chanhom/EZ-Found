@@ -1,0 +1,374 @@
+    {% load static %}
+    <style>
+        .post-container {
+            position: relative;
+            /* height: 800px; */
+            background-color: thistle;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.5em;
+            overflow: hidden;
+        }
+
+        .post-bar-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 65px;
+            padding: 5px;
+            background-color: white;
+        }
+
+        .post-profile-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+            border-radius: 0.5em;
+            transition: all 0.2s;
+            margin-right: 5px;
+        }
+
+        .post-profile-container:hover {
+            background-color: rgba(128, 128, 128, 0.4);
+        }
+
+        .post-profile-img {
+            position: relative;
+            /* height: 100%;
+            max-height: 45px; */
+            width: 100%;
+            max-width: 45px;
+        }
+
+        .post-profile-name {
+            position: relative;
+            margin-left: 5px;
+        }
+
+        .post-profile-name p {
+            position: relative; 
+            top: 50%; 
+            transform: translateY(-50%);
+            color: #707070;
+        }
+
+        .post-date-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .post-date-img {
+            position: relative;
+            padding: 10px;
+        }
+
+        .post-date-img img {
+            position: relative;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .post-date-text p {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #B5B5B5;
+        }
+
+        .post-more-menu-container {
+            width: 45px;
+            margin: 5px;
+            border-radius: 0.5em;
+            transition: all 0.2s;
+        }
+
+        .post-more-menu-container:hover {
+            background-color: rgba(181, 181, 181, 0.438);
+        }
+
+        .post-more-menu-items {
+            position: relative;
+            background-color: white;
+            left: 150%;
+            z-index: 99;
+            border: #B5B5B5 2px solid;
+            border-radius: 0.5em;
+            width: 100px;
+            transition: all 0.2s;
+        }
+
+        .post-more-menu-btn:checked ~ .post-more-menu-items {
+            left: -115%;
+            transition: all 0.2s;
+        }
+
+        .post-more-menu-item {
+            position: relative;
+            width: 90px;
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 5px;
+            color: #B5B5B5;
+        }
+
+        .post-more-menu-item img {
+            position: relative;
+            margin: 3px;
+        }
+
+        .post-img-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .post-img-container img {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .post-detail-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;            
+            background-color: white;
+            padding: 10px;
+        }
+
+        .post-detail {
+            position: relative;   
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .post-category-items {
+            position: relative;
+            width: 100%;
+            border-radius: 0.5em;
+            display: flex;
+            flex-direction: row;
+            overflow-x: scroll;
+            background-color: #E1E1E1;
+        }
+
+        .post-category-items::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .post-detail-category-items {
+            position: relative;
+            background-color: white;
+            padding: 0px 5px 0px 5px;
+            margin: 5px;
+            border-radius: 0.5em;
+        }
+
+        .post-detail-category-items p {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .post-description {
+            position: relative;
+            width: 100%;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .post-comment-container {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            border-top: #B5B5B5 2px solid;
+            padding: 10px;
+            background-color: white;
+        }
+
+        @media screen and (max-width: 500px) , screen and (max-height: 500px) {
+            .post-detail-container {
+                flex-wrap: wrap;
+            }
+
+            .post-detail {
+                flex-wrap: wrap;
+            }
+            
+        }
+    </style>
+    <div data-aos="zoom-in" class="post-container">
+        <div class="post-bar-container">
+            <div style="display: flex; flex-direction: row;">
+                <a href="{% url 'profile' %}" class="post-profile-container" style="text-decoration: none;">
+                    <div style="position: relative;">
+                        <div class="profile-img" style="background-image: url({% static 'images/bg.jpeg' %})"></div>
+                        <img class="post-profile-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
+                    </div>
+                    <div class="post-profile-name">
+                        <p>100%Not DummyAcc</p>
+                    </div>
+                </a>
+                <div class="post-date-container">
+                    <div class="post-date-img">
+                        <img style="border-radius: 100%;"  src="{% static 'images/clock.png' %}">
+                    </div>
+                    <div class="post-date-text">
+                        <p>10 Mar 2020 at 11.20 AM</p>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="post-more-menu-container">
+                <label for="post-more-menu-btn-{{data.id}}" class="post-date-container" style="cursor: pointer;">
+                    <div class="post-date-img">
+                        <img style="border-radius: 100%;"  src="{% static 'images/more.png' %}">
+                    </div>
+                </label>
+                <input type="checkbox" class="post-more-menu-btn" id="post-more-menu-btn-{{data.id}}" style="position: absolute; visibility: hidden;">
+                <div class="post-more-menu-items">
+                    <a href="#" style="text-decoration: none;">
+                        <div class="post-more-menu-item">
+                            <img src="{% static 'images/edit.png' %}">
+                            <p style="margin-bottom: 0; width: 100%; text-align: center;">Edit</p>
+                        </div>
+                    </a>
+                    <a href="#" style="text-decoration: none;">
+                        <div class="post-more-menu-item">
+                            <img src="{% static 'images/delete.png' %}">
+                            <p style="margin-bottom: 0; width: 100%; text-align: center;">Delete</p>
+                        </div>
+                    </a>
+                </div>
+            </div> {% endcomment %}
+        </div>
+        <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">
+            <img src="{% static 'images/bg.jpeg' %}">
+        </div>
+        <div class="post-detail-container">
+            <div class="post-detail">
+                <div class="post-category-items" style="max-width: 200px; height: 50px;">
+                    {% for C in Category %}
+                        <div class="post-detail-category-items">
+                            <p >{{C.value}}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="post-date-container">
+                    <div class="post-date-img">
+                        <img style="border-radius: 100%;"  src="{% static 'images/location.png' %}">
+                    </div>
+                    <div class="post-date-text">
+                        <p>Faculty of Information Technology</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style=
+                "
+                    border-radius: 100em;
+                    width: 100px; 
+                    position: relative; 
+                    top: 50%;
+                    transform: translateY(-50%);
+                    font-weight: bold;
+                    background-color: red;
+                    border: unset;
+                " 
+                disabled>Lost</button>
+            </div>
+        </div>
+        <div class="post-description">
+            <p>
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+            </p>
+        </div>
+        <style>
+            .post-comment-detail {
+                position: relative;
+                width: 100%;
+                max-height: 500px;
+                background-color: white;
+                border-top: #B5B5B5 2px solid;
+                display: none;
+                padding: 10px;
+                overflow-y: scroll;
+            }
+
+            .show-comment:checked ~ .post-comment-detail {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .post-comment {
+                position: relative;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .post-comment-description {
+                position: relative;
+                background-color: #DFDFDF;
+                margin: 0px 0px 10px 50px;
+                padding: 10px;
+                border-radius: 0.5em;
+                width: fit-content;
+            }
+        </style>
+        <input type="checkbox" id="show-comment-{{data.id}}" class="show-comment" style="position: absolute; visibility: hidden;">
+        <div class="post-comment-detail" id="post-comment-detail">
+            {% for L in Locations %}
+            <div class="post-comment">
+                <a href="#" class="post-profile-container" style="text-decoration: none; width: fit-content;">
+                    <div style="position: relative;">
+                        <div class="profile-img" style="background-image: url({% static 'images/asw.png' %})"></div>
+                        <img class="post-profile-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
+                    </div>
+                    <div class="post-profile-name">
+                        <p>ANSWER ME</p>
+                    </div>
+                </a>
+                <div class="post-comment-description">
+                    <p>
+                        ใช่ค่ะ ขอบคุณมากๆค่ะ UwU
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="post-comment-container">
+            <form action="#" method="POST" style="margin: 0; width: 100%;">
+                {% csrf_token %}
+                <div class="post-commit">
+                    <input type="text" class="form-control" style="border-radius: 100em;" name="post-comment" placeholder="Enter comment">
+                </div>
+            </form>
+            <div>
+                <label style="border-radius: 100em; margin-left: 10px; margin-bottom: 0;" class="btn btn-primary" for="show-comment-{{data.id}}" onclick="scrollOnbuttom(event)">Show comment</label>
+            </div>
+        </div>
+        <!-- <script>
+            function scrollOnbuttom() {
+                setTimeout(function(e){
+                    var postCommentDetail = document.getElementById('post-comment-detail');
+                    postCommentDetail.scrollTop = postCommentDetail.scrollHeight;
+                }, 10);
+            }
+        </script> -->
+    </div>

@@ -38,11 +38,11 @@
             position: relative;
             text-align: center;
             font-size: 4vmin;
-            font-weight: bold;
         }
 
         .navber-title a {
             color: white;
+            font-weight: bold;
         }
 
         .sign-in-container {
@@ -147,7 +147,7 @@
             <!-- <div class="sign-in-container">
                 <button type="button" class="btn btn-primary" id="btn-1">Sign In</button>
             </div> -->
-            <a href="#" data-aos="zoom-in-down" class="infor-item">
+            <a href="{% url 'profile' %}" data-aos="zoom-in-down" class="infor-item">
                 <div class="profile-img" style="background-image: url({% static "images/bg.jpeg" %});"></div>
                 <img class="manu-img" style="border-radius: 100%;"  src="{% static "images/icon.webp" %}">
             </a>    
@@ -237,11 +237,11 @@
     <div class="noti-container">
         {% for N in Noti %}
         <div class="noti-box">
-            <a href="#" data-aos="fade-up" class="noti-pofile">
+            <a href="{% url 'profile' %}" data-aos="fade-up" class="noti-pofile">
                 <div style="background-image: url({% static "images/22127.jpg" %});"></div>
                 <!-- <img style="border-radius: 100%;"  src="{% static "images/icon.webp" %}"> -->
             </a>
-            <a href="#" class="noti-text" style="text-decoration: none;">
+            <a href="{% url 'post' post_id='1' %}" class="noti-text" style="text-decoration: none;">
                 <p>LnwZa007 has commented on your post</p>
             </a>
         </div>
@@ -290,7 +290,7 @@
     </style>
 
     <div class="menu-container">
-        <a href="#" class="menu-item" style="text-decoration: none;">
+        <a href="{% url 'profile' %}" class="menu-item" style="text-decoration: none;">
             <img src="{% static "images/user.png" %}" alt="">
             <div>
                 <p>Profile</p>

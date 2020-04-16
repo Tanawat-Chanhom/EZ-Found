@@ -18,9 +18,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('otp', views.otp),
-    path('reset-pass', views.resetPass),
-    path('sign-in', views.signIn),
-    path('sign-up', views.signUp),
-    path('forgot-pass', views.forgotPass)
+    path('otp', views.otp, name="otp"),
+    path('reset-pass', views.resetPass, name="resetPass"),
+    path('sign-in', views.signIn, name="signIn"),
+    path('sign-up', views.signUp, name="signUp"),
+    path('forgot-pass', views.forgotPass, name="forgotPass")
 ]
