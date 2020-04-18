@@ -1,4 +1,5 @@
 .vscode
 .DS_Store
-win_env
-env
+win_env/
+env/
+bin/
