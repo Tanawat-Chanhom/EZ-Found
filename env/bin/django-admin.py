@@ -1,4 +1,4 @@
-#!/Users/tanawatchanhom/Desktop/EZ-Found/env/bin/python3
+#!/Users/exzenous/Developer/Django Projects/EZ-Found/env/bin/python
 from django.core import management
 
 if __name__ == "__main__":
