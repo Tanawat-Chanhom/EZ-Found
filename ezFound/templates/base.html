@@ -14,6 +14,10 @@
 <body>
 
     <style>
+        html {
+            background-color: #54C1D2;
+        }
+
         .mycontainer {
             position: relative;
             width: 100%;
@@ -27,6 +31,9 @@
             background-color: #707070;
             display: flex;
             flex-direction: row;
+            position: fixed;
+            z-index: 99;
+            width: 100%;
         }
 
         .navber-item {
@@ -56,10 +63,12 @@
             background-color: white; 
             color: #707070;
             font-weight: bold;
+            border: none;
+            transition: all 0.2s;
         }
 
         #btn-1:hover {
-            background-color: rgb(204, 204, 204); 
+            background-color: rgb(226, 226, 226); 
         }
 
         .infor-item {
@@ -144,21 +153,24 @@
             </a>
         </div>
         <div class="navber-item" style="display: flex; justify-content: flex-end; align-items: center;">
-            <!-- <div class="sign-in-container">
-                <button type="button" class="btn btn-primary" id="btn-1">Sign In</button>
-            </div> -->
+        {% if user.is_authenticated %}
             <a href="{% url 'profile' %}" data-aos="zoom-in-down" class="infor-item">
-                <div class="profile-img" style="background-image: url({% static "images/bg.jpeg" %});"></div>
-                <img class="manu-img" style="border-radius: 100%;"  src="{% static "images/icon.webp" %}">
+                <div class="profile-img" style="background-image: url({% static 'images/bg.jpeg' %})"></div>
+                <img class="manu-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
             </a>    
             <div class="infor-item" data-aos="zoom-in-down" style="height: 60%;">
                 <label for="bell-checkbox" style="cursor: pointer; position: absolute; width: 100%; height: 100%;z-index: 99;"></label>
-                <img class="manu-img" src="{% static "images/bell.png" %}">
+                <img class="manu-img" src="{% static 'images/bell.png' %}">
             </div>
             <div class="infor-item" data-aos="zoom-in-down" style="height: 30%;">
                 <label for="menu-checkbox" style="cursor: pointer; position: absolute; width: 100%; height: 100%;z-index: 99;"></label>
-                <img class="manu-img" src="{% static "images/arrow-manu.png" %}">
+                <img class="manu-img" src="{% static 'images/arrow-manu.png' %}">
             </div>
+        {% else %}
+            <div class="sign-in-container">
+                <a href="{% url 'signIn' %}" class="btn btn-primary" id="btn-1">Sign In</a>
+            </div>
+        {% endif %}
         </div>
     </div>
 
@@ -291,17 +303,25 @@
 
     <div class="menu-container">
         <a href="{% url 'profile' %}" class="menu-item" style="text-decoration: none;">
-            <img src="{% static "images/user.png" %}" alt="">
+            <img src="{% static 'images/user.png' %}" alt="">
             <div>
                 <p>Profile</p>
             </div>
         </a>
         <a href="#" class="menu-item" style="text-decoration: none;">
-            <img src="{% static "images/logout.png" %}" alt="">
+            <img src="{% static 'images/logout.png' %}" alt="">
             <div>
                 <p>Logout</p>
             </div>
         </a>
+    </div>
+
+    <div class="navber" style="position: relative; z-index: 0; visibility: hidden;">
+        <div class="navber-item navber-title">
+            <a href="{% url 'index' %}" style="text-decoration: none;">
+                EZ-FOUND
+            </a>
+        </div>
     </div>
 
     <div class="container">
@@ -310,6 +330,8 @@
     </div>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         AOS.init();
     </script>
