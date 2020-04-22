@@ -201,32 +201,12 @@
         }
     </style>
     <label for="new-post-checkbox" class="close-new-post-label"></label>
-    <form action="{% url 'upload' %}" method="POST" class="new-post-form" enctype="multipart/form-data">
-        {% csrf_token %}
+    <div class="new-post-form">
         <div class="drag-and-drop-container">
             <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;" id="myDropzone">
                 <img src='#' id='base64Img' style='display: none;'>
-                <input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>
+                <input type='file' name='dropzone' id='dropzone' onchange="readURL(this)" required/>
             </div>
-            <script>
-                function readURL(input) {
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            if (e.target.result.split("/")[0] == "data:image") {
-                                document.getElementById('base64Img').src = e.target.result;
-                                document.getElementById('base64Img').style.display = 'unset';
-                            } else {
-                                alert('Image only')
-                                document.getElementById('dropzone').remove();
-                                document.getElementById('myDropzone').innerHTML = 
-                                "<img src='#' id='base64Img' style='display: none;'><input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>";
-                            }
-                        };
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                }
-            </script>
         </div>
         <div class="new-post-form-detail">
             <div class="from-category">
@@ -238,7 +218,7 @@
                 <div class="form-category-items">
                     {% for C in dataCategory %}
                         <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="new-post-form-category-{{C.id}}" class="form-category-item">
-                            <input type="checkbox" class="form-category-checkbox" name="form-category-checkbox-{{C.id}}" id="new-post-form-category-{{C.id}}" value="{{C.value}}">
+                            <input type="checkbox" class="form-category-checkbox" name="form-category-checkbox-{{C.id}}" id="new-post-form-category-{{C.id}}" value="{{C.id}}" onchange="category(event)">
                             <span class="form-category-span-bg"></span>
                             <div>
                                 <p>{{C.value}}</p>
@@ -255,7 +235,7 @@
                         </div>
                     </div>
                     <div class="form-location-items">
-                        <select class="form-control" name="new-post-form-location">
+                        <select class="form-control" name="new-post-form-location" id="new-post-form-location">
                             <option selected>--> Location <--</option>
                             {% for L in dataLocations %}
                                 <option value="{{L.value}}">{{L.value}}</option>
@@ -270,7 +250,7 @@
                         </div>
                     </div>
                     <div class="form-location-items">
-                        <select class="form-control" name="new-post-form-status">
+                        <select class="form-control" name="new-post-form-status" id="new-post-form-status">
                             <option selected>--> Status <--</option>
                             <option value="Lost">Lost</option>
                             <option value="Found">Found</option>
@@ -285,13 +265,51 @@
                     </div>
                 </div>
                 <div class="form-des-detail">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <textarea class="form-control" id="new-post-form-description" rows="3"></textarea>
                 </div>
             </div>
             <div class="new-post-form-submit-btn">
                 <div>
-                    <button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;">Post</button>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+    <script>
+        let newPostCategoryIdData = [];
+        let base64Img = [];
+
+        function sendNewPost(event) {
+            console.log(newPostCategoryIdData);
+            console.log(document.getElementById('new-post-form-location').value);
+            console.log(document.getElementById('new-post-form-status').value);
+            console.log(document.getElementById('new-post-form-description').value);
+            console.log(base64Img);
+        }
+
+        function readURL(input) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                if (e.target.result.split("/")[0] == "data:image") {
+                    document.getElementById('base64Img').src = e.target.result;
+                    document.getElementById('base64Img').style.display = 'unset';
+                    base64Img.push(e.target.result)
+                } else {
+                    alert('Image only')
+                    document.getElementById('dropzone').remove();
+                    document.getElementById('myDropzone').innerHTML = 
+                    "<img src='#' id='base64Img' style='display: none;'><input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>";
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function category(event) {
+            let categoryId = event.target.id;
+            if (document.getElementById(event.target.id).checked == true) {
+                newPostCategoryIdData.push(event.target.value);
+            } else {
+                newPostCategoryIdData.splice(newPostCategoryIdData.indexOf(event.target.value), 1)
+            }
+        }
+    </script>

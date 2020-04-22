@@ -2,6 +2,19 @@
 {% block content %}
 {% load static %}
 
+    
     {% include "posts/components/post.html" with data=posts %}
+
+    <script>
+        var display = document.getElementsByClassName('post-comment-detail');
+        display[0].style.display = "flex";
+        display[0].style.flexDirection = "column";
+
+        var btn = document.getElementsByClassName('btn');
+        btn[2].style.display = "none";
+        
+        var postCommentDetail = document.getElementsByClassName('post-comment-detail');
+        postCommentDetail[0].scrollTop = postCommentDetail[0].scrollHeight;
+    </script>
 
 {% endblock %}

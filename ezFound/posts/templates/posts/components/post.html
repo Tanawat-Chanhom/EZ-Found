@@ -228,7 +228,7 @@
                         <img style="border-radius: 100%;"  src="{% static 'images/clock.png' %}">
                     </div>
                     <div class="post-date-text">
-                        <p>10 Mar 2020 at 11.20 AM</p>
+                        <p>10 Mar 2020 at 11.20 AM {{posts.id}}</p>
                     </div>
                 </div>
             </div>
@@ -333,8 +333,8 @@
                 width: fit-content;
             }
         </style>
-        <input type="checkbox" id="show-comment-{{data.id}}" class="show-comment" style="position: absolute; visibility: hidden;">
-        <div class="post-comment-detail" id="post-comment-detail">
+        <input type="checkbox" id="show-comment-{{data.id}}" value="{{posts.id}}" class="show-comment" style="position: absolute; visibility: hidden;" onchange="scrollOnbuttom(event)">
+        <div class="post-comment-detail" id="post-comment-detail-{{posts.id}}">
             {% for L in Locations %}
             <div class="post-comment">
                 <a href="#" class="post-profile-container" style="text-decoration: none; width: fit-content;">
@@ -347,7 +347,7 @@
                     </div>
                 </a>
                 <div class="post-comment-description">
-                    <p>
+                    <p >
                         ใช่ค่ะ ขอบคุณมากๆค่ะ UwU
                     </p>
                 </div>
@@ -355,22 +355,28 @@
             {% endfor %}
         </div>
         <div class="post-comment-container">
-            <form action="#" method="POST" style="margin: 0; width: 100%;">
-                {% csrf_token %}
-                <div class="post-commit">
-                    <input type="text" class="form-control" style="border-radius: 100em;" name="post-comment" placeholder="Enter comment">
-                </div>
-            </form>
+            <div style="width: 100%;">
+                <input type="text" class="form-control" style="border-radius: 100em; width: 100%;" name="post-comment" id="{{posts.id}}" placeholder="Enter comment" onkeypress="sendComment(event)">
+            </div>
             <div>
-                <label style="border-radius: 100em; margin-left: 10px; margin-bottom: 0;" class="btn btn-primary" for="show-comment-{{data.id}}" onclick="scrollOnbuttom(event)">Show comment</label>
+                <label style="border-radius: 100em; margin-left: 10px; margin-bottom: 0;" class="btn btn-primary" for="show-comment-{{data.id}}">Show comment</label>
             </div>
         </div>
-        <!-- <script>
-            function scrollOnbuttom() {
-                setTimeout(function(e){
-                    var postCommentDetail = document.getElementById('post-comment-detail');
-                    postCommentDetail.scrollTop = postCommentDetail.scrollHeight;
-                }, 10);
+        <script>
+            function sendComment(event) {
+                if (event.code == "Enter") {
+                    console.log(event.target.id)
+                    console.log(event.target.value)
+                    console.log('sending.....')
+                    window.location.href = '/post/'+event.target.id;
+                }
             }
-        </script> -->
+
+            function scrollOnbuttom(event) {
+                setTimeout(function(e){
+                    var postCommentDetail = document.getElementById("post-comment-detail-"+event.target.value);
+                    postCommentDetail.scrollTop = postCommentDetail.scrollHeight;
+                }, 1);
+            }
+        </script>
     </div>

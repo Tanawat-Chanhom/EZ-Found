@@ -181,7 +181,6 @@
             }
         }
     </style>
-    <form action="#">
         <div class="filter-container">
             <div data-aos="zoom-in" class="category-container">
                 <div class="category-title">
@@ -192,7 +191,7 @@
                 <div class="category-items">
                     {% for C in dataCategory %}
                         <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="filter-category-{{C.id}}" class="category-item">
-                            <input type="checkbox" class="category-checkbox" name="category-checkbox-{{C.id}}" id="filter-category-{{C.id}}" value="option1">
+                            <input type="checkbox" class="category-checkbox" name="category-checkbox-{{C.id}}" id="filter-category-{{C.id}}" value="{{C.id}}" onchange="category(event)">
                             <span class="category-span-bg"></span>
                             <div>
                                 <p>{{C.value}}</p>
@@ -232,7 +231,7 @@
                     }
                 </style>
                 <div data-aos="zoom-in" data-aos-delay="200" class="filter-btn-container">
-                    <button type="submit" class="btn btn-primary" style="border-radius: 0.5em">Search</button>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 0.5em" onclick="filter(event)">Search</button>
                 </div>
                 <div data-aos="zoom-in" data-aos-delay="200" class="status-container">
                     <div class="category-title">
@@ -243,15 +242,41 @@
                     <div class="category-items">
                         {% for S in dataStatus %}
                             <label data-aos="zoom-in" data-aos-delay="{{S.id}}00" for="filter-status-{{S.id}}" class="status-item">
-                                <input type="checkbox" class="status-checkbox" name="status-checkbox-{{S.id}}" id="filter-status-{{S.id}}" value="option1">
+                                <input type="checkbox" class="status-checkbox" name="status-checkbox-{{S.id}}" id="filter-status-{{S.id}}" value="{{S.id}}" onchange="status(event)">
                                 <span class="status-span-bg"></span>
                                 <div>
                                     <p>{{S.value}}</p>
                                 </div>
                             </label>
                         {% endfor %}
-                    </div>
+                    </div onclick>
                 </div>
             </div>
         </div>
-    </form>
+    <script>
+        var categoryIdData = []
+        var statusIdData = []
+        function filter(event) {
+            console.log(categoryIdData);
+            console.log(document.getElementById("filter-location").value);
+            console.log(statusIdData);
+        }
+
+        function category(event) {
+            let categoryId = event.target.id;
+            if (document.getElementById(event.target.id).checked == true) {
+                categoryIdData.push(event.target.value);
+            } else {
+                categoryIdData.splice(categoryIdData.indexOf(event.target.value), 1)
+            }
+        }
+
+        function status(event) {
+            let statusId = event.target.id;
+            if (document.getElementById(statusId).checked == true) {
+                statusIdData.push(event.target.value);
+            } else {
+                statusIdData.splice(statusIdData.indexOf(event.target.value), 1)
+            }
+        }
+    </script>
