@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from pkg_resources import require
+from django.http import JsonResponse
 
 category = [
     {"id":1,"value":"Wallet"},

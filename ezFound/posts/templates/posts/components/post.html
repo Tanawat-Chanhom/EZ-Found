@@ -3,7 +3,7 @@
         .post-container {
             position: relative;
             /* height: 800px; */
-            background-color: thistle;
+            background-color: white;
             margin: 20px;
             display: flex;
             flex-direction: column;
@@ -19,6 +19,7 @@
             height: 65px;
             padding: 5px;
             background-color: white;
+            border-bottom: #B5B5B5 2px solid;
         }
 
         .post-profile-container {
@@ -144,6 +145,7 @@
             justify-content: space-between;            
             background-color: white;
             padding: 10px;
+            border-top: #B5B5B5 2px solid;
         }
 
         .post-detail {
@@ -254,7 +256,7 @@
             </div> {% endcomment %}
         </div>
         <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">
-            <img src="{% static 'images/bg.jpeg' %}">
+            <img style="margin: 5px;" src="{% static 'images/bg.jpeg' %}">
         </div>
         <div class="post-detail-container">
             <div class="post-detail">

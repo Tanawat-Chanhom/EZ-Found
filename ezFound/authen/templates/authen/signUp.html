@@ -1,5 +1,178 @@
-{% extends "base.html" %}
-{% block content %}
-    <p>signUp</p>
 {% load static %}
-{% endblock %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>EZ Found</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+<style>
+    body {
+        background-color: #54C1D2;
+    }
+
+    .sign-up-container {
+        position: relative;
+        margin: 0 auto;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 680px;
+        height: 800px;
+        background-color: white;
+        border-radius: 0.5em;
+        overflow: hidden;
+
+        display: grid;
+        grid-template-rows: 20% 60% 20%;
+    }
+
+    .sign-up-title {
+        position: relative;
+    }
+
+    .sign-up-title p {
+        position: relative;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 48px;
+        color: #3CDBD7;
+    }
+
+    .sign-up-form {
+        position: relative;
+        display: grid;
+        height: 100%;
+        width: 85%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .two-cm {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .two-cm div {
+        position: relative;
+        width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    input {
+        position: relative;
+        width: 100%;
+    }
+
+    .input-style {
+        border: 0;
+        border-radius: unset;
+        border-bottom: #BEBEBE 3px solid;
+    }
+
+    .input-file-style {
+        background-color: rgba(225, 225, 225, 0.6);
+        padding: 5px;
+        border-radius: 0.5em;
+    }
+
+    textarea {
+        min-height: 110px;
+        max-height: 110px;
+    }
+
+    button[type="submit"] {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #3CDBD7;
+        border: 0;
+        width: 400px;
+        font-size: 23px;
+        border-radius: 100em;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #40F282;
+    }
+
+    .spinner-style {
+        position: relative;
+        left: 48%;
+        top: 36%;
+    }
+</style>
+
+<body data-aos="zoom-out-up" data-aos-duration="1000">
+    <div class="sign-up-container">
+        <div class="sign-up-title"><p>Sign Up</p></div>
+        <div class="sign-up-form">
+            <div style="margin-right: 10px; margin-left: 10px;">
+                <input type="text" class="form-control input-style" id="usernmae" name="usernmae" placeholder="Enter username" required="true">
+            </div>
+
+            <div class="two-cm">
+                <div>
+                    <input type="text" class="form-control input-style" id="password" name="password" placeholder="Enter password" required="true">
+                </div>
+                <div>
+                    <input type="text" class="form-control input-style" id="confirm-password" name="confirm-password" placeholder="Enter confirm Password" required="true">
+                </div>
+            </div>
+
+            <div class="two-cm">
+                <div>
+                    <input type="text" class="form-control input-style" id="fname" name="fname" placeholder="Enter first name" required="true">
+                </div>
+                <div>
+                    <input type="text" class="form-control input-style" id="lname" name="lname" placeholder="Enter last name" required="true">
+                </div>
+            </div>
+            <div class="two-cm">
+                <div>
+                    <input type="email" class="form-control input-style" id="email" name="email" placeholder="Enter email" required="true">
+                </div>
+                <div>
+                    <input type="text" class="form-control input-style" id="student_number" name="student_number" placeholder="Enter student number" required="true">
+                </div>
+            </div>
+            <div class="two-cm">
+                <div>
+                    <input type="text" class="form-control input-style" style="margin-top: 32px;" id="phonenumber" name="phonenumber" placeholder="Enter phonenumber" required="true">
+                </div>
+                <div>
+                    <label>Profile Image</label>
+                    <input type="file" class="input-file-style" id="img" name="img" placeholder="Enter Img" required="true">
+                </div>
+            </div>
+            <div>
+                <div style="position: relative; top: 50%; transform: translateY(-50%); margin-right: 10px; margin-left: 10px;">
+                    <textarea class="form-control" id="information" name="information" placeholder="Enter more information" required="true" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="sign-up-title" id="test">
+            <!-- <a href="{% url 'index' %}"> -->
+                <button type="submit" class="btn btn-primary" onclick="test()">GET STARTED</button>
+            <!-- </a> -->
+        </div>
+    </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        function test() {
+            document.getElementById('test').innerHTML = '<div class="spinner-border text-success spinner-style" role="status"><span class="sr-only">Loading...</span></div>'
+        }
+    </script>
+</body>
+</html>

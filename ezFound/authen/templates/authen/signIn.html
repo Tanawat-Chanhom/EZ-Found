@@ -1,5 +1,191 @@
-{% extends "base.html" %}
-{% block content %}
-    <p>signIn</p>
 {% load static %}
-{% endblock %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>EZ Found</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+<style>
+    body {
+        background-color: #54C1D2;
+    }
+
+    .sign-in-container {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0 auto;
+        width: 100%;
+        max-width: 1000px;
+        height: 500px;
+        background-color: white;
+        border-radius: 0.5em;
+        overflow: hidden;
+
+        display: grid;
+        grid-template-columns: 60% 40%;
+    }
+
+    .login-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        display: grid;
+        grid-template-rows: 38% 13% 13% 10% 25%;
+        column-gap: 10px;
+    }
+
+    .sign-in-title {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 60px;
+        width: fit-content;
+        height: fit-content;
+        color: #3CDBD7;
+    }
+
+    .sign-in-title p {
+        font-weight: bold;
+    }
+
+    .sign-in-btn {
+        position: relative;
+    }
+
+    .sign-in-btn button {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
+        height: 40px;
+        border-radius: 100em;
+        background-color: #3CDBD7;
+        border: none;
+    }
+
+    .sign-in-btn button:hover {
+        background-color: #40F282;
+    }
+
+    .sign-in-username {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        position: relative;
+        width: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 0;
+        border-radius: unset;
+        border-bottom: #BEBEBE 3px solid;
+    }
+
+    .sign-in-passcode {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        position: relative;
+        width: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 0;
+        border-radius: unset;
+        border-bottom: #BEBEBE 3px solid;
+    }
+
+    .sign-in-forgot {
+        position: relative;
+        width: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .sign-in-forgot a {
+        float: right;
+        color: #3CDBD7;
+        text-decoration: none;
+    }
+
+    .sign-up-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(0deg, rgba(64,242,130,1) 0%, rgba(84,193,210,1) 100%);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .sign-up {
+        position: relative;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .sign-up-title {
+        position: relative;
+        color: white;
+        font-size: 36px;
+        text-align: center;
+    }
+
+    .sign-up-btn a {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px;
+        border-radius: 100em;
+        background-color: white;
+        color: #3CDBD7;
+        border: unset;
+        opacity: 0.8;
+    }
+
+    .sign-up-btn a:hover {
+        background-color: #54C1D2;
+    }
+</style>
+
+<body data-aos="zoom-out-up" data-aos-duration="1000">
+    <div class="sign-in-container">
+        <div class="login-container">
+            <div class="sign-in-title"><p>Sign In</p></div>
+            <input type="email" class="form-control sign-in-username" placeholder="Email">
+            <input type="email" class="form-control sign-in-passcode" placeholder="Password">
+            <div class="sign-in-forgot">
+                <a href="{% url 'forgotPass' %}">
+                    Forgot password?
+                </a>
+            </div>
+            <div class="sign-in-btn">
+                <a href="{% url 'index' %}">
+                    <button type="submit" class="btn btn-primary">SIGN IN</button>
+                </a>
+            </div>
+        </div>
+        <div class="sign-up-container" style="background-image: url({% static 'images/ezgif.com-gif-maker.gif' %})">
+            <div class="sign-up">
+                <div class="sign-up-title">
+                    <p>Don't have an account?</p>
+                </div>
+                <div class="sign-up-btn">
+                    <a href="{% url 'signUp' %}" type="submit" class="btn btn-primary" class="">SIGN UP</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+</html>
