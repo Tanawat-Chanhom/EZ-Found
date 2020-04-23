@@ -7,5 +7,5 @@ class Profile(models.Model):
     phone = models.CharField(max_length=10)
     information = models.TextField()
     profile_img_path = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
