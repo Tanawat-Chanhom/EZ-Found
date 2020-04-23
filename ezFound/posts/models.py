@@ -18,13 +18,22 @@ class Location(models.Model):
 
 class Post(models.Model):
 
+    POST_STATUS = [
+        ('LOST', 'LOST'),
+        ('FOUND', 'FOUND'),
+        ('RETURNED', 'RETURNED')
+    ]
+
     title = models.CharField(max_length=255)
     descriptions = models.TextField()
-    status = models.TextChoices('LOST', 'FOUND', 'RETURNED')
+    status = models.CharField(
+        max_length=8,
+        choices=POST_STATUS
+    )
     date = models.DateField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ManyToManyField(Category)
-    location = models.ForeignKey(Location, on_delete=models.SET_NULL)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
 
 
 class PostImage(models.Model):
@@ -41,8 +50,8 @@ class Message(models.Model):
     is_seen = models.BooleanField(default=False)
     create_at = models.DateTimeField(auto_now=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    send_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    send_to = models.ForeignKey(User, on_delete=models.CASCADE)
+    send_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_by")
+    message_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_to")
 
 
 class Comment(models.Model):
@@ -51,4 +60,4 @@ class Comment(models.Model):
     create_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(auto_now=False, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.SET_NULL)
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)

@@ -11,8 +11,6 @@ from json import loads
 
 # ---------- Module Import ----------
 
-from account.models import UserProfile
-
 def forgotPass(request):
     return render(request, 'authen/forgotPass.html')
 
@@ -29,16 +27,6 @@ def resetPass(request):
 def signUp(request):
     if request.method == 'GET':
         return render(request, 'authen/signUp.html')
-    elif request.method == 'POST':
-        body_unicode = HttpRequest.body
-        print(body_unicode)
-        user = User.objects.create_user(
-            username="",
-            password="",
-            email="",
-            first_name="",
-            last_name=""
-        )
     else:
         return HttpResponseNotAllowed()
 
