@@ -101,13 +101,15 @@
 
     .spinner-style {
         position: relative;
-        left: 48%;
-        top: 36%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: fit-content;
     }
 </style>
 
 <body data-aos="zoom-out-up" data-aos-duration="1000">
-    <div class="sign-up-container">
+    <form  class="sign-up-container">
         <div class="sign-up-title"><p>Sign Up</p></div>
         <div class="sign-up-form">
             <div style="margin-right: 10px; margin-left: 10px;">
@@ -119,7 +121,7 @@
                     <input type="text" class="form-control input-style" id="password" name="password" placeholder="Enter password" required="true">
                 </div>
                 <div>
-                    <input type="text" class="form-control input-style" id="confirm-password" name="confirm-password" placeholder="Enter confirm Password" required="true">
+                    <input type="text" class="form-control input-style" id="confirm_password" name="confirm_password" placeholder="Enter confirm Password" required="true">
                 </div>
             </div>
 
@@ -145,21 +147,21 @@
                 </div>
                 <div>
                     <label>Profile Image</label>
-                    <input type="file" class="input-file-style" id="img" name="img" placeholder="Enter Img" required="true">
+                    <input type="file" class="input-file-style" id="img" name="img" placeholder="Enter Img" required="true" onchange="readURL(this)">
                 </div>
             </div>
             <div>
                 <div style="position: relative; top: 50%; transform: translateY(-50%); margin-right: 10px; margin-left: 10px;">
-                    <textarea class="form-control" id="information" name="information" placeholder="Enter more information" required="true" rows="4"></textarea>
+                    <textarea class="form-control" id="information" name="information" placeholder="Enter more information" rows="4"></textarea>
                 </div>
             </div>
         </div>
-        <div class="sign-up-title" id="test">
+        <div id="sign-up-btn">
             <!-- <a href="{% url 'index' %}"> -->
-                <button type="submit" class="btn btn-primary" onclick="test()">GET STARTED</button>
+                <button type="submit" class="btn btn-primary" onclick="submitForm()">GET STARTED</button>
             <!-- </a> -->
         </div>
-    </div>
+    </form>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -170,8 +172,45 @@
         AOS.init();
     </script>
     <script>
-        function test() {
-            document.getElementById('test').innerHTML = '<div class="spinner-border text-success spinner-style" role="status"><span class="sr-only">Loading...</span></div>'
+        let base64Img = [];
+
+        function submitForm() {
+            if (
+                document.getElementById('usernmae').value != "" &&
+                document.getElementById('password').value != "" &&
+                document.getElementById('confirm_password').value != "" &&
+                document.getElementById('fname').value != "" &&
+                document.getElementById('lname').value != "" &&
+                document.getElementById('email').value != "" &&
+                document.getElementById('student_number').value != "" &&
+                document.getElementById('phonenumber').value != "" &&
+                base64Img[0] != undefined
+                ) {
+                document.getElementById('sign-up-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>'
+                console.log(document.getElementById('usernmae').value);
+                console.log(document.getElementById('password').value);
+                console.log(document.getElementById('confirm_password').value);
+                console.log(document.getElementById('fname').value);
+                console.log(document.getElementById('lname').value);
+                console.log(document.getElementById('email').value);
+                console.log(document.getElementById('student_number').value);
+                console.log(document.getElementById('phonenumber').value);
+                console.log(base64Img);
+                console.log(document.getElementById('information').value);
+            }
+            
+        }
+
+        function readURL(input) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                if (e.target.result.split("/")[0] == "data:image") {
+                    base64Img.push(e.target.result)
+                } else {
+                    alert('Image only')
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
         }
     </script>
 </body>

@@ -200,6 +200,38 @@
             background-color: white;
         }
 
+        .post-comment-detail {
+            position: relative;
+            width: 100%;
+            max-height: 500px;
+            background-color: white;
+            border-top: #B5B5B5 2px solid;
+            display: none;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+
+        .show-comment:checked ~ .post-comment-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-comment {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-comment-description {
+            position: relative;
+            background-color: #DFDFDF;
+            margin: 0px 0px 10px 50px;
+            padding: 10px;
+            border-radius: 0.5em;
+            width: fit-content;
+        }
+
         @media screen and (max-width: 500px) , screen and (max-height: 500px) {
             .post-detail-container {
                 flex-wrap: wrap;
@@ -256,7 +288,7 @@
             </div> {% endcomment %}
         </div>
         <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">
-            <img style="margin: 5px;" src="{% static 'images/bg.jpeg' %}">
+            <img src="{% static 'images/bg.jpeg' %}">
         </div>
         <div class="post-detail-container">
             <div class="post-detail">
@@ -300,39 +332,6 @@
                 ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
             </p>
         </div>
-        <style>
-            .post-comment-detail {
-                position: relative;
-                width: 100%;
-                max-height: 500px;
-                background-color: white;
-                border-top: #B5B5B5 2px solid;
-                display: none;
-                padding: 10px;
-                overflow-y: scroll;
-            }
-
-            .show-comment:checked ~ .post-comment-detail {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .post-comment {
-                position: relative;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .post-comment-description {
-                position: relative;
-                background-color: #DFDFDF;
-                margin: 0px 0px 10px 50px;
-                padding: 10px;
-                border-radius: 0.5em;
-                width: fit-content;
-            }
-        </style>
         <input type="checkbox" id="show-comment-{{data.id}}" value="{{posts.id}}" class="show-comment" style="position: absolute; visibility: hidden;" onchange="scrollOnbuttom(event)">
         <div class="post-comment-detail" id="post-comment-detail-{{posts.id}}">
             {% for L in Locations %}
