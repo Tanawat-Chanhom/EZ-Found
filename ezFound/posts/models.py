@@ -25,7 +25,7 @@ class Post(models.Model):
     ]
 
     title = models.CharField(max_length=255)
-    descriptions = models.TextField()
+    descriptions = models.TextField(default=None)
     status = models.CharField(
         max_length=8,
         choices=POST_STATUS
@@ -38,7 +38,7 @@ class Post(models.Model):
 
 class PostImage(models.Model):
 
-    image_url = models.TextField()
+    image_url = models.TextField(default=None)
     create_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(auto_now=False, default=None)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

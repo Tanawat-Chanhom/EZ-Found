@@ -15,14 +15,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name='OTP',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('student_id', models.CharField(max_length=8)),
-                ('phone', models.CharField(max_length=10)),
-                ('information', models.TextField()),
-                ('profile_img_path', models.TextField()),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('ref_code', models.CharField(max_length=6)),
+                ('otp_code', models.CharField(max_length=6)),
+                ('create_at', models.DateTimeField(auto_now=True)),
+                ('expire_at', models.DateTimeField()),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]
