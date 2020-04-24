@@ -54,10 +54,6 @@
 
     .sign-in-btn {
         position: relative;
-    }
-
-    .sign-in-btn button {
-        position: relative;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -68,7 +64,7 @@
         border: none;
     }
 
-    .sign-in-btn button:hover {
+    .sign-in-btn:hover {
         background-color: #40F282;
     }
 
@@ -156,23 +152,27 @@
         transform: translate(-50%, -50%);
         width: fit-content;
     }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
 </style>
 
 <body data-aos="zoom-out-up" data-aos-duration="1000">
     <form class="sign-in-container">
         <div class="login-container">
-            <div class="sign-in-title"><p>Sign In</p></div>
+            <div class="sign-in-title"><p class="ml13">Sign In</p></div>
                 <input type="text" class="form-control sign-in-username" placeholder="Username" id="form-sign-in-username" required="Ture">
                 <input type="password" class="form-control sign-in-passcode" placeholder="Password" id="form-sign-in-passcode" required="True">
             <div class="sign-in-forgot">
                 <a href="{% url 'forgotPass' %}">
                     Forgot password?
                 </a>
+                <small id="sign-in-error-text" style="color: red;"></small>
             </div>
-            <div class="sign-in-btn" id="sign-in-btn">
-                <!-- <a href="{% url 'index' %}"> -->
-                    <button type="submit" class="btn btn-primary" onclick="submitForm(event)">SIGN IN</button>
-                <!-- </a> -->
+            <div id="sign-in-btn">
+                <button type="submit" class="btn btn-primary sign-in-btn" onclick="submitForm(event)">SIGN IN</button>
             </div>
         </div>
         <div class="sign-up-container" style="background-image: url({% static 'images/ezgif.com-gif-maker.gif' %})">
@@ -192,17 +192,55 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
     <script>
         AOS.init();
     </script>
     <script>
+
+        /* 
+            This function will take the values ​​from the Form and sending to the server
+        */
         function submitForm(event) {
             if (document.getElementById('form-sign-in-username').value != "" && document.getElementById('form-sign-in-passcode').value != "") {
                 document.getElementById('sign-in-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>'
-                console.log(document.getElementById('form-sign-in-username').value);
-                console.log(document.getElementById('form-sign-in-passcode').value);
+                axios.defaults.xsrfCookieName = 'csrftoken'
+                axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+                axios.post('/authen/sign-in', {
+                        "username": document.getElementById('form-sign-in-username').value,
+                        "password": document.getElementById('form-sign-in-passcode').value
+                    })
+                    .then(response => {
+                        if (response.data.statusCode == 200) {
+                            window.location.href = "/";
+                        } else {
+                            document.getElementById('sign-in-error-text').innerHTML = response.data.errorMessage;
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('sign-in-error-text').innerHTML = error;
+                    })
+                    document.getElementById('sign-in-btn').innerHTML = '<button type="submit" class="btn btn-primary sign-in-btn" style="top: 62.5px" onclick="submitForm(event)">SIGN IN</button>'
             }
         }
+
+
+        /* 
+            This is a text animation.
+        */
+        let textWrapper = document.querySelector('.ml13');
+        textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+        anime.timeline({loop: false})
+        .add({
+            targets: '.ml13 .letter',
+            translateY: [100,0],
+            translateZ: 0,
+            opacity: [0,1],
+            easing: "easeOutExpo",
+            duration: 1400,
+            delay: (el, i) => 300 + 30 * i
+        })
     </script>
 </body>
 </html>

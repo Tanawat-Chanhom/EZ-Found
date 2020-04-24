@@ -1,14 +1,15 @@
 # ---------- Django Import ----------
 
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest
+from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 # ---------- Library Import ----------
 
 from json import loads
+import json
 
 # ---------- Module Import ----------
 
@@ -32,32 +33,43 @@ def resetPass(request):
 
 
 @require_http_methods(["GET", "POST"])
-def signUp(request):
+def signUp(request):    
 
     if request.method == 'GET':
         return render(request, 'authen/signUp.html')
 
     elif request.method == 'POST':
+        data = json.loads(request.body);
         user = User.objects.create_user(
-            username=request.POST.get('username'),
-            password=request.POST.get('password'),
-            email=request.POST.get('email'),
-            first_name=request.POST.get('fname'),
-            last_name=request.POST.get('lname')
+            username=data['username'],
+            password=data['password'],
+            email=data['email'],
+            first_name=data['fname'],
+            last_name=data['lname']
         )
         profile = Profile(
-            student_id=request.POST.get('student_id'),
-            phone=request.POST.get('phone'),
-            information=request.POST.get('information'),
-            profile_img_path=request.POST.get('profile_img_path'),
+            student_id=data['student_id'],
+            phone=data['phone'],
+            information=data['information'],
+            profile_img_path=data['profile_img_path'],
             user=user
         )
         user.save()
         profile.save()
-        return HttpResponse('User Created', status=201)
+        responseData = {
+                "statusCode": "201",
+                "statusMessage": "Created",
+                "errorMessage": "User Created"
+            }
+        return JsonResponse(responseData, safe=False)
 
     else:
-        return HttpResponseNotAllowed("Method Not Allow", status=405)
+        responseData = {
+                "statusCode": "405",
+                "statusMessage": "Method Not Allow",
+                "errorMessage": "Method Not Allow"
+            }
+        return JsonResponse(responseData, safe=False)
 
 
 @require_http_methods(["GET", "POST"])
@@ -67,18 +79,29 @@ def signIn(request):
         return render(request, 'authen/signIn.html')
 
     elif request.method == 'POST':
+        data = json.loads(request.body);
         user = authenticate(
             request,
-            username=request.POST.get('username'), 
-            password=request.POST.get('password')
+            username=data['username'], 
+            password=data['password']
         )
 
         if user is not None:
             login(request, user)
-            return HttpResponse('Login Success', status=200)
+            responseData = {
+                "statusCode": "200",
+                "statusMessage": "OK",
+                "errorMessage": "Login Success"
+            }
+            return JsonResponse(responseData, safe=False)
 
         else:
-            return HttpResponseBadRequest('Incorrect Username Or Password', status=400)
+            responseData = {
+                "statusCode": "400",
+                "statusMessage": "Bad request!",
+                "errorMessage": "Incorrect Username Or Password"
+            }
+            return JsonResponse(responseData, safe=False)
 
     else:
         return HttpResponseNotAllowed("Method Not Allow", status=405)

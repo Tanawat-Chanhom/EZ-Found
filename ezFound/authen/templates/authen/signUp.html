@@ -23,7 +23,7 @@
         overflow: hidden;
 
         display: grid;
-        grid-template-rows: 20% 60% 20%;
+        grid-template-rows: 20% 60% 3% 13%;
     }
 
     .sign-up-title {
@@ -106,6 +106,14 @@
         transform: translate(-50%, -50%);
         width: fit-content;
     }
+
+    .sign-up-error-text {
+        position:absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 13px;
+        color: red;
+    }
 </style>
 
 <body data-aos="zoom-out-up" data-aos-duration="1000">
@@ -121,7 +129,7 @@
                     <input type="text" class="form-control input-style" id="password" name="password" placeholder="Enter password" required="true">
                 </div>
                 <div>
-                    <input type="text" class="form-control input-style" id="confirm_password" name="confirm_password" placeholder="Enter confirm Password" required="true">
+                    <input type="text" class="form-control input-style" id="confirm_password" name="confirm_password" placeholder="Enter confirm password" required="true">
                 </div>
             </div>
 
@@ -156,10 +164,11 @@
                 </div>
             </div>
         </div>
+        <div>
+            <small id="sign-up-error-text" class="sign-up-error-text"></small>
+        </div>
         <div id="sign-up-btn">
-            <!-- <a href="{% url 'index' %}"> -->
-                <button type="submit" class="btn btn-primary" onclick="submitForm()">GET STARTED</button>
-            <!-- </a> -->
+            <button type="submit" class="btn btn-primary" onclick="submitForm()">GET STARTED</button>
         </div>
     </form>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -172,8 +181,12 @@
         AOS.init();
     </script>
     <script>
-        let base64Img = [];
+        let base64Img = []; // This variable stores the image as base64.
 
+
+        /* 
+            This function will take the values ​​from the Form and sending to the server
+        */
         function submitForm() {
             if (
                 document.getElementById('usernmae').value != "" &&
@@ -185,22 +198,39 @@
                 document.getElementById('student_number').value != "" &&
                 document.getElementById('phonenumber').value != "" &&
                 base64Img[0] != undefined
-                ) {
-                document.getElementById('sign-up-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>'
-                console.log(document.getElementById('usernmae').value);
-                console.log(document.getElementById('password').value);
-                console.log(document.getElementById('confirm_password').value);
-                console.log(document.getElementById('fname').value);
-                console.log(document.getElementById('lname').value);
-                console.log(document.getElementById('email').value);
-                console.log(document.getElementById('student_number').value);
-                console.log(document.getElementById('phonenumber').value);
-                console.log(base64Img);
-                console.log(document.getElementById('information').value);
+            ) {
+                if (document.getElementById('password').value == document.getElementById('confirm_password').value) {
+                    document.getElementById('sign-up-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>'
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+                    axios.post('/authen/sign-up', {
+                            "username": document.getElementById('usernmae').value,
+                            "password": document.getElementById('password').value,
+                            "email": document.getElementById('email').value,
+                            "fname": document.getElementById('fname').value,
+                            "lname": document.getElementById('lname').value,
+                            "student_id": document.getElementById('student_number').value,
+                            "phone": document.getElementById('phonenumber').value,
+                            "information": document.getElementById('information').value,
+                            "profile_img_path": base64Img[0]
+                        })
+                        .then(response => {
+                            window.location.href = "/authen/sign-in";
+                        })
+                        .catch(error => {
+                            document.getElementById('sign-up-error-text').innerHTML = error;
+                            document.getElementById('sign-up-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="top: 52px" onclick="submitForm()">GET STARTED</button>';
+                        });
+                } else {
+                    document.getElementById('sign-up-error-text').innerHTML = "Password doesn't match";
+                    document.getElementById('sign-up-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="top: 52px" onclick="submitForm()">GET STARTED</button>';
+                }
             }
-            
         }
 
+        /* 
+            This function takes the input value in file format and convert the data to base64 format.
+        */
         function readURL(input) {
             var reader = new FileReader();
             reader.onload = function (e) {
