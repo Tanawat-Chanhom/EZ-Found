@@ -171,6 +171,14 @@
         </div>
     </div>
 
+    <div class="navber" style="position: relative; z-index: 0; visibility: hidden;">
+        <div class="navber-item navber-title">
+            <a href="{% url 'index' %}" style="text-decoration: none;">
+                EZ-FOUND
+            </a>
+        </div>
+    </div>
+
     <style>
         .noti-box {
             position: relative;
@@ -313,13 +321,7 @@
         </a>
     </div>
 
-    <div class="navber" style="position: relative; z-index: 0; visibility: hidden;">
-        <div class="navber-item navber-title">
-            <a href="{% url 'index' %}" style="text-decoration: none;">
-                EZ-FOUND
-            </a>
-        </div>
-    </div>
+    
 
     <div class="container">
         {% block content %}
