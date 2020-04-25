@@ -1,0 +1,242 @@
+.post-container {
+    position: relative;
+    /* height: 800px; */
+    background-color: white;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+.post-bar-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 65px;
+    padding: 5px;
+    background-color: white;
+    border-bottom: #B5B5B5 2px solid;
+}
+
+.post-profile-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    border-radius: 0.5em;
+    transition: all 0.2s;
+    margin-right: 5px;
+}
+
+.post-profile-container:hover {
+    background-color: rgba(128, 128, 128, 0.4);
+}
+
+.post-profile-img {
+    position: relative;
+    /* height: 100%;
+    max-height: 45px; */
+    width: 100%;
+    max-width: 45px;
+}
+
+.post-profile-name {
+    position: relative;
+    margin-left: 5px;
+}
+
+.post-profile-name p {
+    position: relative; 
+    top: 50%; 
+    transform: translateY(-50%);
+    color: #707070;
+}
+
+.post-date-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+.post-date-img {
+    position: relative;
+    padding: 10px;
+}
+
+.post-date-img img {
+    position: relative;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.post-date-text p {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #B5B5B5;
+}
+
+.post-more-menu-container {
+    width: 45px;
+    margin: 5px;
+    border-radius: 0.5em;
+    transition: all 0.2s;
+}
+
+.post-more-menu-container:hover {
+    background-color: rgba(181, 181, 181, 0.438);
+}
+
+.post-more-menu-items {
+    position: relative;
+    background-color: white;
+    left: 150%;
+    z-index: 99;
+    border: #B5B5B5 2px solid;
+    border-radius: 0.5em;
+    width: 100px;
+    transition: all 0.2s;
+}
+
+.post-more-menu-btn:checked ~ .post-more-menu-items {
+    left: -115%;
+    transition: all 0.2s;
+}
+
+.post-more-menu-item {
+    position: relative;
+    width: 90px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    color: #B5B5B5;
+}
+
+.post-more-menu-item img {
+    position: relative;
+    margin: 3px;
+}
+
+.post-img-container {
+    position: relative;
+    width: 100%;
+}
+
+.post-img-container img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+}
+
+.post-detail-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;            
+    background-color: white;
+    padding: 10px;
+    border-top: #B5B5B5 2px solid;
+}
+
+.post-detail {
+    position: relative;   
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-category-items {
+    position: relative;
+    width: 100%;
+    border-radius: 0.5em;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    background-color: #E1E1E1;
+}
+
+.post-category-items::-webkit-scrollbar {
+    height: 0px;
+}
+
+.post-detail-category-items {
+    position: relative;
+    background-color: white;
+    padding: 0px 5px 0px 5px;
+    margin: 5px;
+    border-radius: 0.5em;
+}
+
+.post-detail-category-items p {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.post-description {
+    position: relative;
+    width: 100%;
+    background-color: white;
+    padding: 10px;
+}
+
+.post-comment-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-top: #B5B5B5 2px solid;
+    padding: 10px;
+    background-color: white;
+}
+
+.post-comment-detail {
+    position: relative;
+    width: 100%;
+    max-height: 500px;
+    background-color: white;
+    border-top: #B5B5B5 2px solid;
+    display: none;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.show-comment:checked ~ .post-comment-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-comment {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-comment-description {
+    position: relative;
+    background-color: #DFDFDF;
+    margin: 0px 0px 10px 50px;
+    padding: 10px;
+    border-radius: 0.5em;
+    width: fit-content;
+}
+
+@media screen and (max-width: 500px) , screen and (max-height: 500px) {
+    .post-detail-container {
+        flex-wrap: wrap;
+    }
+
+    .post-detail {
+        flex-wrap: wrap;
+    }
+    
+}
