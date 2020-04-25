@@ -11,10 +11,9 @@
         display[0].style.flexDirection = "column";
 
         var btn = document.getElementsByClassName('btn');
-        btn[2].style.display = "none";
+        btn[1].style.display = "none";
         
-        var postCommentDetail = document.getElementsByClassName('post-comment-detail');
-        postCommentDetail[0].scrollTop = postCommentDetail[0].scrollHeight;
+        display[0].scrollTop = display[0].scrollHeight;
     </script>
 
 {% endblock %}
