@@ -8,4 +8,5 @@ class Profile(models.Model):
     information = models.TextField()
     profile_img_path = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
 
