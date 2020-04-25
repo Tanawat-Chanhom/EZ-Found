@@ -3,3 +3,7 @@
 win_env/
 env/
 bin/
+*.pyc
+*.pyc
+*.pyc
+*.pyc

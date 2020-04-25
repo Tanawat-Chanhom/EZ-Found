@@ -8,4 +8,6 @@ class OTP(models.Model):
     expire_at = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.ref_code
+    

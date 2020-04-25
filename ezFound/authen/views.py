@@ -19,17 +19,22 @@ from account.models import Profile
 
 def forgotPass(request):
 
-    return render(request, 'authen/forgotPass.html')
+    if request.method == 'GET':
+        return render(request, 'authen/forgotPass.html')
+
 
 
 def otp(request):
 
-    return render(request, 'authen/otp.html')
+    if request.method == 'GET':
+        return render(request, 'authen/otp.html')
+
 
 
 def resetPass(request):
 
-    return render(request, 'authen/resetPass.html')
+    if request.method == 'GET':
+        return render(request, 'authen/resetPass.html')
 
 
 @require_http_methods(["GET", "POST"])
@@ -104,4 +109,9 @@ def signIn(request):
             return JsonResponse(responseData, safe=False)
 
     else:
-        return HttpResponseNotAllowed("Method Not Allow", status=405)
+        responseData = {
+                "statusCode": "405",
+                "statusMessage": "Method Not Allow",
+                "errorMessage": "Method Not Allow"
+            }
+        return JsonResponse(responseData, safe=False)
