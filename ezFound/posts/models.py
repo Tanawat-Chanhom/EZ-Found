@@ -34,6 +34,8 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ManyToManyField(Category)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    create_at = models.DateTimeField(auto_now=True)
+    delete_at = models.DateTimeField(auto_now=False, default=None)
 
 
 class PostImage(models.Model):

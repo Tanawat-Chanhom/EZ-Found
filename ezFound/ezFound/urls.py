@@ -19,10 +19,12 @@ from django.urls import path, include
 from account import urls as accountUrls
 from authen import urls as authenUrls
 from posts import urls as postsUrls
+from api import urls as apiUrls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include(accountUrls)),
     path('authen/', include(authenUrls)),
+    path('api/v1/', include(apiUrls)),
     path('', include(postsUrls))
 ]
