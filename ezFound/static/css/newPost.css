@@ -172,22 +172,36 @@
 .new-post-form-submit-btn div {
     position: relative;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#myDropzone {
-    padding: 20px;
-}
-
-#myDropzone img {
+.carousel-base64-img {
     position: relative;
-    top: 50%;
+    height: 100%;
     left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+}
+
+.carousel-delete-img-btn {
+    position: absolute;
+    z-index: 99;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    cursor: pointer;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
+}
+
+.carousel-delete-img-btn img {
+    position: relative;
     height: 100%;
 }
 
-#myDropzone input[type="file"] {
+.carousel-input-file {
     position: absolute;
     bottom: 0%;
     left: 50%;

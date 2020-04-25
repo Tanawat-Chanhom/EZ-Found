@@ -5,9 +5,31 @@
     <label for="new-post-checkbox" class="close-new-post-label"></label>
     <div class="new-post-form">
         <div class="drag-and-drop-container">
-            <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;" id="myDropzone">
-                <img src='#' id='base64Img' style='display: none;'>
-                <input type='file' name='dropzone' id='dropzone' onchange="readURL(this)" required/>
+            <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;">
+                <div id="carouselExampleIndicators" class="carousel slide" style="height: 100%;" data-ride="carousel">
+                    <!-- <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol> -->
+                    <div class="carousel-inner" id="carousel-inner">
+                        <!-- <div class="carousel-item active">
+                            <div class="carousel-delete-img-btn">
+                                delete
+                            </div>
+                            <img class="d-block w-100" src="..." alt="First slide">
+                        </div> -->
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                <input type='file' class="carousel-input-file" onchange="readURL(this)" required/>
             </div>
         </div>
         <div class="new-post-form-detail">
@@ -38,10 +60,11 @@
                     </div>
                     <div class="form-location-items">
                         <select class="form-control" name="new-post-form-location" id="new-post-form-location">
-                            <option selected>--> Location <--</option>
+                            <option selected value="">--> Location <--</option>
                             {% for L in dataLocations %}
                                 <option value="{{L.value}}">{{L.value}}</option>
                             {% endfor %}
+                            <option value="Lost">Lost</option>
                         </select>
                     </div>
                 </div>
@@ -53,7 +76,7 @@
                     </div>
                     <div class="form-location-items">
                         <select class="form-control" name="new-post-form-status" id="new-post-form-status">
-                            <option selected>--> Status <--</option>
+                            <option selected value="">--> Status <--</option>
                             <option value="Lost">Lost</option>
                             <option value="Found">Found</option>
                         </select>
@@ -72,7 +95,10 @@
             </div>
             <div class="new-post-form-submit-btn">
                 <div>
-                    <button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>
+                    <small id="new-post-error-text" style="color: red;"></small>
+                    <div id="new-post-form-submit-btn">
+                        <button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,25 +108,49 @@
         let base64Img = [];
 
         function sendNewPost(event) {
-            console.log(newPostCategoryIdData);
-            console.log(document.getElementById('new-post-form-location').value);
-            console.log(document.getElementById('new-post-form-status').value);
-            console.log(document.getElementById('new-post-form-description').value);
+            // console.log(newPostCategoryIdData);
+            // console.log(document.getElementById('new-post-form-location').value);
+            // console.log(document.getElementById('new-post-form-status').value);
+            // console.log(document.getElementById('new-post-form-description').value);
             console.log(base64Img);
+
+            // if (newPostCategoryIdData[0] == undefined) {
+            //     document.getElementById('new-post-error-text').innerText = "Please select category";
+            // } else if (document.getElementById('new-post-form-status').value == "") {
+            //     document.getElementById('new-post-error-text').innerText = "Please select status";
+            // } else if (document.getElementById('new-post-form-location').value == "") {
+            //     document.getElementById('new-post-error-text').innerText = "Please select location";
+            // } else if (document.getElementById('new-post-form-description').value == "") {
+            //     document.getElementById('new-post-error-text').innerText = "Please input your description";
+            // } else if (base64Img[0] == undefined) {
+            //     document.getElementById('new-post-error-text').innerText = "Please select your image";
+            // } else {
+            //     document.getElementById('new-post-form-submit-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>';
+            //     axios.post('/post', {
+            //             'name': "fefe"
+            //         })
+            //         .then(response => {
+
+            //         })
+            //         .catch(error => {
+            //             document.getElementById('new-post-error-text').innerText = error;
+            //             document.getElementById('new-post-form-submit-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>';
+            //         })
+            // }
         }
 
         function readURL(input) {
-            var reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = function (e) {
                 if (e.target.result.split("/")[0] == "data:image") {
-                    document.getElementById('base64Img').src = e.target.result;
-                    document.getElementById('base64Img').style.display = 'unset';
-                    base64Img.push(e.target.result)
+                    let randomStringId = Math.random().toString(36).substring(7);
+                    addImage(e.target.result, randomStringId);
+                    base64Img.push({
+                        "id":randomStringId,
+                        "base64": e.target.result
+                    });
                 } else {
                     alert('Image only')
-                    document.getElementById('dropzone').remove();
-                    document.getElementById('myDropzone').innerHTML = 
-                    "<img src='#' id='base64Img' style='display: none;'><input type='file' name='dropzone' id='dropzone' onchange='readURL(this)' required/>";
                 }
             };
             reader.readAsDataURL(input.files[0]);
@@ -114,4 +164,50 @@
                 newPostCategoryIdData.splice(newPostCategoryIdData.indexOf(event.target.value), 1)
             }
         }
+
+        function addImage(base64, id) {
+            let carouselInner = document.getElementById('carousel-inner');
+            let carouselItem = document.createElement('div');
+            let carouselImg = document.createElement('img');
+            let carouselDeleteContainer = document.createElement('div');
+            let carouselDeleteImg = document.createElement('img');
+
+            carouselDeleteImg.src = "{% static 'images/remove.png' %}";
+            carouselDeleteImg.id = id;
+
+            carouselDeleteContainer.classList.add('carousel-delete-img-btn');
+            carouselDeleteContainer.onclick = function() {deleteImg(event)};
+            carouselDeleteContainer.appendChild(carouselDeleteImg);
+
+            carouselImg.src = base64;
+            carouselImg.classList.add('d-block','carousel-base64-img');
+
+            carouselItem.appendChild(carouselDeleteContainer);
+            carouselItem.appendChild(carouselImg);
+            if (base64Img[0] == undefined) {
+                carouselItem.classList.add('carousel-item', 'active');
+            } else {
+                carouselItem.classList.add('carousel-item');
+            }
+            carouselItem.id = "carousel-base64-img-" + id;
+
+            carouselInner.appendChild(carouselItem);           
+        }
+
+        function deleteImg(event) {
+            base64Img.forEach((data, index) => {
+                if (data.id == event.target.id) {
+                    
+                    let carouselItem = document.getElementById("carousel-base64-img-" + event.target.id);
+                    carouselItem.remove();
+                    
+                    base64Img.splice(index, 1);
+                     if (carouselItem.className.indexOf('active') > 0) {
+                        let carouselItemFirst = document.getElementsByClassName('carousel-item')[0];
+                        carouselItemFirst.classList.add('active');
+                    }
+                }
+            })
+        }
+
     </script>
