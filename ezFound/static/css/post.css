@@ -123,16 +123,17 @@
 }
 
 .post-img-container {
-    position: relative;
-    width: 100%;
+    /* position: relative;
+    width: 100%; */
+    background-color: #707070;
 }
 
 .post-img-container img {
-    position: relative;
+    /* position: relative;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 600px;
+    max-width: 600px; */
 }
 
 .post-detail-container {
