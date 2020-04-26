@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
 from account.models import Profile
+from api.utils.get import comment as getComment
 
 # Create your views here.
 
@@ -32,7 +33,8 @@ def post_get(request, postId):
                 "location": post.location.name,
                 "user": post.user.username,
                 "create_at": post.create_at,
-                "date": post.date
+                "date": post.date,
+                "comment": getComment(postId)
             }
         })
     except ObjectDoesNotExist:
