@@ -9,6 +9,7 @@ from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
 from account.models import Profile
 from api.utils.get import comment as getComment
+from api.utils.get import image as getImage
 
 """
     TODO: - Query post by Location
@@ -37,7 +38,8 @@ def post_get(request, postId):
                 "user": post.user.username,
                 "create_at": post.create_at,
                 "date": post.date,
-                "comment": getComment(postId)
+                "comment": getComment(postId),
+                "images": getImage(postId)
             }
         })
     except ObjectDoesNotExist:
@@ -64,7 +66,8 @@ def userPost(request, userId):
             "location": p.location.name,
             "user": p.user.username,
             "create_at": p.create_at,
-            "date": p.date
+            "date": p.date,
+            "images": getImage(p.id)
         } for p in posts]
 
         return JsonResponse({
