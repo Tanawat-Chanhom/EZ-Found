@@ -10,8 +10,11 @@ from authen.models import OTP
 from account.models import Profile
 from api.utils.get import comment as getComment
 
-# Create your views here.
-
+"""
+    TODO: - Query post by Location
+          - Query post by Category
+          - Get User's Profile
+"""
 
 @api_view(['GET'])
 def post_get(request, postId):
@@ -108,6 +111,7 @@ def post(request):
 
         elif request.method == 'POST':
             try:
+                # Create Post
                 post = Post(
                     title=request.data['title'],
                     descriptions=request.data['descriptions'],
@@ -120,6 +124,13 @@ def post(request):
                 for c in request.data['categories_id']:
                     post.category.add(Category.objects.get(pk=c))
                 post.save()
+
+                # Create PostImage
+                image = PostImage(
+                    image_url=request.data['img'],
+                    post=post
+                )
+                image.save()
 
                 return JsonResponse({
                     "statusCode": 201,
