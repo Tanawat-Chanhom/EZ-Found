@@ -13,7 +13,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'password', 'first_name', 'last_name', 'email']
 
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ['name', 'create_at', 'delete_at']
+
+
 class PostSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Post
         fields = ['title', 'descriptions', 'status', 'date,', 'user', 'category', 'location', 'create_at', 'delete_at']
@@ -31,10 +38,6 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['text', 'is_seen', 'create_at', 'post', 'send_by', 'message_to']
 
 
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ['name', 'create_at', 'delete_at']
 
 
 class CategorySerializer(serializers.ModelSerializer):
