@@ -61,7 +61,7 @@
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
-    border-radius: 0.5em 0.5em 0em 0em;
+    border-radius: 0.5em;
     overflow: hidden;
     color: #B5B5B5;
 }
