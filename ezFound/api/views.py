@@ -14,43 +14,63 @@ from api.utils.get import image as getImage
 
 """
     TODO:
-          - Delete Post
           - Edit Post
 """
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def post_get(request, postId):
     """ Get Specific Post """
 
-    try:
-        post = Post.objects.get(pk=postId)
-        return JsonResponse({
-            "statusCode": 200,
-            "statusText": "Success",
-            "message": "Success",
-            "error": False,
-            "data": {
-                "id": postId,
-                "title": post.title,
-                "description": post.descriptions,
-                "status": post.status,
-                "categories": [c.name for c in post.category.all()],
-                "location": post.location.name,
-                "user": post.user.username,
-                "create_at": post.create_at,
-                "date": post.date,
-                "comment": getComment(postId),
-                "images": getImage(postId)
-            }
-        })
-    except ObjectDoesNotExist:
-        return JsonResponse({
-            "statusCode": 404,
-            "statusText": "Not Found",
-            "message": "Post Not Exist",
-            "error": True
-        })
+    if request.method == 'GET':
+        try:
+            post = Post.objects.get(pk=postId)
+            return JsonResponse({
+                "statusCode": 200,
+                "statusText": "Success",
+                "message": "Success",
+                "error": False,
+                "data": {
+                    "id": postId,
+                    "title": post.title,
+                    "description": post.descriptions,
+                    "status": post.status,
+                    "categories": [c.name for c in post.category.all()],
+                    "location": post.location.name,
+                    "user": post.user.username,
+                    "create_at": post.create_at,
+                    "date": post.date,
+                    "comment": getComment(postId),
+                    "images": getImage(postId)
+                }
+            })
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "Post Not Exist",
+                "error": True
+            })
 
+    elif request.method == 'DELETE':
+        try:
+            post = Post.objects.get(pk=postId)
+            post.delete_at = now()
+            post.save()
+
+            return JsonResponse({
+                "statusCode": 200,
+                "statusText": "Success",
+                "message": "Post Deleted!",
+                "error": False
+            })
+
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "Post Not Exist",
+                "error": True
+            })
 
 @api_view(['GET'])
 def userPost(request, userId):
@@ -69,7 +89,7 @@ def userPost(request, userId):
             "create_at": p.create_at,
             "date": p.date,
             "images": getImage(p.id)
-        } for p in posts]
+        } for p in posts if p.delete_at is None]
 
         return JsonResponse({
             "statusCode": 200,
@@ -178,7 +198,7 @@ def get_location(request, locationId):
             "create_at": p.create_at,
             "date": p.date,
             "images": getImage(p.id)
-        } for p in posts]
+        } for p in posts if p.delete_at is None]
 
         return JsonResponse({
             "statusCode": 200,
@@ -213,7 +233,7 @@ def get_category(request, categoryId):
             "create_at": p.create_at,
             "date": p.date,
             "images": getImage(p.id)
-        } for p in posts]
+        } for p in posts if p.delete_at is None]
 
         return JsonResponse({
             "statusCode": 200,
