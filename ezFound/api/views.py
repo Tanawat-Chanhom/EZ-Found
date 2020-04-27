@@ -13,12 +13,9 @@ from api.utils.get import comment as getComment
 from api.utils.get import image as getImage
 
 """
-    TODO: - Query post by Location
-          - Query post by Category
+    TODO:
           - Delete Post
           - Edit Post
-          - Delete Comment
-          - Edit Comment
 """
 
 @api_view(['GET'])
@@ -167,12 +164,72 @@ def post(request):
 
 @api_view(['GET'])
 def get_location(request, locationId):
-    pass
+
+    try:
+        posts = Post.objects.filter(location=locationId)
+        payload = [{
+            "id": p.id,
+            "title": p.title,
+            "description": p.descriptions,
+            "status": p.status,
+            "category": [c.name for c in p.category.all()],
+            "location": p.location.name,
+            "user": p.user.username,
+            "create_at": p.create_at,
+            "date": p.date,
+            "images": getImage(p.id)
+        } for p in posts]
+
+        return JsonResponse({
+            "statusCode": 200,
+            "statusText": "Success",
+            "message": "Query Success",
+            "error": False,
+            "data": payload
+        })
+
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
 
 
 @api_view(['GET'])
 def get_category(request, categoryId):
-    pass
+
+    try:
+        posts = Post.objects.filter(category=categoryId)
+        payload = [{
+            "id": p.id,
+            "title": p.title,
+            "description": p.descriptions,
+            "status": p.status,
+            "category": [c.name for c in p.category.all()],
+            "location": p.location.name,
+            "user": p.user.username,
+            "create_at": p.create_at,
+            "date": p.date,
+            "images": getImage(p.id)
+        } for p in posts]
+
+        return JsonResponse({
+            "statusCode": 200,
+            "statusText": "Success",
+            "message": "Query Success",
+            "error": False,
+            "data": payload
+        })
+
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
 
 
 @api_view(['GET'])
