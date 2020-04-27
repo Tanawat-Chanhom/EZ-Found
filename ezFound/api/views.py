@@ -39,7 +39,7 @@ def post_get(request, postId):
                     "user": post.user.username,
                     "create_at": post.create_at,
                     "date": post.date,
-                    "comment": getComment(postId),
+                    "comments": getComment(postId),
                     "images": getImage(postId),
                     "user": getUser(post.user_id),
                 }
@@ -150,7 +150,8 @@ def post(request):
                 "create_at": p.create_at,
                 "date": p.date,
                 "user": getUser(p.user.id),
-                "images": getImage(p.id)
+                "images": getImage(p.id),
+                "comments": getComment(p.id)
             } for p in posts]
 
             return JsonResponse({
