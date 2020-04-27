@@ -153,13 +153,21 @@ def post(request):
                 "images": getImage(p.id),
                 "comments": getComment(p.id)
             } for p in posts]
+            categoryAll = Category.objects.all()
+            locationAll = Location.objects.all()
 
-            return JsonResponse({
-                "statusCode": 200,
-                "statusText": "Success",
-                "message": "Successt",
-                "error": False,
-                "data": payload
+            # return JsonResponse({
+            #     "statusCode": 200,
+            #     "statusText": "Success",
+            #     "message": "Successt",
+            #     "error": False,
+            #     "data": payload
+            # })
+
+            return render(request, 'posts/index.html', context={
+                'Category': categoryAll,
+                'Locations': locationAll,
+                'Posts': payload
             })
 
         elif request.method == 'POST':

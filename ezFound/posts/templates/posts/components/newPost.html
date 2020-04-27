@@ -4,7 +4,7 @@
     </head>
     <label for="new-post-checkbox" class="close-new-post-label"></label>
     <div class="new-post-form">
-        <div class="drag-and-drop-container">
+        <div class="drag-and-drop-container" style="height: 300px;">
             <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;">
                 <div id="carouselExampleIndicators" class="carousel slide" style="height: 100%;" data-ride="carousel">
                     <div class="carousel-inner" id="carousel-inner">
@@ -30,14 +30,34 @@
                 </div>
                 <div class="form-category-items">
                     {% for C in dataCategory %}
-                        <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="new-post-form-category-{{C.id}}" class="form-category-item">
+                        <label data-aos="zoom-in" data-aos-delay="100" for="new-post-form-category-{{C.id}}" class="form-category-item">
                             <input type="checkbox" class="form-category-checkbox" name="form-category-checkbox-{{C.id}}" id="new-post-form-category-{{C.id}}" value="{{C.id}}" onchange="category(event)">
                             <span class="form-category-span-bg"></span>
                             <div>
-                                <p>{{C.value}}</p>
+                                <p>{{C.name}}</p>
                             </div>
                         </label>
                     {% endfor %}
+                </div>
+            </div>
+            <style>
+                .form-title {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    margin: 10px;
+                }
+            </style>
+            <div class="form-title">
+                <div class="form-category-title">
+                    <div>
+                        <span>Title</span>
+                    </div>
+                </div>
+                <div class="form-location-items">
+                    <div>
+                        <input type="text" style="background-color: white; border-radius: 0.3em;" class="form-control-plaintext" id="form-title" placeholder="Title">
+                    </div>
                 </div>
             </div>
             <div class="location-status-container">
@@ -50,10 +70,9 @@
                     <div class="form-location-items">
                         <select class="form-control" name="new-post-form-location" id="new-post-form-location">
                             <option selected value="">--> Location <--</option>
-                            {% for L in dataLocations %}
-                                <option value="{{L.value}}">{{L.value}}</option>
+                            {% for L in dataLocation %}
+                                <option value="{{L.id}}">{{L.name}}</option>
                             {% endfor %}
-                            <option value="Lost">Lost</option>
                         </select>
                     </div>
                 </div>
@@ -66,12 +85,33 @@
                     <div class="form-location-items">
                         <select class="form-control" name="new-post-form-status" id="new-post-form-status">
                             <option selected value="">--> Status <--</option>
-                            <option value="Lost">Lost</option>
-                            <option value="Found">Found</option>
+                            <option value="LOST">Lost</option>
+                            <option value="FOUND">Found</option>
                         </select>
                     </div>
                 </div>
             </div>
+            <style>
+                .form-title {
+                    position: relative;
+                    display: flex;
+                    flex-direction: row;
+                    margin: 10px;
+                }
+            </style>
+            <div class="form-title">
+                <div class="form-category-title">
+                    <div>
+                        <span>Date</span>
+                    </div>
+                </div>
+                <div class="form-location-items">
+                    <div>
+                        <input type="date" style="background-color: white; border-radius: 0.3em;" class="form-control-plaintext" id="form-date">
+                    </div>
+                </div>
+            </div>
+
             <div class="form-des">
                 <div class="form-des-title">
                     <div>
@@ -79,7 +119,7 @@
                     </div>
                 </div>
                 <div class="form-des-detail">
-                    <textarea class="form-control" id="new-post-form-description" rows="3"></textarea>
+                    <textarea style="min-height: 100px; max-height: 100px;" class="form-control" id="new-post-form-description" rows="3"></textarea>
                 </div>
             </div>
             <div class="new-post-form-submit-btn">
@@ -92,40 +132,53 @@
             </div>
         </div>
     </div>
+    <!-- <script type="text/javascript" src="{% static 'js/validatedate.js' %}"></script> -->
     <script>
         let newPostCategoryIdData = [];
         let base64Img = [];
 
         function sendNewPost(event) {
-            console.log(newPostCategoryIdData);
-            console.log(document.getElementById('new-post-form-location').value);
-            console.log(document.getElementById('new-post-form-status').value);
-            console.log(document.getElementById('new-post-form-description').value);
-            console.log(base64Img);
 
-            // if (newPostCategoryIdData[0] == undefined) {
-            //     document.getElementById('new-post-error-text').innerText = "Please select category";
-            // } else if (document.getElementById('new-post-form-status').value == "") {
-            //     document.getElementById('new-post-error-text').innerText = "Please select status";
-            // } else if (document.getElementById('new-post-form-location').value == "") {
-            //     document.getElementById('new-post-error-text').innerText = "Please select location";
-            // } else if (document.getElementById('new-post-form-description').value == "") {
-            //     document.getElementById('new-post-error-text').innerText = "Please input your description";
-            // } else if (base64Img[0] == undefined) {
-            //     document.getElementById('new-post-error-text').innerText = "Please select your image";
-            // } else {
-            //     document.getElementById('new-post-form-submit-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>';
-            //     axios.post('/post', {
-            //             'name': "fefe"
-            //         })
-            //         .then(response => {
-
-            //         })
-            //         .catch(error => {
-            //             document.getElementById('new-post-error-text').innerText = error;
-            //             document.getElementById('new-post-form-submit-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>';
-            //         })
-            // }
+            if (newPostCategoryIdData[0] == undefined) {
+                document.getElementById('new-post-error-text').innerText = "Please select category";
+            } else if (document.getElementById('new-post-form-status').value == "") {
+                document.getElementById('new-post-error-text').innerText = "Please select status";
+            } else if (document.getElementById('new-post-form-location').value == "") {
+                document.getElementById('new-post-error-text').innerText = "Please select location";
+            } else if (document.getElementById('new-post-form-description').value == "") {
+                document.getElementById('new-post-error-text').innerText = "Please input your description";
+            } else if (base64Img[0] == undefined) {
+                document.getElementById('new-post-error-text').innerText = "Please select your image";
+            } else if (document.getElementById('form-title').value == "") {
+                document.getElementById('new-post-error-text').innerText = "Please enter your title";
+            } else {
+                document.getElementById('new-post-form-submit-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>';
+                axios.defaults.xsrfCookieName = 'csrftoken'
+                axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+                axios.post('api/v1/post', {
+                        'title': document.getElementById('form-title').value,
+                        'descriptions': document.getElementById('new-post-form-description').value,
+                        'status': document.getElementById('new-post-form-status').value,
+                        'date': document.getElementById('form-date').value,
+                        'user_id': {{user.id}},
+                        'location_id': document.getElementById('new-post-form-location').value,
+                        'categories_id': newPostCategoryIdData,
+                        'img': base64Img[0].base64
+                    })
+                    .then(response => {
+                        console.log(response);
+                        if (response.data.statusCode == "200") {
+                            console.log('createPost')
+                        } else {
+                            document.getElementById('new-post-error-text').innerText = response.data.message;
+                            document.getElementById('new-post-form-submit-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>';
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('new-post-error-text').innerText = error;
+                        document.getElementById('new-post-form-submit-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>';
+                    })
+            }
         }
 
         function readURL(input) {

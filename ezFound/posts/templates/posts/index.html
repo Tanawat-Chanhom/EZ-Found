@@ -75,7 +75,7 @@
         </label>
     </div>
 
-    {% include 'posts/components/newPost.html' with dataCategory=Category dataStatus=Status dataLocation=Locations%}
+    {% include 'posts/components/newPost.html' with dataCategory=Category dataLocation=Locations%}
 
     {% for post in Posts %}
         {% include "posts/components/post.html" with data=post %}
