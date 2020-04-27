@@ -24,25 +24,24 @@ def post_get(request, postId):
     if request.method == 'GET':
         try:
             post = Post.objects.get(pk=postId)
-            return JsonResponse({
-                "statusCode": 200,
-                "statusText": "Success",
-                "message": "Success",
-                "error": False,
-                "data": {
-                    "id": postId,
-                    "title": post.title,
-                    "description": post.descriptions,
-                    "status": post.status,
-                    "categories": [c.name for c in post.category.all()],
-                    "location": post.location.name,
-                    "user": post.user.username,
-                    "create_at": post.create_at,
-                    "date": post.date,
-                    "comments": getComment(postId),
-                    "images": getImage(postId),
-                    "user": getUser(post.user_id),
-                }
+            payload = {
+                "id": postId,
+                "title": post.title,
+                "description": post.descriptions,
+                "status": post.status,
+                "categories": [c.name for c in post.category.all()],
+                "location": post.location.name,
+                "user": post.user.username,
+                "create_at": post.create_at,
+                "date": post.date,
+                "comments": getComment(postId),
+                "images": getImage(postId),
+                "user": getUser(post.user_id),
+            }
+
+            return render(request, 'posts/post.html', context={
+                # 'Message': messages, // ใส่ข้อมูลของ message ด้วย
+                'Posts': payload
             })
         except ObjectDoesNotExist:
             return JsonResponse({
@@ -139,7 +138,15 @@ def post(request):
 
     try:
         if request.method == 'GET':
-            posts = Post.objects.all()
+            if request.GET.get('filter-search-by') == "Category":
+                posts = Post.objects.filter(category=request.GET.get('filter-category'))
+            elif request.GET.get('filter-search-by') == "Location":
+                posts = Post.objects.filter(location=request.GET.get('filter-location'))
+            elif request.GET.get('filter-search-by') == "Status":
+                posts = Post.objects.filter(status=request.GET.get('filter-status').upper())
+            else:
+                posts = Post.objects.all()
+            
             payload = [{
                 "id": p.id,
                 "title": p.title,
@@ -156,13 +163,6 @@ def post(request):
             categoryAll = Category.objects.all()
             locationAll = Location.objects.all()
 
-            # return JsonResponse({
-            #     "statusCode": 200,
-            #     "statusText": "Success",
-            #     "message": "Successt",
-            #     "error": False,
-            #     "data": payload
-            # })
 
             return render(request, 'posts/index.html', context={
                 'Category': categoryAll,

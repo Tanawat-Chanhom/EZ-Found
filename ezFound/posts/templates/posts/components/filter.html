@@ -2,23 +2,45 @@
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'css/filter.css' %}">
     </head>
+    <form action="{% url 'index' %}" method="GET">
         <div class="filter-container">
-            <div data-aos="zoom-in" class="category-container">
-                <div class="category-title">
-                    <div>
-                        <span>Category</span>
+            <style>
+                .category-by-container {
+                    position: relative;
+                    display: grid;
+                    grid-template-columns: 50% 50%;
+                }
+            </style>
+            <div class="category-by-container">
+                <div data-aos="zoom-in" class="category-container">
+                    <div class="category-title">
+                        <div>
+                            <span>Category</span>
+                        </div>
+                    </div>
+                    <div class="location-items">
+                        <select class="form-control" id="filter-category" name="filter-category">
+                            <option value="" selected>--> Category <--</option>
+                        {% for C in dataCategory %}
+                            <option value="{{C.id}}">{{C.name}}</option>
+                        {% endfor %}
+                        </select>
                     </div>
                 </div>
-                <div class="category-items">
-                    {% for C in dataCategory %}
-                        <label data-aos="zoom-in" data-aos-delay="{{C.id}}00" for="filter-category-{{C.id}}" class="category-item">
-                            <input type="checkbox" class="category-checkbox" name="category-checkbox-{{C.id}}" id="filter-category-{{C.id}}" value="{{C.id}}" onchange="category(event)">
-                            <span class="category-span-bg"></span>
-                            <div>
-                                <p>{{C.name}}</p>
-                            </div>
-                        </label>
-                    {% endfor %}
+                 <div data-aos="zoom-in" data-aos-delay="100" class="category-container">
+                    <div class="category-title">
+                        <div>
+                            <span>Search By</span>
+                        </div>
+                    </div>
+                    <div class="location-items">
+                        <select class="form-control" id="filter-search-by" name="filter-search-by" onchange="search_by(event)" required>
+                            <option value="" selected>--> By <--</option>
+                            <option value="Category">Category</option>
+                            <option value="Location">Location</option>
+                            <option value="Status">Status</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="location-status-container">
@@ -29,10 +51,10 @@
                         </div>
                     </div>
                     <div class="location-items">
-                        <select class="form-control" id="filter-location">
-                            <option selected>--> Location <--</option>
+                        <select class="form-control" id="filter-location" name="filter-location">
+                            <option value="" selected>--> Location <--</option>
                             {% for L in dataLocation %}
-                                <option>{{L.name}}</option>
+                                <option value="{{L.id}}">{{L.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -52,7 +74,7 @@
                     }
                 </style>
                 <div data-aos="zoom-in" data-aos-delay="200" class="filter-btn-container">
-                    <button type="submit" class="btn btn-primary" style="border-radius: 0.5em" onclick="filter(event)">Search</button>
+                        <button type="submit" class="btn btn-primary" style="border-radius: 0.5em" onclick="filter(event)">Search</button>
                 </div>
                 <div data-aos="zoom-in" data-aos-delay="200" class="status-container">
                     <div class="category-title">
@@ -60,56 +82,32 @@
                             <span>Status</span>
                         </div>
                     </div>
-                    <div class="category-items">
-                            <label data-aos="zoom-in" data-aos-delay="100" for="filter-status-found" class="status-item">
-                                <input type="checkbox" class="status-checkbox" name="status-checkbox-found" id="filter-status-found" value="found" onchange="status(event)">
-                                <span class="status-span-bg"></span>
-                                <div>
-                                    <p>Found</p>
-                                </div>
-                            </label>
-                            <label data-aos="zoom-in" data-aos-delay="200" for="filter-status-lost" class="status-item">
-                                <input type="checkbox" class="status-checkbox" name="status-checkbox-lost" id="filter-status-lost" value="lost" onchange="status(event)">
-                                <span class="status-span-bg"></span>
-                                <div>
-                                    <p>Lost</p>
-                                </div>
-                            </label>
-                            <label data-aos="zoom-in" data-aos-delay="300" for="filter-status-returned" class="status-item">
-                                <input type="checkbox" class="status-checkbox" name="status-checkbox-returned" id="filter-status-returned" value="returned" onchange="status(event)">
-                                <span class="status-span-bg"></span>
-                                <div>
-                                    <p>Returned</p>
-                                </div>
-                            </label>
-                    </div onclick>
+                    <div class="location-items">
+                        <select class="form-control" id="filter-status" name="filter-status">
+                            <option value="" selected>--> Location <--</option>
+                            <option>Found</option>
+                            <option>Lost</option>
+                            <option>Returned</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
+    </form>
     <script>
-        var categoryIdData = []
-        var statusIdData = []
-        function filter(event) {
-            console.log(categoryIdData);
-            console.log(document.getElementById("filter-location").value);
-            console.log(statusIdData);
-        }
-
-        function category(event) {
-            let categoryId = event.target.id;
-            if (document.getElementById(event.target.id).checked == true) {
-                categoryIdData.push(event.target.value);
-            } else {
-                categoryIdData.splice(categoryIdData.indexOf(event.target.value), 1)
-            }
-        }
-
-        function status(event) {
-            let statusId = event.target.id;
-            if (document.getElementById(statusId).checked == true) {
-                statusIdData.push(event.target.value);
-            } else {
-                statusIdData.splice(statusIdData.indexOf(event.target.value), 1)
+        function search_by(event) {
+            if (event.target.value == "Category") {
+                document.getElementById('filter-category').setAttribute("required", "");
+                document.getElementById('filter-location').removeAttribute("required");
+                document.getElementById('filter-status').removeAttribute("required");
+            } else if (event.target.value == "Location") {
+                document.getElementById('filter-category').removeAttribute("required");
+                document.getElementById('filter-location').setAttribute("required", "");
+                document.getElementById('filter-status').removeAttribute("required");
+            } else if (event.target.value == "Status") {
+                document.getElementById('filter-category').removeAttribute("required");
+                document.getElementById('filter-location').removeAttribute("required");
+                document.getElementById('filter-status').setAttribute("required", "");
             }
         }
     </script>
