@@ -275,6 +275,40 @@ def get_category(request, categoryId):
             "error": True
         })
 
+@api_view(['GET'])
+def get_status(request, status):
+
+    try:
+        posts = Post.objects.filter(status=status.upper())
+        print(posts[0].delete_at, posts[0])
+        payload = [{
+            "id": p.id,
+            "title": p.title,
+            "description": p.descriptions,
+            "status": p.status,
+            "category": [c.name for c in p.category.all()],
+            "location": p.location.name,
+            "user": p.user.username,
+            "create_at": p.create_at,
+            "date": p.date,
+            "images": getImage(p.id)
+        } for p in posts if p.delete_at is None]
+
+        return JsonResponse({
+            "statusCode": 200,
+            "statusText": "Success",
+            "message": "Query Success",
+            "error": False,
+            "data": payload
+        })
+
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
 
 @api_view(['GET'])
 def profile(request, userId):

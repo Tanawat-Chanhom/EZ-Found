@@ -7,6 +7,7 @@ urlpatterns = [
     path('post/user/<int:userId>', api.userPost),               # Get all post of specific user
     path('post/location/<int:locationId>', api.get_location),   # Get all post in requested location
     path('post/category/<int:categoryId>', api.get_category),   # Get all post in requested category
+    path('post/status/<str:status>', api.get_status),           # Get all post in requested status
     path('profile/<int:userId>', api.profile),                  # Get profile of user
     path('comment', api.comment),                               # Post, edit comments
     path('comment/<int:commentId>', api.del_comment),           # Delete comments
