@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
@@ -207,49 +208,103 @@ def profile(request, userId):
         })
 
 
-@api_view(['POST'])
-def comment(request, postId):
+@api_view(['POST', 'PUT'])
+def comment(request):
 
     try:
-        try:
-            # Get Object
-            user = User.objects.get(pk=request.data['user_id'])
-            post = Post.objects.get(pk=postId)
+        if request.method == 'POST':
+            try:
+                # Get Object
+                user = User.objects.get(pk=request.data['user_id'])
+                post = Post.objects.get(pk=request.data['post_id'])
 
-            # Create Comment Object
-            comment = Comment(
-                text=request.data['text'],
-                user=user,
-                post=post
-            )
+                # Create Comment Object
+                comment = Comment(
+                    text=request.data['text'],
+                    user=user,
+                    post=post
+                )
 
-            # Create Message Object
-            message = Message(
-                text=f"{user.first_name} Commented on your post.",
-                post=post,
-                send_by=user,
-                message_to=User.objects.get(pk=post.user_id)
-            )
+                # Create Message Object
+                if user.id != post.user_id:
+                    message = Message(
+                        text=f"{user.first_name} Commented on your post.",
+                        post=post,
+                        send_by=user,
+                        message_to=User.objects.get(pk=post.user_id)
+                    )
+                    message.save()
 
-            # Save Object
-            comment.save()
-            message.save()
+                # Save Object
+                comment.save()
 
-            # Response
-            return JsonResponse({
-                "statusCode": 201,
-                "statusText": "Created",
-                "message": "Comment Posted!",
-                "error": False
-            })
+                # Response
+                return JsonResponse({
+                    "statusCode": 201,
+                    "statusText": "Created",
+                    "message": "Comment Posted!",
+                    "error": False
+                })
 
-        except ObjectDoesNotExist:
-            return JsonResponse({
-                "statusCode": 404,
-                "statusText": "Not Found",
-                "message": "Post Or User Not Exist",
-                "error": True
-            })
+            except ObjectDoesNotExist:
+                return JsonResponse({
+                    "statusCode": 404,
+                    "statusText": "Not Found",
+                    "message": "Post Or User Not Exist",
+                    "error": True
+                })
+
+        elif request.method == 'PUT':
+            try:
+                comment = Comment.objects.get(pk=request.data['comment_id'])
+                comment.text = request.data['text']
+                comment.save()
+
+                return JsonResponse({
+                    "statusCode": 200,
+                    "statusText": "Success",
+                    "message": "Success",
+                    "error": False
+                })
+
+            except ObjectDoesNotExist:
+                return JsonResponse({
+                    "statusCode": 404,
+                    "statusText": "Not Found",
+                    "message": "Comment Not Exist",
+                    "error": True
+                })
+
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
+
+
+@api_view(['DELETE'])
+def del_comment(request, commentId):
+    try:
+        comment = Comment.objects.get(pk=commentId)
+        comment.delete_at = now()
+        comment.save()
+
+        return JsonResponse({
+            "statusCode": 200,
+            "statusText": "Success",
+            "message": "Comment Deleted!",
+            "error": False
+        })
+
+    except ObjectDoesNotExist:
+        return JsonResponse({
+            "statusCode": 404,
+            "statusText": "Not Found",
+            "message": "Comment Not Exist",
+            "error": True
+        })
 
     except:
         return JsonResponse({

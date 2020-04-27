@@ -30,7 +30,7 @@ def comment(id):
         "create_at": c.create_at,
         "delete_at": c.delete_at,
         "user": user(c.user_id)
-    } for c in comments]
+    } for c in comments if c.delete_at is None]
 
     return payload
 
