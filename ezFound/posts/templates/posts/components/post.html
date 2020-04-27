@@ -5,7 +5,7 @@
     <div data-aos="zoom-in" class="post-container">
         <div class="post-bar-container">
             <div style="display: flex; flex-direction: row;">
-                <a href="{% url 'profile' %}" class="post-profile-container" style="text-decoration: none;">
+                <a href="{% url 'profile2' userId=data.user.id %}" class="post-profile-container" style="text-decoration: none;">
                     <div style="position: relative;">
                         <div class="profile-img" style="background-image: url({{data.user.profile_img}})"></div>
                         <img class="post-profile-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
@@ -23,28 +23,30 @@
                     </div>
                 </div>
             </div>
-            {% comment %} <div class="post-more-menu-container">
-                <label for="post-more-menu-btn-{{data.id}}" class="post-date-container" style="cursor: pointer;">
-                    <div class="post-date-img">
-                        <img style="border-radius: 100%;"  src="{% static 'images/more.png' %}">
+            {% if User.id is user.id %}
+                <div class="post-more-menu-container">
+                    <label for="post-more-menu-btn-{{data.id}}" class="post-date-container" style="cursor: pointer;">
+                        <div class="post-date-img">
+                            <img style="border-radius: 100%;"  src="{% static 'images/more.png' %}">
+                        </div>
+                    </label>
+                    <input type="checkbox" class="post-more-menu-btn" id="post-more-menu-btn-{{data.id}}" style="position: absolute; visibility: hidden;">
+                    <div class="post-more-menu-items">
+                        <a href="#" style="text-decoration: none;">
+                            <div class="post-more-menu-item">
+                                <img src="{% static 'images/edit.png' %}">
+                                <p style="margin-bottom: 0; width: 100%; text-align: center;">Edit</p>
+                            </div>
+                        </a>
+                        <a href="#" style="text-decoration: none;">
+                            <div class="post-more-menu-item">
+                                <img src="{% static 'images/delete.png' %}">
+                                <p style="margin-bottom: 0; width: 100%; text-align: center;">Delete</p>
+                            </div>
+                        </a>
                     </div>
-                </label>
-                <input type="checkbox" class="post-more-menu-btn" id="post-more-menu-btn-{{data.id}}" style="position: absolute; visibility: hidden;">
-                <div class="post-more-menu-items">
-                    <a href="#" style="text-decoration: none;">
-                        <div class="post-more-menu-item">
-                            <img src="{% static 'images/edit.png' %}">
-                            <p style="margin-bottom: 0; width: 100%; text-align: center;">Edit</p>
-                        </div>
-                    </a>
-                    <a href="#" style="text-decoration: none;">
-                        <div class="post-more-menu-item">
-                            <img src="{% static 'images/delete.png' %}">
-                            <p style="margin-bottom: 0; width: 100%; text-align: center;">Delete</p>
-                        </div>
-                    </a>
                 </div>
-            </div> {% endcomment %}
+            {% endif %}
         </div>
         <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">
             <div id="carousel-{{data.id}}" class="carousel slide" data-ride="carousel">
@@ -114,7 +116,7 @@
         <div class="post-comment-detail" id="post-comment-detail-{{data.id}}">
             {% for C in data.comments %}
             <div class="post-comment">
-                <a href="{% url 'profile' %}" class="post-profile-container" style="text-decoration: none; width: fit-content;">
+                <a href="{% url 'profile2' userId=C.user.id %}" class="post-profile-container" style="text-decoration: none; width: fit-content;">
                     <div style="position: relative;">
                         <div class="profile-img" style="background-image: url({{C.user.profile_img}})"></div>
                         <img class="post-profile-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">

@@ -103,6 +103,7 @@ def userPost(request, userId):
 
     try:
         posts = Post.objects.filter(user_id=userId)
+        user = User.objects.get(pk=userId)
         payload = [{
             "id": p.id,
             "title": p.title,
@@ -116,12 +117,17 @@ def userPost(request, userId):
             "user": getUser(p.user.id),
         } for p in posts if p.delete_at is None]
 
-        return JsonResponse({
-            "statusCode": 200,
-            "statusText": "Success",
-            "message": "Successt",
-            "error": False,
-            "data": payload
+        # return JsonResponse({
+        #     "statusCode": 200,
+        #     "statusText": "Success",
+        #     "message": "Successt",
+        #     "error": False,
+        #     "data": payload
+        # })
+
+        return render(request, 'account/profile.html', context={
+            'Posts': payload,
+            'User': user
         })
     except ObjectDoesNotExist:
         return JsonResponse({
@@ -138,37 +144,40 @@ def post(request):
 
     try:
         if request.method == 'GET':
-            if request.GET.get('filter-search-by') == "Category":
-                posts = Post.objects.filter(category=request.GET.get('filter-category'))
-            elif request.GET.get('filter-search-by') == "Location":
-                posts = Post.objects.filter(location=request.GET.get('filter-location'))
-            elif request.GET.get('filter-search-by') == "Status":
-                posts = Post.objects.filter(status=request.GET.get('filter-status').upper())
+            if request.user.is_authenticated:
+                if request.GET.get('filter-search-by') == "Category":
+                    posts = Post.objects.filter(category=request.GET.get('filter-category'))
+                elif request.GET.get('filter-search-by') == "Location":
+                    posts = Post.objects.filter(location=request.GET.get('filter-location'))
+                elif request.GET.get('filter-search-by') == "Status":
+                    posts = Post.objects.filter(status=request.GET.get('filter-status').upper())
+                else:
+                    posts = Post.objects.all()
+                
+                payload = [{
+                    "id": p.id,
+                    "title": p.title,
+                    "description": p.descriptions,
+                    "status": p.status,
+                    "location": p.location.name,
+                    "categoty": [c.name for c in p.category.all()],
+                    "create_at": p.create_at,
+                    "date": p.date,
+                    "user": getUser(p.user.id),
+                    "images": getImage(p.id),
+                    "comments": getComment(p.id)
+                } for p in posts]
+                categoryAll = Category.objects.all()
+                locationAll = Location.objects.all()
+
+
+                return render(request, 'posts/index.html', context={
+                    'Category': categoryAll,
+                    'Locations': locationAll,
+                    'Posts': payload
+                })
             else:
-                posts = Post.objects.all()
-            
-            payload = [{
-                "id": p.id,
-                "title": p.title,
-                "description": p.descriptions,
-                "status": p.status,
-                "location": p.location.name,
-                "categoty": [c.name for c in p.category.all()],
-                "create_at": p.create_at,
-                "date": p.date,
-                "user": getUser(p.user.id),
-                "images": getImage(p.id),
-                "comments": getComment(p.id)
-            } for p in posts]
-            categoryAll = Category.objects.all()
-            locationAll = Location.objects.all()
-
-
-            return render(request, 'posts/index.html', context={
-                'Category': categoryAll,
-                'Locations': locationAll,
-                'Posts': payload
-            })
+                return redirect('signIn')
 
         elif request.method == 'POST':
             try:

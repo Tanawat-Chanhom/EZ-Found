@@ -154,8 +154,8 @@
         </div>
         <div class="navber-item" style="display: flex; justify-content: flex-end; align-items: center;">
         {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}" data-aos="zoom-in-down" class="infor-item">
-                <div class="profile-img" style="background-image: url({% static 'images/bg.jpeg' %})" id="navbar-profile-img"></div>
+            <a href="{% url 'profile2' userId=user.id %}" data-aos="zoom-in-down" class="infor-item">
+                <div class="profile-img" style="background-image: url({{User.profile.profile_img_path}})" id="navbar-profile-img"></div>
                 <img class="manu-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
             </a>    
             <div class="infor-item" data-aos="zoom-in-down" style="height: 60%;">
@@ -309,7 +309,7 @@
     </style>
 
     <div class="menu-container">
-        <a href="{% url 'profile' %}" class="menu-item" style="text-decoration: none;">
+        <a href="{% url 'profile2' userId=user.id %}" class="menu-item" style="text-decoration: none;">
             <img src="{% static 'images/user.png' %}" alt="">
             <div>
                 <p>Profile</p>

@@ -12,6 +12,7 @@ def user(id):
         user = User.objects.get(pk=id)
         profile = Profile.objects.get(user_id=id)
         payload = {
+            "id": user.id,
             "first_name": user.first_name,
             "last_name": user.last_name,
             "profile_img": profile.profile_img_path

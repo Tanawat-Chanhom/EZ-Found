@@ -127,7 +127,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/authen/sign-in'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
