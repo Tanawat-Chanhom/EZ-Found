@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from posts import views
+import api.views as api
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', api.post, name='index'),
     path('upload', views.uploadTest, name="upload"),
     path('post/<int:post_id>', views.post, name='post'),
 ]

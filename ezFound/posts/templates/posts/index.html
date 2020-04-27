@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-    {% include 'posts/components/filter.html' with dataCategory=Category dataStatus=Status dataLocation=Locations %}
+    {% include 'posts/components/filter.html' with dataCategory=Category dataLocation=Locations %}
     <style>
         .new-post-container {
             position: relative;
@@ -77,8 +77,8 @@
 
     {% include 'posts/components/newPost.html' with dataCategory=Category dataStatus=Status dataLocation=Locations%}
 
-    {% for posts in Category %}
-        {% include "posts/components/post.html" with data=posts %}
+    {% for post in Posts %}
+        {% include "posts/components/post.html" with data=post %}
     {% endfor %}
     
 {% endblock %}

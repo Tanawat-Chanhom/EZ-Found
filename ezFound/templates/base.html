@@ -155,7 +155,7 @@
         <div class="navber-item" style="display: flex; justify-content: flex-end; align-items: center;">
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}" data-aos="zoom-in-down" class="infor-item">
-                <div class="profile-img" style="background-image: url({% static 'images/bg.jpeg' %})"></div>
+                <div class="profile-img" style="background-image: url({% static 'images/bg.jpeg' %})" id="navbar-profile-img"></div>
                 <img class="manu-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
             </a>    
             <div class="infor-item" data-aos="zoom-in-down" style="height: 60%;">
@@ -259,7 +259,6 @@
         <div class="noti-box">
             <a href="{% url 'profile' %}" data-aos="fade-up" class="noti-pofile">
                 <div style="background-image: url({% static "images/22127.jpg" %});"></div>
-                <!-- <img style="border-radius: 100%;"  src="{% static "images/icon.webp" %}"> -->
             </a>
             <a href="{% url 'post' post_id='1' %}" class="noti-text" style="text-decoration: none;">
                 <p>LnwZa007 has commented on your post</p>
@@ -341,6 +340,14 @@
         AOS.init({
             once: true
         });
+    </script>
+    <script>
+        {% if user.is_authenticated %}
+            axios.get('api/v1/profile/{{user.id}}')
+            .then(response => {
+                document.getElementById('navbar-profile-img').style.backgroundImage = "url("+response.data.profile_img_path+")";
+            })
+        {% endif %}
     </script>
 </body>
 </html>
