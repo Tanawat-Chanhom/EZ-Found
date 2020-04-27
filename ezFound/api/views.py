@@ -13,11 +13,10 @@ from api.utils.get import comment as getComment
 from api.utils.get import image as getImage
 
 """
-    TODO:
-          - Edit Post
+    TODO: All Done!...For Now (Add Task Here)
 """
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'DELETE', 'PUT'])
 def post_get(request, postId):
     """ Get Specific Post """
 
@@ -71,6 +70,31 @@ def post_get(request, postId):
                 "message": "Post Not Exist",
                 "error": True
             })
+
+    elif request.method == 'PUT':
+        try:
+            post = Post.objects.get(pk=postId)
+            post.title = request.data['title'] if 'title' in request.data else post.title
+            post.text = request.data['descriptions'] if 'descriptions' in request.data else post.descriptions
+            post.status = request.data['status'] if 'status' in request.data else post.status
+
+            post.save()
+
+            return JsonResponse({
+                "statusCode": 200,
+                "statusText": "Success",
+                "message": "Post Edited!",
+                "error": False
+            })
+
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "Post Not Exist",
+                "error": True
+            })
+
 
 @api_view(['GET'])
 def userPost(request, userId):

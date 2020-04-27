@@ -3,7 +3,7 @@ import api.views as api
 
 urlpatterns = [
     path('post', api.post),                                     # Get post for index page and create new post
-    path('post/<int:postId>', api.post_get),                    # Get specific post and all commmets of that post
+    path('post/<int:postId>', api.post_get),                    # Get specific post and all commmets of that post, Delete Post, Edit Post
     path('post/user/<int:userId>', api.userPost),               # Get all post of specific user
     path('post/location/<int:locationId>', api.get_location),   # Get all post in requested location
     path('post/category/<int:categoryId>', api.get_category),   # Get all post in requested category
