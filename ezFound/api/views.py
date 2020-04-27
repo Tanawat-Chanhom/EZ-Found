@@ -14,7 +14,10 @@ from api.utils.get import image as getImage
 """
     TODO: - Query post by Location
           - Query post by Category
-          - Get User's Profile
+          - Delete Post
+          - Edit Post
+          - Delete Comment
+          - Edit Comment
 """
 
 @api_view(['GET'])
@@ -26,7 +29,7 @@ def post_get(request, postId):
         return JsonResponse({
             "statusCode": 200,
             "statusText": "Success",
-            "message": "Successt",
+            "message": "Success",
             "error": False,
             "data": {
                 "id": postId,
@@ -123,6 +126,8 @@ def post(request):
                     user=User.objects.get(pk=request.data['user_id']),
                     location=Location.objects.get(pk=request.data['location_id'])
                 )
+                
+                # Add category to post
                 post.save()
                 for c in request.data['categories_id']:
                     post.category.add(Category.objects.get(pk=c))
@@ -148,6 +153,102 @@ def post(request):
                     "statusText": "Bad Request",
                     "message": "Invalid API Payload",
                     "error": True
+            })
+
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
+
+
+@api_view(['GET'])
+def get_location(request, locationId):
+    pass
+
+
+@api_view(['GET'])
+def get_category(request, categoryId):
+    pass
+
+
+@api_view(['GET'])
+def profile(request, userId):
+    """ Get Profile Of A User """
+    try:
+        try:
+            user = User.objects.get(pk=userId)
+            profile = Profile.objects.get(user_id=userId)
+            return JsonResponse({
+                "username": user.username,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "student_id": profile.student_id,
+                "phone": profile.phone,
+                "profile_img_path": profile.profile_img_path
+            })
+
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "User Not Exist",
+                "error": True
+            })
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
+
+
+@api_view(['POST'])
+def comment(request, postId):
+
+    try:
+        try:
+            # Get Object
+            user = User.objects.get(pk=request.data['user_id'])
+            post = Post.objects.get(pk=postId)
+
+            # Create Comment Object
+            comment = Comment(
+                text=request.data['text'],
+                user=user,
+                post=post
+            )
+
+            # Create Message Object
+            message = Message(
+                text=f"{user.first_name} Commented on your post.",
+                post=post,
+                send_by=user,
+                message_to=User.objects.get(pk=post.user_id)
+            )
+
+            # Save Object
+            comment.save()
+            message.save()
+
+            # Response
+            return JsonResponse({
+                "statusCode": 201,
+                "statusText": "Created",
+                "message": "Comment Posted!",
+                "error": False
+            })
+
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "Post Or User Not Exist",
+                "error": True
             })
 
     except:
