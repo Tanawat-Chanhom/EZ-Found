@@ -181,11 +181,12 @@ def post(request):
                 post.save()
 
                 # Create PostImage
-                image = PostImage(
-                    image_url=request.data['img'],
-                    post=post
-                )
-                image.save()
+                for i in request.data['images']:
+                    image = PostImage(
+                        image_url=i,
+                        post=post
+                    )
+                    image.save()
 
                 return JsonResponse({
                     "statusCode": 201,
