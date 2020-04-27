@@ -11,6 +11,7 @@ from authen.models import OTP
 from account.models import Profile
 from api.utils.get import comment as getComment
 from api.utils.get import image as getImage
+from api.utils.get import user as getUser
 
 """
     TODO: All Done!...For Now (Add Task Here)
@@ -39,7 +40,8 @@ def post_get(request, postId):
                     "create_at": post.create_at,
                     "date": post.date,
                     "comment": getComment(postId),
-                    "images": getImage(postId)
+                    "images": getImage(postId),
+                    "user": getUser(post.user_id),
                 }
             })
         except ObjectDoesNotExist:
@@ -109,10 +111,10 @@ def userPost(request, userId):
             "status": p.status,
             "category": [c.name for c in p.category.all()],
             "location": p.location.name,
-            "user": p.user.username,
             "create_at": p.create_at,
             "date": p.date,
-            "images": getImage(p.id)
+            "images": getImage(p.id),
+            "user": getUser(p.user.id),
         } for p in posts if p.delete_at is None]
 
         return JsonResponse({
@@ -144,9 +146,11 @@ def post(request):
                 "description": p.descriptions,
                 "status": p.status,
                 "location": p.location.name,
-                "user": p.user.username,
+                "categoty": [c.name for c in p.category.all()],
                 "create_at": p.create_at,
-                "date": p.date
+                "date": p.date,
+                "user": getUser(p.user.id),
+                "images": getImage(p.id)
             } for p in posts]
 
             return JsonResponse({
@@ -218,7 +222,7 @@ def get_location(request, locationId):
             "status": p.status,
             "category": [c.name for c in p.category.all()],
             "location": p.location.name,
-            "user": p.user.username,
+            "user": getUser(p.user_id),
             "create_at": p.create_at,
             "date": p.date,
             "images": getImage(p.id)
@@ -253,7 +257,7 @@ def get_category(request, categoryId):
             "status": p.status,
             "category": [c.name for c in p.category.all()],
             "location": p.location.name,
-            "user": p.user.username,
+            "user": getUser(p.user_id),
             "create_at": p.create_at,
             "date": p.date,
             "images": getImage(p.id)
@@ -288,7 +292,7 @@ def get_status(request, status):
             "status": p.status,
             "category": [c.name for c in p.category.all()],
             "location": p.location.name,
-            "user": p.user.username,
+            "user": getUser(p.user_id),
             "create_at": p.create_at,
             "date": p.date,
             "images": getImage(p.id)
