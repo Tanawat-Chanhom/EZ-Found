@@ -1,5 +1,6 @@
 from django.urls import path
 import api.views as api
+import api.taggy as taggy
 
 urlpatterns = [
     path('post', api.post),                                     # Get post for index page and create new post
@@ -11,4 +12,6 @@ urlpatterns = [
     path('profile/<int:userId>', api.profile),                  # Get profile of user
     path('comment', api.comment),                               # Post, edit comments
     path('comment/<int:commentId>', api.del_comment),           # Delete comments
+    path('change_password/<int:userId>', taggy.change_password),
+    path('edit_profile/<int:userId>', taggy.edit_profile),
 ]
