@@ -11,7 +11,7 @@
                         <img class="post-profile-img" style="border-radius: 100%;"  src="{% static 'images/icon.webp' %}">
                     </div>
                     <div class="post-profile-name">
-                        <p>100%Not DummyAcc</p>
+                        <p>{{data.user}}</p>
                     </div>
                 </a>
                 <div class="post-date-container">
@@ -19,7 +19,7 @@
                         <img style="border-radius: 100%;"  src="{% static 'images/clock.png' %}">
                     </div>
                     <div class="post-date-text">
-                        <p>10 Mar 2020 at 11.20 AM {{posts.id}}</p>
+                        <p>{{data.create_at}}</p>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
         <div class="post-detail-container">
             <div class="post-detail">
                 <div class="post-category-items" style="max-width: 200px; height: 50px;">
-                    {% for C in Category %}
+                    {% for C in data.category %}
                         <div class="post-detail-category-items">
                             <p >{{C.value}}</p>
                         </div>
@@ -84,7 +84,7 @@
                         <img style="border-radius: 100%;"  src="{% static 'images/location.png' %}">
                     </div>
                     <div class="post-date-text">
-                        <p>Faculty of Information Technology</p>
+                        <p>{{data.location}}</p>
                     </div>
                 </div>
             </div>
@@ -100,19 +100,16 @@
                     background-color: red;
                     border: unset;
                 " 
-                disabled>Lost</button>
+                disabled>{{data.status}}</button>
             </div>
         </div>
         <div class="post-description">
+            <h3>Title: {{data.title}}</h3>
             <p>
-                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
-                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
-                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
-                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
-                ช่วยด้วยค่ะ พอดีว่าเราพาน้องไปคณะแล้วน้องวิ่งหนีไปอ่ะค่ะ ถ้าเจอน้องช่วยติดต่อกลับได้มั้ยคะ?
+                Description: {{data.description}}
             </p>
         </div>
-        <input type="checkbox" id="show-comment-{{data.id}}" value="{{posts.id}}" class="show-comment" style="position: absolute; visibility: hidden;" onchange="scrollOnbuttom(event)">
+        <input type="checkbox" id="show-comment-{{data.id}}" value="{{data.id}}" class="show-comment" style="position: absolute; visibility: hidden;" onchange="scrollOnbuttom(event)">
         <div class="post-comment-detail" id="post-comment-detail-{{posts.id}}">
             {% for L in Locations %}
             <div class="post-comment">
@@ -135,9 +132,9 @@
         </div>
         <div class="post-comment-container">
             <div style="width: 100%;">
-                <input type="text" class="form-control" style="border-radius: 100em; width: 100%;" name="post-comment" id="{{posts.id}}" placeholder="Enter comment" onkeypress="sendComment(event)">
+                <input type="text" class="form-control" style="border-radius: 100em; width: 100%;" name="post-comment" id="{{data.id}}" placeholder="Enter comment" onkeypress="sendComment(event)">
             </div>
-            <div >
+            <div>
                 <label style="border-radius: 100em; margin-left: 10px; margin-bottom: 0; min-width: 149px" class="btn btn-primary" for="show-comment-{{data.id}}">Show comment</label>
             </div>
         </div>

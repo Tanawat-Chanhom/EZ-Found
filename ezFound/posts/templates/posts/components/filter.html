@@ -15,7 +15,7 @@
                             <input type="checkbox" class="category-checkbox" name="category-checkbox-{{C.id}}" id="filter-category-{{C.id}}" value="{{C.id}}" onchange="category(event)">
                             <span class="category-span-bg"></span>
                             <div>
-                                <p>{{C.value}}</p>
+                                <p>{{C.name}}</p>
                             </div>
                         </label>
                     {% endfor %}
@@ -32,7 +32,7 @@
                         <select class="form-control" id="filter-location">
                             <option selected>--> Location <--</option>
                             {% for L in dataLocation %}
-                                <option>{{L.value}}</option>
+                                <option>{{L.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -61,15 +61,27 @@
                         </div>
                     </div>
                     <div class="category-items">
-                        {% for S in dataStatus %}
-                            <label data-aos="zoom-in" data-aos-delay="{{S.id}}00" for="filter-status-{{S.id}}" class="status-item">
-                                <input type="checkbox" class="status-checkbox" name="status-checkbox-{{S.id}}" id="filter-status-{{S.id}}" value="{{S.id}}" onchange="status(event)">
+                            <label data-aos="zoom-in" data-aos-delay="100" for="filter-status-found" class="status-item">
+                                <input type="checkbox" class="status-checkbox" name="status-checkbox-found" id="filter-status-found" value="found" onchange="status(event)">
                                 <span class="status-span-bg"></span>
                                 <div>
-                                    <p>{{S.value}}</p>
+                                    <p>Found</p>
                                 </div>
                             </label>
-                        {% endfor %}
+                            <label data-aos="zoom-in" data-aos-delay="200" for="filter-status-lost" class="status-item">
+                                <input type="checkbox" class="status-checkbox" name="status-checkbox-lost" id="filter-status-lost" value="lost" onchange="status(event)">
+                                <span class="status-span-bg"></span>
+                                <div>
+                                    <p>Lost</p>
+                                </div>
+                            </label>
+                            <label data-aos="zoom-in" data-aos-delay="300" for="filter-status-returned" class="status-item">
+                                <input type="checkbox" class="status-checkbox" name="status-checkbox-returned" id="filter-status-returned" value="returned" onchange="status(event)">
+                                <span class="status-span-bg"></span>
+                                <div>
+                                    <p>Returned</p>
+                                </div>
+                            </label>
                     </div onclick>
                 </div>
             </div>
