@@ -1,5 +1,167 @@
 {% extends "base.html" %}
 {% block content %}
-    <p>profile</p>
 {% load static %}
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+    </head>
+
+    <div class="profile-header-container">
+        <div class="profile-header">
+            <div class="profile-header-img" style="background-image: url({% static 'images/asw.png' %});" >
+                <img src="{% static 'images/icon.webp' %}">
+            </div>
+            <div class="profile-header-information">
+                <h1>Chicken McNuggie</h1>
+                <p>69666999</p>
+                <p>Faculty of Information Technology</p>
+            </div>
+        </div> 
+    </div>
+    
+    <div class="profile-navbar-container">
+        <input type="radio" style="visibility: hidden; position: absolute;" name="navbar-radio" id="posts" checked>
+        <input type="radio" style="visibility: hidden; position: absolute;" name="navbar-radio" id="edit" >
+        <label class="profile-navbar-posts" for="posts">
+            <p>Posts</p>
+        </label>
+        <label class="profile-navbar-edit" for="edit">
+            <p>Edit Profile</p>
+        </label>
+        <div class="profile-posts-container">
+            {% if Category is not null %}
+                {% for posts in Category %}
+                    {% include "posts/components/post.html" with data=posts %}
+                {% endfor %}
+            {% else %}
+                <div class="profile-posts-null">
+                    <div>
+                        <img src="{% static 'images/tumbleweed.png' %}" alt="">
+                    </div>
+                    <h2>You haven't post anything yet.</h2>
+                </div>
+            {% endif %}
+        </div>
+        <div class="profile-edit-container">
+            <div class="profile-edit-navbar">
+                <input type="radio" style="visibility: hidden; position: absolute;" name="profile-edit-radio" id="profile-information" checked>
+                <input type="radio" style="visibility: hidden; position: absolute;" name="profile-edit-radio" id="change-passsword">
+                <label class="label-profile-information" for="profile-information" onclick="changeComponent()">
+                    <p>Profile Infomation</p>
+                </label>
+                <label class="label-change-passsword" for="change-passsword" onclick="changeComponent()">
+                    <p>Change Password</p>
+                </label>
+            </div>
+            <div>
+                <div class="profile-edit-profile-information" id="profile-edit-profile-information">
+                    <div class="profile-information-container">
+                        <div class="profile-information-img">
+                            <div style="background-image: url({% static 'images/asw.png' %})" id="profile-information-img">
+                                <img src="{% static 'images/icon.webp' %}">
+                            </div>
+                            <label for="profile-information-img-input" style="z-index: 2;">
+                                Change Image
+                            </label>
+                            <input type="file" style="visibility: hidden; position: absolute;" id="profile-information-img-input" onchange="readURL(this)">
+                        </div>
+                        <div class="profile-information">
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">First name</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="fname" placeholder="Chicken">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">Last name</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="lname" placeholder="Mcnuggie">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">Student ID</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="studentId" placeholder="69666999">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">Faculty</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="faculty" placeholder="Faculty of Information Technology">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary profile-information-btn" onclick="submitProfile()">Apply</button>
+                </div>
+                <div class="profile-edit-change-passsword" id="profile-edit-change-passsword">
+                    <div class="change-passsword-container">
+                        <div class="form-group row">
+                            <label class="col-sm-4 ">Current Password</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="currentPass" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 ">New Password</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="newPass" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 ">Confirm Password</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="confirmPass">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary change-passsword-btn" onclick="changePassword()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let base64Img = []; // This variable stores the image as base64.
+
+        document.getElementById('profile-edit-change-passsword').style.display = "none";
+        function changeComponent() {
+            if (document.getElementById('profile-information').checked) {
+                document.getElementById('profile-edit-profile-information').style.display = "none";
+                document.getElementById('profile-edit-change-passsword').style.display = "block";
+            } else {
+                document.getElementById('profile-edit-profile-information').style.display = "block";
+                document.getElementById('profile-edit-change-passsword').style.display = "none";
+            }
+        }
+
+        function submitProfile() {
+            console.log(document.getElementById('fname').value)
+            console.log(document.getElementById('lname').value)
+            console.log(document.getElementById('studentId').value)
+            console.log(document.getElementById('faculty').value)
+        }
+
+        function changePassword() {
+            console.log(document.getElementById('currentPass').value)
+            console.log(document.getElementById('newPass').value)
+            console.log(document.getElementById('confirmPass').value)
+        }
+
+        /* 
+            This function takes the input value in file format and convert the data to base64 format.
+        */
+        function readURL(input) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                if (e.target.result.split("/")[0] == "data:image") {
+                    base64Img[0] = e.target.result;
+                    document.getElementById('profile-information-img').style.backgroundImage = "url("+e.target.result+")";
+                } else {
+                    alert('Image only')
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+            console.log(base64Img);
+        }
+    </script>
+
 {% endblock %}
