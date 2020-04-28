@@ -343,7 +343,7 @@
     </script>
     <script>
         {% if user.is_authenticated %}
-            axios.get('api/v1/profile/{{user.id}}')
+            axios.get('http://127.0.0.1:8000/api/v1/profile/{{user.id}}')
             .then(response => {
                 document.getElementById('navbar-profile-img').style.backgroundImage = "url("+response.data.profile_img_path+")";
             })

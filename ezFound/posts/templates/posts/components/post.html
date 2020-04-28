@@ -76,7 +76,7 @@
         <div class="post-detail-container">
             <div class="post-detail">
                 <div class="post-category-items" style="max-width: 200px; height: 50px;">
-                    {% for C in data.categoty %}
+                    {% for C in data.category %}
                         <div class="post-detail-category-items">
                             <p >{{C}}</p>
                         </div>
@@ -146,7 +146,7 @@
                 if (event.code == "Enter") {
                     axios.defaults.xsrfCookieName = 'csrftoken'
                     axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
-                    axios.post('api/v1/comment', {
+                    axios.post('http://127.0.0.1:8000/api/v1/comment', {
                         'user_id': {{user.id}},
                         'post_id': Number(event.target.id),
                         'text': event.target.value

@@ -60,10 +60,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    text-align: center;
+    /* text-align: center; */
     border-radius: 0.5em;
     overflow: hidden;
-    color: #B5B5B5;
+    /* color: #B5B5B5; */
 }
 
 .profile-navbar-container label {

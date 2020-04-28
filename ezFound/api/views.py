@@ -160,7 +160,7 @@ def post(request):
                     "description": p.descriptions,
                     "status": p.status,
                     "location": p.location.name,
-                    "categoty": [c.name for c in p.category.all()],
+                    "category": [c.name for c in p.category.all()],
                     "create_at": p.create_at,
                     "date": p.date,
                     "user": getUser(p.user.id),
