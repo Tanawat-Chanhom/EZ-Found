@@ -132,3 +132,7 @@ LOGIN_URL = '/authen/sign-in'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+# CRONJOBS = [
+#     ('*/1 * * * *', 'cron.jobs.job1')
+# ]
