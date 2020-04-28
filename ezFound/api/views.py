@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from django.db.models import Q
+from datetime import timedelta
 
 from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
@@ -515,3 +517,43 @@ def get_message(request, id):
             "message": "Internal Server",
             "error": True
         })
+
+
+def suggest(request, userId):
+
+    my_posts = Post.objects.filter(user_id=userId)
+    posts = Post.objects.filter(create_at__range=[now() - timedelta(days=7), now()])
+    suggest = []
+
+    my_location = [p.location.name for p in my_posts]
+    my_category = [p.category.all() for p in my_posts]
+    my_category_flatten = [c[0].name for c in my_category]
+    my_category_flatten = set(my_category_flatten)
+
+    for post in posts:
+        curr_post_category = [c.name for c in post.category.all()]
+        print(curr_post_category)
+        if post.location in my_location or set(curr_post_category).intersection(my_category_flatten):
+            suggest.append(post)
+
+    payload = [{
+        "id": p.id,
+        "title": p.title,
+        "description": p.descriptions,
+        "status": p.status,
+        "category": [c.name for c in p.category.all()],
+        "location": p.location.name,
+        "create_at": p.create_at,
+        "date": p.date,
+        "images": getImage(p.id),
+        "user": getUser(p.user.id),
+        "comments": getComment(p.id)
+    } for p in suggest if p.delete_at is None]
+
+    return JsonResponse({
+        "statusCode": 200,
+        "statusText": "Success",
+        "message": "Success",
+        "error": False,
+        "data": payload
+    })

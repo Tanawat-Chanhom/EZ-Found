@@ -44,7 +44,6 @@ class Post(models.Model):
     def __str__(self):
         return '%s' % (self.title)
 
-
 class PostImage(models.Model):
 
     image_url = models.TextField(default=None)
