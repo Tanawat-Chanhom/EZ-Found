@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from email.message import EmailMessage
 
 from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
@@ -12,6 +13,11 @@ from account.models import Profile
 from api.utils.get import comment as getComment
 from api.utils.get import image as getImage
 from django.contrib.auth import authenticate, logout
+
+import smtplib
+import random
+import string
+from datetime import timedelta
 
 """
     TODO: All Done!...For Now (Add Task Here)
@@ -97,3 +103,40 @@ def edit_profile(request, userId):
             "message": "Internal Server",
             "error": True
         })
+
+@api_view(['PUT'])
+def forget_password(request):
+    """ User Forget Password """
+    if request.method == 'PUT':
+        try:
+            specific_user = User.objects.get(email=request.data['email'])
+            if specific_user is not None:
+                otp_code = randomString()
+                ref_code = randomString()
+                del_at = now() + timedelta(minutes=5)
+                otp = OTP(ref_code=ref_code, otp_code=otp_code, expire_at=del_at, user=specific_user)
+                otp.save()
+                username = "mrkstyut@gmail.com"
+                password = "4D47D0FA"
+                receivers = specific_user.email
+                msg = EmailMessage()
+                msg.set_content(f'This is your OTP code: {otp_code}')
+                msg['Subject'] = 'OTP Code'
+                msg['From'] = username
+                msg['To'] = receivers
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.ehlo()
+                server.starttls()
+                server.login(username ,password)
+                server.send_message(msg)
+                server.quit()
+                return render(request, 'authen/resetPass.html', context={
+                    'ref_code': ref_code
+                })
+        except:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "User with that email doesn't Existed",
+                "error": True
+            })

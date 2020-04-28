@@ -15,4 +15,5 @@ urlpatterns = [
     path('message/<int:id>', api.get_message),                  # Get, Delete message of a user (Send user_id if want a message of a user, Send id of message if want to delete message)
     path('change_password/<int:userId>', taggy.change_password),
     path('edit_profile/<int:userId>', taggy.edit_profile),
+    path('forget_password', taggy.forget_password),
 ]
