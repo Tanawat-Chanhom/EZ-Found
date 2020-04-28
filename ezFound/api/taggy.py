@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
@@ -13,6 +13,7 @@ from account.models import Profile
 from api.utils.get import comment as getComment
 from api.utils.get import image as getImage
 from django.contrib.auth import authenticate, logout
+from django.db.models import Q
 
 import smtplib
 import random
@@ -104,12 +105,12 @@ def edit_profile(request, userId):
             "error": True
         })
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def forget_password(request):
     """ User Forget Password """
-    if request.method == 'PUT':
+    if request.method == 'POST':
         try:
-            specific_user = User.objects.get(email=request.data['email'])
+            specific_user = User.objects.get(email=request.POST.get('email'))
             if specific_user is not None:
                 otp_code = randomString()
                 ref_code = randomString()
@@ -134,23 +135,26 @@ def forget_password(request):
                     'ref_code': ref_code
                 })
         except:
-            return JsonResponse({
-                "statusCode": 404,
-                "statusText": "Not Found",
-                "message": "User with that email doesn't Existed",
-                "error": True
+            return render(request, 'authen/forgotPass.html', context={
+                'error': "User with that email doesn't Existed"
             })
+            # return JsonResponse({
+            #     "statusCode": 404,
+            #     "statusText": "Not Found",
+            #     "message": "User with that email doesn't Existed",
+            #     "error": True
+            # })
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def reset_password(request):
     """ Reset Password """
-    if request.method == 'PUT':
+    if request.method == 'POST':
         try:
             data = {
-                "ref_code": request.data['ref_code'],
-                "otp_code": request.data['otp_code'],
-                "new_password": request.data['new_password'],
-                "confirm_password": request.data['confirm_password']
+                "ref_code": request.POST.get('ref_code'),
+                "otp_code": request.POST.get('otp_code'),
+                "new_password": request.POST.get('new_password'),
+                "confirm_password": request.POST.get('confirm_password')
             }
             otp_obj = OTP.objects.get(Q(otp_code=data['otp_code']), Q(ref_code=data['ref_code']))
             if otp_obj is not None:
@@ -159,26 +163,36 @@ def reset_password(request):
                     user.set_password(data['new_password'])
                     user.save()
                     logout(request)
-                    return JsonResponse({
-                        "statusCode": 200,
-                        "statusText": "Success",
-                        "message": "Password Changed!",
-                        "error": False
-                    })
+                    # return JsonResponse({
+                    #     "statusCode": 200,
+                    #     "statusText": "Success",
+                    #     "message": "Password Changed!",
+                    #     "error": False
+                    # })
+
+                    return redirect('signIn')
                 else:
-                    return JsonResponse({
-                        "statusCode": 400,
-                        "statusText": "Bad Request",
-                        "message": "Password and Confirm Password mismatch.....",
-                        "error": True
+                    return render(request, 'authen/resetPass.html', context={
+                        'ref_code': request.POST.get('ref_code'),
+                        'error': "Password and Confirm Password mismatch....."
                     })
+                    # return JsonResponse({
+                    #     "statusCode": 400,
+                    #     "statusText": "Bad Request",
+                    #     "message": "Password and Confirm Password mismatch.....",
+                    #     "error": True
+                    # })
         except:
-            return JsonResponse({
-                "statusCode": 404,
-                "statusText": "Not Found",
-                "message": "Cannot found specific user",
-                "error": True
+            return render(request, 'authen/resetPass.html', context={
+                'ref_code': request.POST.get('ref_code'),
+                'error': "Cannot found specific user"
             })
+            # return JsonResponse({
+            #     "statusCode": 404,
+            #     "statusText": "Not Found",
+            #     "message": "Cannot found specific user",
+            #     "error": True
+            # })
 
 def randomString(stringLength=6):
     letters = string.ascii_lowercase
