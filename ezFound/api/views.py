@@ -146,40 +146,37 @@ def post(request):
 
     try:
         if request.method == 'GET':
-            if request.user.is_authenticated:
-                if request.GET.get('filter-search-by') == "Category":
-                    posts = Post.objects.filter(category=request.GET.get('filter-category'))
-                elif request.GET.get('filter-search-by') == "Location":
-                    posts = Post.objects.filter(location=request.GET.get('filter-location'))
-                elif request.GET.get('filter-search-by') == "Status":
-                    posts = Post.objects.filter(status=request.GET.get('filter-status').upper())
-                else:
-                    posts = Post.objects.all()
-                
-                payload = [{
-                    "id": p.id,
-                    "title": p.title,
-                    "description": p.descriptions,
-                    "status": p.status,
-                    "location": p.location.name,
-                    "category": [c.name for c in p.category.all()],
-                    "create_at": p.create_at,
-                    "date": p.date,
-                    "user": getUser(p.user.id),
-                    "images": getImage(p.id),
-                    "comments": getComment(p.id)
-                } for p in posts]
-                categoryAll = Category.objects.all()
-                locationAll = Location.objects.all()
-
-
-                return render(request, 'posts/index.html', context={
-                    'Category': categoryAll,
-                    'Locations': locationAll,
-                    'Posts': payload
-                })
+            if request.GET.get('filter-search-by') == "Category":
+                posts = Post.objects.filter(category=request.GET.get('filter-category'))
+            elif request.GET.get('filter-search-by') == "Location":
+                posts = Post.objects.filter(location=request.GET.get('filter-location'))
+            elif request.GET.get('filter-search-by') == "Status":
+                posts = Post.objects.filter(status=request.GET.get('filter-status').upper())
             else:
-                return render(request, 'authen/signIn.html')
+                posts = Post.objects.all()
+            
+            payload = [{
+                "id": p.id,
+                "title": p.title,
+                "description": p.descriptions,
+                "status": p.status,
+                "location": p.location.name,
+                "category": [c.name for c in p.category.all()],
+                "create_at": p.create_at,
+                "date": p.date,
+                "user": getUser(p.user.id),
+                "images": getImage(p.id),
+                "comments": getComment(p.id)
+            } for p in posts]
+            categoryAll = Category.objects.all()
+            locationAll = Location.objects.all()
+
+
+            return render(request, 'posts/index.html', context={
+                'Category': categoryAll,
+                'Locations': locationAll,
+                'Posts': payload
+            })
 
         elif request.method == 'POST':
             try:
