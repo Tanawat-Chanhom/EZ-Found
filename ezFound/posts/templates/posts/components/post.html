@@ -2,7 +2,7 @@
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
     </head>
-    <div data-aos="zoom-in" class="post-container">
+    <div data-aos="zoom-in" class="post-container" id="post-container-{{data.id}}">
         <div class="post-bar-container">
             <div style="display: flex; flex-direction: row;">
                 <a href="{% url 'profile2' userId=data.user.id %}" class="post-profile-container" style="text-decoration: none;">
@@ -32,18 +32,18 @@
                     </label>
                     <input type="checkbox" class="post-more-menu-btn" id="post-more-menu-btn-{{data.id}}" style="position: absolute; visibility: hidden;">
                     <div class="post-more-menu-items">
-                        <a href="#" style="text-decoration: none;">
-                            <div class="post-more-menu-item">
+                        <a href="{% url 'post_edit' postId=data.id %}" style="text-decoration: none;">
+                            <div class="post-more-menu-item" onclick="">
                                 <img src="{% static 'images/edit.png' %}">
                                 <p style="margin-bottom: 0; width: 100%; text-align: center;">Edit</p>
                             </div>
                         </a>
-                        <a href="#" style="text-decoration: none;">
+                        <div onclick="deletePost({{data.id}})" style="cursor: pointer;">
                             <div class="post-more-menu-item">
                                 <img src="{% static 'images/delete.png' %}">
                                 <p style="margin-bottom: 0; width: 100%; text-align: center;">Delete</p>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             {% endif %}
@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div id="post-status-btn">
                 <button type="submit" class="btn btn-primary" style=
                 "
                     border-radius: 100em;
@@ -114,8 +114,17 @@
         </div>
         <input type="checkbox" id="show-comment-{{data.id}}" value="{{data.id}}" class="show-comment" style="position: absolute; visibility: hidden;" onchange="scrollOnbuttom(event)">
         <div class="post-comment-detail" id="post-comment-detail-{{data.id}}">
+            <style>
+                .post-comment-description {
+                    margin-bottom: unset;
+                }
+
+                .post-comment-description label {
+                    cursor: pointer;
+                }
+            </style>
             {% for C in data.comments %}
-            <div class="post-comment">
+            <div class="post-comment" id="post-comment-{{C.id}}">
                 <a href="{% url 'profile2' userId=C.user.id %}" class="post-profile-container" style="text-decoration: none; width: fit-content;">
                     <div style="position: relative;">
                         <div class="profile-img" style="background-image: url({{C.user.profile_img}})"></div>
@@ -125,11 +134,17 @@
                         <p>{{C.user.first_name}} {{C.user.last_name}}</p>
                     </div>
                 </a>
-                <div class="post-comment-description">
+                <div class="post-comment-description" id="post-comment-text-{{C.id}}">
                     <p style="margin: 0px">
                         {{C.text}}
                     </p>
                 </div>
+                {% if C.user.id is user.id %}
+                    <div class="post-comment-description" style="background-color: unset; margin-top: unset; margin-left: 40px;">
+                        <label id="comment-label-edit" onclick="editComment('{{C.text}}', '{{C.id}}')"><small>edit</small></label>
+                        <label id="comment-label-delete" onclick="deleteComment('{{C.id}}')"><small>delete</small></label>
+                    </div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -171,6 +186,48 @@
                     var postCommentDetail = document.getElementById("post-comment-detail-"+event.target.value);
                     postCommentDetail.scrollTop = postCommentDetail.scrollHeight;
                 }, 1);
+            }
+
+            function deletePost(id) {
+                document.getElementById('post-container-'+id).remove();
+                axios.delete('http://127.0.0.1:8000/api/v1/post/'+id)
+                .then(response => {
+                    // console.log(response);
+                })
+                .catch(error => {
+                    // console.log(error);
+                })
+            }
+
+            function editComment(text, id) {
+                document.getElementById('post-comment-text-'+id).innerHTML = '<input class="form-control" value="'+ text +'" onkeypress="updatecomment(event, '+ id +')">';
+            }
+
+            function deleteComment(id) {
+                axios.delete('http://127.0.0.1:8000/api/v1/comment/'+id)
+                .then(response => {
+                    console.log(response);
+                    document.getElementById('post-comment-'+id).remove();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+
+            function updatecomment(event, id) {
+                if (event.key === "Enter") {
+                    axios.put('http://127.0.0.1:8000/api/v1/comment', {
+                        'comment_id': id,
+                        'text': event.target.value
+                    })
+                    .then(response => {
+                        console.log(response);
+                        document.getElementById('post-comment-text-'+id).innerHTML = '<p style="margin: 0px">'+ event.target.value +'</p>';
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                }
             }
         </script>
     </div>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+    <style>
+        .edit-btn-save {
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .edit-btn-save button {
+            border-radius: 100em;
+            width: 80px;
+        }
+
+        .post-description {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-description input {
+            margin: 10px;
+            width: 70%;
+        }
+
+        .post-description label {
+            margin: 10px;
+            width: 70%;
+        }
+    </style>
+
+    {% include "posts/components/post.html" with data=Posts %}
+
+    <div  class="edit-btn-save">
+        <button type="button" class="btn btn-primary" onclick="updatePost({{Posts.id}})">save</button>
+    </div>
+    <div  class="edit-btn-save">
+        <small style="position: relative; color: red;" id="error-text"></small>
+    </div>
+    <script>
+        var btn = document.getElementsByClassName('btn');
+        btn[1].style.display = "none";
+
+        let postDescription = document.getElementsByClassName('post-description')[0];
+        postDescription.innerHTML = '<label>Title</label><input type="text" id="edit-title" class="form-control" value="{{Posts.title}}"><label>Description</label><input class="form-control" id="edit-des" type="text" value="{{Posts.description}}">'
+
+        if ('{{Posts.status}}' == "LOST") {
+            document.getElementById('post-status-btn').innerHTML = '<select class="form-control" name="new-post-form-status" id="new-post-form-status"><option value="LOST" selected>Lost</option><option value="FOUND">Found</option><option value="RETURNED">Returned</option></select>';
+        } else if ('{{Posts.status}}' == "FOUND") {
+            document.getElementById('post-status-btn').innerHTML = '<select class="form-control" name="new-post-form-status" id="new-post-form-status"><option value="LOST">Lost</option><option value="FOUND" selected>Found</option><option value="RETURNED">Returned</option></select>';
+        } else if ('{{Posts.status}}' == "RETURNED") {
+            document.getElementById('post-status-btn').innerHTML = '<select class="form-control" name="new-post-form-status" id="new-post-form-status"><option value="LOST">Lost</option><option value="FOUND">Found</option><option value="RETURNED" selected>Returned</option></select>';
+        }
+
+        function updatePost(id) {
+            if (document.getElementById('edit-title').value == "") {
+                document.getElementById('error-text').innerText = "Please enter title"
+            } else if (document.getElementById('edit-des').value == "") {
+                document.getElementById('error-text').innerText = "Please enter description"
+            } else {
+                axios.put('http://127.0.0.1:8000/api/v1/post/'+id, {
+                    'title': document.getElementById('edit-title').value,
+                    'descriptions': document.getElementById('edit-des').value,
+                    'status': document.getElementById('new-post-form-status').value
+                })
+                .then(respose => {
+                    document.getElementById('error-text').innerText = respose.data.message
+                    document.getElementById('error-text').style.color = "green"
+                })
+                .catch(error => {
+                    document.getElementById('error-text').innerText = error.message
+                    document.getElementById('error-text').style.color = "red"
+                })
+            }
+        }
+    </script>
+
+{% endblock %}

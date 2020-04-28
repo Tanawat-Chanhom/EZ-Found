@@ -29,7 +29,7 @@ def post_get(request, postId):
                 "title": post.title,
                 "description": post.descriptions,
                 "status": post.status,
-                "categories": [c.name for c in post.category.all()],
+                "category": [c.name for c in post.category.all()],
                 "location": post.location.name,
                 "user": post.user.username,
                 "create_at": post.create_at,
@@ -40,7 +40,6 @@ def post_get(request, postId):
             }
 
             return render(request, 'posts/post.html', context={
-                # 'Message': messages, // ใส่ข้อมูลของ message ด้วย
                 'Posts': payload
             })
         except ObjectDoesNotExist:
@@ -76,7 +75,7 @@ def post_get(request, postId):
         try:
             post = Post.objects.get(pk=postId)
             post.title = request.data['title'] if 'title' in request.data else post.title
-            post.text = request.data['descriptions'] if 'descriptions' in request.data else post.descriptions
+            post.descriptions = request.data['descriptions'] if 'descriptions' in request.data else post.descriptions
             post.status = request.data['status'] if 'status' in request.data else post.status
 
             post.save()
