@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from email.message import EmailMessage
+from django.db.models import Q
 
 from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
@@ -140,3 +141,34 @@ def forget_password(request):
                 "message": "User with that email doesn't Existed",
                 "error": True
             })
+
+# @api_view(['PUT'])
+# def reset_password(request):
+#     """ Reset Fking Password """
+#     if request.method == 'PUT':
+#         try:
+#             # user = User.objects.get(pk=userId)
+#             data = {
+#                 "ref_code"
+#                 "OTP_code": request.data['otp_code'],
+#                 "new_password": request.data['new_password'],
+#                 "confirm_password": request.data['confirm_passowrd']
+#             }
+#             otp_obj = OTP.objects.get(Q(otp_code=data['OTP_code']), Q(ref_code))
+#                 return JsonResponse({
+#                     "statusCode": 200,
+#                     "statusText": "Success",
+#                     "message": "Email Sended",
+#                     "error": False
+#                 })
+#         except:
+#             return JsonResponse({
+#                 "statusCode": 404,
+#                 "statusText": "Not Found",
+#                 "message": "User with the email doesn't Existed",
+#                 "error": True
+#             })
+
+def randomString(stringLength=6):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))
