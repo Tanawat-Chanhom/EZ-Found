@@ -369,7 +369,7 @@
             })
             axios.defaults.xsrfCookieName = 'csrftoken'
             axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
-            axios.get('http://127.0.0.1:8000/api/v1/message/3')
+            axios.get('http://127.0.0.1:8000/api/v1/message/{{user.id}}')
             .then(response => {
                 response.data.data.forEach(data => {
                     let notiContainer = document.getElementById('noti-container');
