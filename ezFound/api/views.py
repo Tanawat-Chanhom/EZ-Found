@@ -177,7 +177,7 @@ def post(request):
                     'Posts': payload
                 })
             else:
-                return redirect('signIn')
+                return render(request, 'authen/signIn.html')
 
         elif request.method == 'POST':
             try:
@@ -483,7 +483,9 @@ def get_message(request, id):
             payload = [{
                 "text": m.text,
                 "from": getUser(m.send_by_id),
-                "create_at": m.create_at
+                "create_at": m.create_at,
+                "post": m.post_id,
+                "messageId": m.id
             } for m in messages if m.delete_at is None]
 
             return JsonResponse({
