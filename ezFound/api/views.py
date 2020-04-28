@@ -115,6 +115,7 @@ def userPost(request, userId):
             "date": p.date,
             "images": getImage(p.id),
             "user": getUser(p.user.id),
+            "comments": getComment(p.id)
         } for p in posts if p.delete_at is None]
 
         # return JsonResponse({

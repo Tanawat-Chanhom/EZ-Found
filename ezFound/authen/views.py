@@ -23,14 +23,6 @@ def forgotPass(request):
         return render(request, 'authen/forgotPass.html')
 
 
-
-def otp(request):
-
-    if request.method == 'GET':
-        return render(request, 'authen/otp.html')
-
-
-
 def resetPass(request):
 
     if request.method == 'GET':
