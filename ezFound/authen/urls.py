@@ -23,5 +23,6 @@ urlpatterns = [
     path('reset-pass', views.resetPass, name="resetPass"),
     path('sign-in', views.signIn, name="signIn"),
     path('sign-up', views.signUp, name="signUp"),
-    path('forgot-pass', views.forgotPass, name="forgotPass")
+    path('forgot-pass', views.forgotPass, name="forgotPass"),
+    path('logout', views.logout_view, name="logout")
 ]

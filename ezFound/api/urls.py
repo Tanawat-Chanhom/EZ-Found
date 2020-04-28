@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/<int:userId>', api.profile),                  # Get profile of user
     path('comment', api.comment),                               # Post, edit comments
     path('comment/<int:commentId>', api.del_comment),           # Delete comments
+    path('message/<int:id>', api.get_message),                  # Get, Delete message of a user (Send user_id if want a message of a user, Send id of message if want to delete message)
     path('change_password/<int:userId>', taggy.change_password),
     path('edit_profile/<int:userId>', taggy.edit_profile),
 ]

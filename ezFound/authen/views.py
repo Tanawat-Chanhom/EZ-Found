@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 # ---------- Library Import ----------
@@ -115,3 +115,7 @@ def signIn(request):
                 "errorMessage": "Method Not Allow"
             }
         return JsonResponse(responseData, safe=False)
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'authen/signIn.html')

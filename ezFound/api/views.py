@@ -471,3 +471,45 @@ def del_comment(request, commentId):
             "message": "Internal Server",
             "error": True
         })
+
+
+@api_view(['GET', 'DELETE'])
+def get_message(request, id):
+
+    try:
+        if request.method == 'GET':
+            messages = Message.objects.filter(message_to_id=id)
+
+            payload = [{
+                "text": m.text,
+                "from": getUser(m.send_by_id),
+                "create_at": m.create_at
+            } for m in messages if m.delete_at is None]
+
+            return JsonResponse({
+                "statusCode": 200,
+                "statusText": "Success",
+                "message": "Query Success!",
+                "error": False,
+                "data": payload
+            })
+
+        elif request.method == 'DELETE':
+            message = Message.objects.get(pk=id)
+            message.delete_at = now()
+            message.save()
+
+            return JsonResponse({
+                "statusCode": 200,
+                "statusText": "Success",
+                "message": "Message Deleted!",
+                "error": False
+            })
+
+    except:
+        return JsonResponse({
+            "statusCode": 500,
+            "statusText": "Internal Server",
+            "message": "Internal Server",
+            "error": True
+        })
