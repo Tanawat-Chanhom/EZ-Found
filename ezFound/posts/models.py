@@ -59,7 +59,7 @@ class Message(models.Model):
     create_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(auto_now=False, null=True, default=None)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    send_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_by")
+    send_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="send_by", null=True)
     message_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="message_to")
     def __str__(self):
         return '(%s) %s' % (self.user, self.create_at)

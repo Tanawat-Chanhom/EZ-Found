@@ -519,41 +519,70 @@ def get_message(request, id):
         })
 
 
-def suggest(request, userId):
+@api_view(['GET', 'DELETE'])
+def suggest(request, id):
 
-    my_posts = Post.objects.filter(user_id=userId)
-    posts = Post.objects.filter(create_at__range=[now() - timedelta(days=7), now()])
-    suggest = []
+    if request.method == 'GET':
+        user = User.objects.get(pk=id)
+        my_posts = Post.objects.filter(user_id=id)
+        posts = Post.objects.filter(create_at__range=[now() - timedelta(days=7), now()])
+        suggest = []
 
-    my_location = [p.location.name for p in my_posts]
-    my_category = [p.category.all() for p in my_posts]
-    my_category_flatten = [c[0].name for c in my_category]
-    my_category_flatten = set(my_category_flatten)
+        my_location = [p.location.name for p in my_posts]
+        my_category = [p.category.all() for p in my_posts]
+        my_category_flatten = [c[0].name for c in my_category]
+        my_category_flatten = set(my_category_flatten)
 
-    for post in posts:
-        curr_post_category = [c.name for c in post.category.all()]
-        print(curr_post_category)
-        if post.location in my_location or set(curr_post_category).intersection(my_category_flatten):
-            suggest.append(post)
+        for post in posts:
+            curr_post_category = [c.name for c in post.category.all()]
+            print(curr_post_category)
+            if post.location in my_location or set(curr_post_category).intersection(my_category_flatten):
+                suggest.append(post)
 
-    payload = [{
-        "id": p.id,
-        "title": p.title,
-        "description": p.descriptions,
-        "status": p.status,
-        "category": [c.name for c in p.category.all()],
-        "location": p.location.name,
-        "create_at": p.create_at,
-        "date": p.date,
-        "images": getImage(p.id),
-        "user": getUser(p.user.id),
-        "comments": getComment(p.id)
-    } for p in suggest if p.delete_at is None]
+        message = [Message(
+            text=f"We suggest this post to you: {p.title}",
+            post=p,
+            send_by=None,
+            message_to=user
+        ) for p in suggest]
 
-    return JsonResponse({
-        "statusCode": 200,
-        "statusText": "Success",
-        "message": "Success",
-        "error": False,
-        "data": payload
-    })
+        for m in message:
+            m.save()
+
+        payload = [{
+            "text": m.text,
+            "from": getUser(m.send_by_id),
+            "create_at": m.create_at,
+            "post": m.post_id,
+            "messageId": m.id
+        } for m in message if m.delete_at is None]
+
+        return JsonResponse({
+            "statusCode": 200,
+            "statusText": "Success",
+            "message": "Query Success!",
+            "error": False,
+            "data": payload
+        })
+
+
+    elif request.method == 'DELETE':
+        try:
+            message = Message.objects.get(pk=id)
+            message.delete_at = now()
+            message.save()
+
+            return JsonResponse({
+                "statusCode": 200,
+                "statusText": "Success",
+                "message": "Message Deleted!",
+                "error": False
+            })
+
+        except ObjectDoesNotExist:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "Message Does Not Exist",
+                "error": True
+            })
