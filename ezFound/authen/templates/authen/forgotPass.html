@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EZ Found</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 
@@ -36,16 +35,18 @@
     </style>
     <div class="container bg-white"
         style="width: 60%; text-align: center; margin-top: 50px; padding: 10px; border-radius: 8px;">
-        <form>
+        <form action="{% url 'forget_password' %}" method="POST">
             <h3 style="font-weight: bold;">Reset Password</h3>
             <p>Please enter your email to proceed to the next step.</p>
-            <label for="email">Email</label><input class="input-style" type="email" id="inputEmail" name="inputEmail"
-                placeholder="Email" required="true"><br><br>
+            <label for="email">Email</label>
+            <input class="input-style" type="email" id="email" name="email" placeholder="Email" required="true"><br><br>
             <div style="text-align: right;">
                 <a href="{% url 'index' %}" class="btn btn-outline-secondary" style="border-radius: 100em; width: 100px;">Cancel</a>
-                {% comment %} <button type="submit" class="btn btn-info" style="border-radius: 100em; width: 100px;">Next</button> {% endcomment %}
-                <a href="{% url 'resetPass' %}" class="btn btn-outline-secondary" style="border-radius: 100em; width: 100px;">Next</a>
+                <button type="submit" class="btn btn-info" style="border-radius: 100em; width: 100px;">Next</button>
             </div>
+            {% if error is not null %}
+                <small style="color: red">{{error}}</small>
+            {% endif %}
         </form>
     </div>
 </body>

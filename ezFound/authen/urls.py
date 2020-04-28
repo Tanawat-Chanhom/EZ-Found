@@ -17,11 +17,13 @@ Including another URLconf
 from authen import views
 from django.contrib import admin
 from django.urls import include, path
+import api.taggy as taggy
 
 urlpatterns = [
     path('reset-pass', views.resetPass, name="resetPass"),
     path('sign-in', views.signIn, name="signIn"),
     path('sign-up', views.signUp, name="signUp"),
     path('forgot-pass', views.forgotPass, name="forgotPass"),
-    path('logout', views.logout_view, name="logout")
+    path('logout', views.logout_view, name="logout"),
+    path('forget_password', taggy.forget_password, name="forget_password"),
 ]

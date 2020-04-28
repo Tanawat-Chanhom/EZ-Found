@@ -6,7 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from email.message import EmailMessage
-from django.db.models import Q
 
 from posts.models import Post, Comment, Message, Location, Category, PostImage
 from authen.models import OTP
