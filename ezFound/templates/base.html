@@ -330,12 +330,14 @@
     </style>
 
     <div class="menu-container">
-        <a href="{% url 'profile2' userId=user.id %}" class="menu-item" style="text-decoration: none;">
-            <img src="{% static 'images/user.png' %}" alt="">
-            <div>
-                <p>Profile</p>
-            </div>
-        </a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile2' userId=user.id %}" class="menu-item" style="text-decoration: none;">
+                <img src="{% static 'images/user.png' %}" alt="">
+                <div>
+                    <p>Profile</p>
+                </div>
+            </a>
+        {% endif %}
         <a href="{% url 'logout' %}" class="menu-item" style="text-decoration: none;">
             <img src="{% static 'images/logout.png' %}" alt="">
             <div>

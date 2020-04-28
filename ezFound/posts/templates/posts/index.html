@@ -61,31 +61,25 @@
         }
     </style>
 
-    <input type="checkbox" id="new-post-checkbox" style="position: absolute; visibility: hidden;">
-    <div data-aos="zoom-in" data-aos-delay="200" class="new-post-container">
-        <label for="new-post-checkbox" class="new-post-label">
-            <div class="new-post">
-                <div class="new-post-plus-icon">
-                    <img src="{% static "images/add.png" %}">
+    {% if user.is_authenticated %}
+        <input type="checkbox" id="new-post-checkbox" style="position: absolute; visibility: hidden;">
+        <div data-aos="zoom-in" data-aos-delay="200" class="new-post-container">
+            <label for="new-post-checkbox" class="new-post-label">
+                <div class="new-post">
+                    <div class="new-post-plus-icon">
+                        <img src="{% static "images/add.png" %}">
+                    </div>
+                    <div class="new-post-text">
+                        <div>Make a new Post</div>
+                    </div>
                 </div>
-                <div class="new-post-text">
-                    <div>Make a new Post</div>
-                </div>
-            </div>
-        </label>
-    </div>
+            </label>
+        </div>
+    {% endif %}
 
     {% include 'posts/components/newPost.html' with dataCategory=Category dataLocation=Locations%}
 
     {% for post in Posts %}
         {% include "posts/components/post.html" with data=post %}
     {% endfor %}
-
-    {% if user.is_authenticated %}
-    {% else %}
-        <script>
-            window.location.href = "authen/sign-in"
-        </script>
-    {% endif %}
-    
 {% endblock %}
