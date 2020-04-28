@@ -14,6 +14,7 @@ import json
 # ---------- Module Import ----------
 
 from account.models import Profile
+import api.taggy as taggy
 
 
 
