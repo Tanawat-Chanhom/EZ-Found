@@ -142,32 +142,44 @@ def forget_password(request):
                 "error": True
             })
 
-# @api_view(['PUT'])
-# def reset_password(request):
-#     """ Reset Fking Password """
-#     if request.method == 'PUT':
-#         try:
-#             # user = User.objects.get(pk=userId)
-#             data = {
-#                 "ref_code"
-#                 "OTP_code": request.data['otp_code'],
-#                 "new_password": request.data['new_password'],
-#                 "confirm_password": request.data['confirm_passowrd']
-#             }
-#             otp_obj = OTP.objects.get(Q(otp_code=data['OTP_code']), Q(ref_code))
-#                 return JsonResponse({
-#                     "statusCode": 200,
-#                     "statusText": "Success",
-#                     "message": "Email Sended",
-#                     "error": False
-#                 })
-#         except:
-#             return JsonResponse({
-#                 "statusCode": 404,
-#                 "statusText": "Not Found",
-#                 "message": "User with the email doesn't Existed",
-#                 "error": True
-#             })
+@api_view(['PUT'])
+def reset_password(request):
+    """ Reset Password """
+    if request.method == 'PUT':
+        try:
+            data = {
+                "ref_code": request.data['ref_code'],
+                "otp_code": request.data['otp_code'],
+                "new_password": request.data['new_password'],
+                "confirm_password": request.data['confirm_password']
+            }
+            otp_obj = OTP.objects.get(Q(otp_code=data['otp_code']), Q(ref_code=data['ref_code']))
+            if otp_obj is not None:
+                user = User.objects.get(id=otp_obj.user_id)
+                if data['new_password'] == data['confirm_password']:
+                    user.set_password(data['new_password'])
+                    user.save()
+                    logout(request)
+                    return JsonResponse({
+                        "statusCode": 200,
+                        "statusText": "Success",
+                        "message": "Password Changed!",
+                        "error": False
+                    })
+                else:
+                    return JsonResponse({
+                        "statusCode": 400,
+                        "statusText": "Bad Request",
+                        "message": "Password and Confirm Password mismatch.....",
+                        "error": True
+                    })
+        except:
+            return JsonResponse({
+                "statusCode": 404,
+                "statusText": "Not Found",
+                "message": "Cannot found specific user",
+                "error": True
+            })
 
 def randomString(stringLength=6):
     letters = string.ascii_lowercase

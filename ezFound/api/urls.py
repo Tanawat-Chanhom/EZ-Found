@@ -16,4 +16,5 @@ urlpatterns = [
     path('change_password/<int:userId>', taggy.change_password),
     path('edit_profile/<int:userId>', taggy.edit_profile),
     path('forget_password', taggy.forget_password),
+    path('reset_password', taggy.reset_password),
 ]
