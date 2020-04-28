@@ -255,13 +255,13 @@
     </style>
 
     <div class="noti-container">
-        {% for N in Noti %}
+        {% for M in Message %}
         <div class="noti-box">
             <a href="{% url 'profile' %}" data-aos="fade-up" class="noti-pofile">
                 <div style="background-image: url({% static "images/22127.jpg" %});"></div>
             </a>
             <a href="{% url 'post' post_id='1' %}" class="noti-text" style="text-decoration: none;">
-                <p>LnwZa007 has commented on your post</p>
+                <p>{{M.text}}</p>
             </a>
         </div>
         {% endfor %}

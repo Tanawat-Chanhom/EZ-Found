@@ -6,7 +6,7 @@
     <div class="new-post-form">
         <div class="drag-and-drop-container" style="height: 300px;">
             <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;">
-                <div id="carouselExampleIndicators" class="carousel slide" style="height: 100%;" data-ride="carousel">
+                <div id="carouselExampleIndicators" class="carousel slide" style="height: 100%; background-color: unset;" data-ride="carousel">
                     <div class="carousel-inner" id="carousel-inner">
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -235,6 +235,7 @@
                 carouselItem.classList.add('carousel-item');
             }
             carouselItem.id = "carousel-base64-img-" + id;
+            carouselItem.style.backgroundColor = "unset";
 
             carouselInner.appendChild(carouselItem);           
         }

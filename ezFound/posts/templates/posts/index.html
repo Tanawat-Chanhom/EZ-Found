@@ -80,5 +80,12 @@
     {% for post in Posts %}
         {% include "posts/components/post.html" with data=post %}
     {% endfor %}
+
+    {% if user.is_authenticated %}
+    {% else %}
+        <script>
+            window.location.href = "authen/sign-in"
+        </script>
+    {% endif %}
     
 {% endblock %}

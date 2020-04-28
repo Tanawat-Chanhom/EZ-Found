@@ -72,6 +72,6 @@ class Comment(models.Model):
     create_at = models.DateTimeField(auto_now=True)
     delete_at = models.DateTimeField(auto_now=False, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     def __str__(self):
         return '(%s) %s' % (self.user, self.create_at)
