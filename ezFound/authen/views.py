@@ -19,19 +19,12 @@ import api.taggy as taggy
 
 
 def forgotPass(request):
-
     if request.method == 'GET':
         return render(request, 'authen/forgotPass.html')
 
 
-def resetPass(request):
-
-    if request.method == 'GET':
-        return render(request, 'authen/resetPass.html')
-
-
 @require_http_methods(["GET", "POST"])
-def signUp(request):    
+def signUp(request):
 
     if request.method == 'GET':
         return render(request, 'authen/signUp.html')

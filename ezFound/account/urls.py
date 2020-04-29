@@ -20,7 +20,6 @@ import api.views as api
 import api.taggy as taggy
 
 urlpatterns = [
-    path('profile', api.userPost, name="profile"),
     path('profile/<int:userId>', api.userPost, name="profile2"),
     path('profile/edit_profile/<int:userId>', taggy.edit_profile),
     path('profile/change_password/<int:userId>', taggy.change_password),

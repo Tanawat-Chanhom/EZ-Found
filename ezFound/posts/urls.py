@@ -20,7 +20,6 @@ import api.views as api
 
 urlpatterns = [
     path('', api.post, name='index'),
-    path('upload', views.uploadTest, name="upload"),
     path('post/<int:postId>', api.post_get, name="post_get"),
     path('post/edit/<int:postId>', views.post_edit, name="post_edit")
 ]
