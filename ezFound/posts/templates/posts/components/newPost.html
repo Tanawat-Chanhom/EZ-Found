@@ -140,7 +140,7 @@
             let today = new Date();
             let userDateSP = document.getElementById('form-date').value.split("-");
             var userDate = new Date(userDateSP[0], userDateSP[1] - 1, userDateSP[2]);
-            let nowDate = new Date(today.getFullYear(), today.getMonth()+1, today.getDate());
+            let nowDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
             if (newPostCategoryIdData[0] == undefined) {
                 document.getElementById('new-post-error-text').innerText = "Please select category";
