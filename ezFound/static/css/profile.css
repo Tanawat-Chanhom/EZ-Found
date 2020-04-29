@@ -72,10 +72,6 @@
     transition: all 0.2s;
 }
 
-.profile-navbar-container label:hover {
-    background-color: #E1E1E1;
-}
-
 .profile-navbar-posts {
     position: relative;
     width: 50%;
