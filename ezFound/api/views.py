@@ -103,7 +103,7 @@ def userPost(request, userId):
     """ Get all post of specific user """
 
     try:
-        posts = Post.objects.filter(user_id=userId)
+        posts = Post.objects.filter(user_id=userId).order_by('-create_at')
         user = User.objects.get(pk=userId)
         payload = [{
             "id": p.id,
@@ -147,13 +147,13 @@ def post(request):
     try:
         if request.method == 'GET':
             if request.GET.get('filter-search-by') == "Category":
-                posts = Post.objects.filter(category=request.GET.get('filter-category'))
+                posts = Post.objects.filter(category=request.GET.get('filter-category')).order_by('-create_at')
             elif request.GET.get('filter-search-by') == "Location":
-                posts = Post.objects.filter(location=request.GET.get('filter-location'))
+                posts = Post.objects.filter(location=request.GET.get('filter-location')).order_by('-create_at')
             elif request.GET.get('filter-search-by') == "Status":
-                posts = Post.objects.filter(status=request.GET.get('filter-status').upper())
+                posts = Post.objects.filter(status=request.GET.get('filter-status').upper()).order_by('-create_at')
             else:
-                posts = Post.objects.all()
+                posts = Post.objects.all().order_by('-create_at')
             
             payload = [{
                 "id": p.id,
