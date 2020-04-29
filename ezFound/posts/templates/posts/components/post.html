@@ -19,7 +19,7 @@
                         <img style="border-radius: 100%;"  src="{% static 'images/clock.png' %}">
                     </div>
                     <div class="post-date-text">
-                        <p>{{data.create_at}}</p>
+                        <p>{{data.date}}</p>
                     </div>
                 </div>
             </div>
@@ -121,9 +121,9 @@
             </div>
         </div>
         <div class="post-description">
-            <h3>Title: {{data.title}}</h3>
+            <h3 style="font-weight: bold;">{{data.title}}</h3>
             <p>
-                Description: {{data.description}}
+                {{data.description}}
             </p>
         </div>
         <input type="checkbox" id="show-comment-{{data.id}}" value="{{data.id}}" class="show-comment" style="position: absolute; visibility: hidden;" onchange="scrollOnbuttom(event)">

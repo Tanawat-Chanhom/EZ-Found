@@ -12,7 +12,7 @@
             </div>
             <div class="profile-header-information">
                 <h1>{{User.first_name}} {{User.last_name}}</h1>
-                <p>STUID: {{User.profile.student_id}} Phone: {{User.profile.phone}}</p>
+                <p>Student ID: {{User.profile.student_id}} Phone: {{User.profile.phone}}</p>
                 <p>{{User.profile.information}}</p>
             </div>
         </div>
@@ -29,6 +29,10 @@
         .profile-navbar-container label:hover {
             background-color: #0269d9;
         }
+
+        .profile-navbar-container {
+            background-color: unset;
+        }
     </style>
     <div class="profile-navbar-container" style="text-align: unset; color: unset;">
         <input type="radio" style="visibility: hidden; position: absolute;" name="navbar-radio" id="posts" checked>
@@ -37,12 +41,18 @@
                 disabled
             {% endif %}
         >
-        <label class="profile-navbar-posts" for="posts">
-            <p style="text-align: center; color: #B5B5B5;">Posts</p>
-        </label>
-        <label class="profile-navbar-edit" for="edit">
-            <p style="text-align: center; color: #B5B5B5;">Edit Profile</p>
-        </label>
+        {% if User.id is user.id %}
+            <label class="profile-navbar-posts" for="posts">
+                <p style="text-align: center; color: #B5B5B5;">Posts</p>
+            </label>
+            <label class="profile-navbar-edit" for="edit">
+                <p style="text-align: center; color: #B5B5B5;">Edit Profile</p>
+            </label>
+        {% else %}
+            <label class="profile-navbar-posts" style="cursor: unset; width: 100%;" for="posts">
+                <p style="text-align: center; color: #B5B5B5;">Posts</p>
+            </label>
+        {% endif %}
         <div class="profile-posts-container">
             {% if Posts is not null %}
                 {% for posts in Posts %}

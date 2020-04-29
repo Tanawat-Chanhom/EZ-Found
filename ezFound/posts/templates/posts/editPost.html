@@ -48,6 +48,8 @@
         let postDescription = document.getElementsByClassName('post-description')[0];
         postDescription.innerHTML = '<label>Title</label><input type="text" id="edit-title" class="form-control" value="{{Posts.title}}"><label>Description</label><input class="form-control" id="edit-des" type="text" value="{{Posts.description}}">'
 
+        document.getElementsByClassName('post-comment-container')[0].style.display = 'none';
+
         if ('{{Posts.status}}' == "LOST") {
             document.getElementById('post-status-btn').innerHTML = '<select class="form-control" name="new-post-form-status" id="new-post-form-status"><option value="LOST" selected>Lost</option><option value="FOUND">Found</option><option value="RETURNED">Returned</option></select>';
         } else if ('{{Posts.status}}' == "FOUND") {
@@ -70,6 +72,7 @@
                 .then(respose => {
                     document.getElementById('error-text').innerText = respose.data.message
                     document.getElementById('error-text').style.color = "green"
+                    window.location.href = 'http://127.0.0.1:8000/account/profile/'+{{user.id}};
                 })
                 .catch(error => {
                     document.getElementById('error-text').innerText = error.message

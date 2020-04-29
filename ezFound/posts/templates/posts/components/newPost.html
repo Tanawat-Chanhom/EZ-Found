@@ -2,8 +2,8 @@
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'css/newPost.css' %}">
     </head>
-    <label for="new-post-checkbox" class="close-new-post-label"></label>
-    <div class="new-post-form">
+    <label for="new-post-checkbox" class="close-new-post-label" id="close-new-post-label"></label>
+    <div class="new-post-form" id="new-post-form">
         <div class="drag-and-drop-container" style="height: 300px;">
             <div style="position: relative; border: 3px dashed white; height: 100%; border-radius: 0.5em;">
                 <div id="carouselExampleIndicators" class="carousel slide" style="height: 100%; background-color: unset;" data-ride="carousel">
@@ -137,6 +137,11 @@
         let base64Img = [];
 
         function sendNewPost(event) {
+            let today = new Date();
+            let userDateSP = document.getElementById('form-date').value.split("-");
+            var userDate = new Date(userDateSP[0], userDateSP[1] - 1, userDateSP[2]);
+            let nowDate = new Date(today.getFullYear(), today.getMonth()+1, today.getDate());
+
             if (newPostCategoryIdData[0] == undefined) {
                 document.getElementById('new-post-error-text').innerText = "Please select category";
             } else if (document.getElementById('new-post-form-status').value == "") {
@@ -149,6 +154,8 @@
                 document.getElementById('new-post-error-text').innerText = "Please select your image";
             } else if (document.getElementById('form-title').value == "") {
                 document.getElementById('new-post-error-text').innerText = "Please enter your title";
+            } else if (userDate > nowDate || document.getElementById('form-date').value == "") {
+                document.getElementById('new-post-error-text').innerText = "Invalid date";
             } else {
                 document.getElementById('new-post-form-submit-btn').innerHTML = '<div class="spinner-style"><div class="spinner-border text-success" role="status"></div></div>';
                 let arrayImg = [];
@@ -172,6 +179,8 @@
                         if (response.data.statusCode == "201") {
                             document.getElementById('new-post-error-text').innerText = response.data.message;
                             document.getElementById('new-post-form-submit-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>';
+
+                            window.location.href = 'http://127.0.0.1:8000/'
                         } else {
                             document.getElementById('new-post-error-text').innerText = response.data.message;
                             document.getElementById('new-post-form-submit-btn').innerHTML = '<button type="submit" class="btn btn-primary" style="border-radius: 100em; width: 100px;" onclick="sendNewPost()">Post</button>';
