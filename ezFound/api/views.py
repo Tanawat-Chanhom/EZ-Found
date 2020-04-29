@@ -532,8 +532,7 @@ def suggest(request, id):
 
         for post in posts:
             curr_post_category = [c.name for c in post.category.all()]
-            print(curr_post_category)
-            if post.location in my_location or set(curr_post_category).intersection(my_category_flatten):
+            if (post.location in my_location or set(curr_post_category).intersection(my_category_flatten)) and post.status != 'RETURNED' and post.delete_at is None:
                 suggest.append(post)
 
         message = [Message(
@@ -541,7 +540,7 @@ def suggest(request, id):
             post=p,
             send_by=None,
             message_to=user
-        ) for p in suggest]
+        ) for p in suggest if not (Message.objects.raw("SELECT COUNT(*) AS id FROM posts_message WHERE send_by_id is NULL AND post_id="+str(p.id)))]
 
         for m in message:
             m.save()
@@ -561,25 +560,3 @@ def suggest(request, id):
             "error": False,
             "data": payload
         })
-
-
-    elif request.method == 'DELETE':
-        try:
-            message = Message.objects.get(pk=id)
-            message.delete_at = now()
-            message.save()
-
-            return JsonResponse({
-                "statusCode": 200,
-                "statusText": "Success",
-                "message": "Message Deleted!",
-                "error": False
-            })
-
-        except ObjectDoesNotExist:
-            return JsonResponse({
-                "statusCode": 404,
-                "statusText": "Not Found",
-                "message": "Message Does Not Exist",
-                "error": True
-            })
