@@ -520,6 +520,8 @@ def get_message(request, id):
 def suggest(request, id):
 
     if request.method == 'GET':
+        msg_query = Message.objects.filter(send_by_id=None)
+        suggest_id = [s.post_id for s in msg_query]
         user = User.objects.get(pk=id)
         my_posts = Post.objects.filter(user_id=id)
         posts = Post.objects.filter(create_at__range=[now() - timedelta(days=7), now()])
@@ -532,7 +534,7 @@ def suggest(request, id):
 
         for post in posts:
             curr_post_category = [c.name for c in post.category.all()]
-            if (post.location in my_location or set(curr_post_category).intersection(my_category_flatten)) and post.status != 'RETURNED' and post.delete_at is None:
+            if (post.user_id != id and post.status != "RETURNED" and post.delete_at is None and (post.location.name in my_location or set(curr_post_category).intersection(set(my_category_flatten)))):
                 suggest.append(post)
 
         message = [Message(
@@ -540,7 +542,7 @@ def suggest(request, id):
             post=p,
             send_by=None,
             message_to=user
-        ) for p in suggest if not (Message.objects.raw("SELECT COUNT(*) AS id FROM posts_message WHERE send_by_id is NULL AND post_id="+str(p.id)))]
+        ) for p in suggest if p.id not in suggest_id]
 
         for m in message:
             m.save()
