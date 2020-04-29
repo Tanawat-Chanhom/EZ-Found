@@ -23,29 +23,31 @@
                     </div>
                 </div>
             </div>
-            {% if User.id is user.id %}
-                <div class="post-more-menu-container">
-                    <label for="post-more-menu-btn-{{data.id}}" class="post-date-container" style="cursor: pointer;">
-                        <div class="post-date-img">
-                            <img style="border-radius: 100%;"  src="{% static 'images/more.png' %}">
-                        </div>
-                    </label>
-                    <input type="checkbox" class="post-more-menu-btn" id="post-more-menu-btn-{{data.id}}" style="position: absolute; visibility: hidden;">
-                    <div class="post-more-menu-items">
-                        <a href="{% url 'post_edit' postId=data.id %}" style="text-decoration: none;">
-                            <div class="post-more-menu-item" onclick="">
-                                <img src="{% static 'images/edit.png' %}">
-                                <p style="margin-bottom: 0; width: 100%; text-align: center;">Edit</p>
+            {% if user.is_authenticated %}
+                {% if User.id is user.id %}
+                    <div class="post-more-menu-container">
+                        <label for="post-more-menu-btn-{{data.id}}" class="post-date-container" style="cursor: pointer;">
+                            <div class="post-date-img">
+                                <img style="border-radius: 100%;"  src="{% static 'images/more.png' %}">
                             </div>
-                        </a>
-                        <div onclick="deletePost({{data.id}})" style="cursor: pointer;">
-                            <div class="post-more-menu-item">
-                                <img src="{% static 'images/delete.png' %}">
-                                <p style="margin-bottom: 0; width: 100%; text-align: center;">Delete</p>
+                        </label>
+                        <input type="checkbox" class="post-more-menu-btn" id="post-more-menu-btn-{{data.id}}" style="position: absolute; visibility: hidden;">
+                        <div class="post-more-menu-items">
+                            <a href="{% url 'post_edit' postId=data.id %}" style="text-decoration: none;">
+                                <div class="post-more-menu-item" onclick="">
+                                    <img src="{% static 'images/edit.png' %}">
+                                    <p style="margin-bottom: 0; width: 100%; text-align: center;">Edit</p>
+                                </div>
+                            </a>
+                            <div onclick="deletePost({{data.id}})" style="cursor: pointer;">
+                                <div class="post-more-menu-item">
+                                    <img src="{% static 'images/delete.png' %}">
+                                    <p style="margin-bottom: 0; width: 100%; text-align: center;">Delete</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             {% endif %}
         </div>
         <div data-aos="zoom-in" data-aos-delay="250" class="post-img-container">

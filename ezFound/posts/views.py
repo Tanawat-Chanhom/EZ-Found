@@ -13,7 +13,7 @@ def post_edit(request, postId):
         "title": post.title,
         "description": post.descriptions,
         "status": post.status,
-        "categories": [c.name for c in post.category.all()],
+        "category": [c.name for c in post.category.all()],
         "location": post.location.name,
         "user": post.user.username,
         "create_at": post.create_at,
