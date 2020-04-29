@@ -409,8 +409,14 @@
                     notiText.innerHTML = '<p>'+ data.text +'</p>'
                     
                     notiProfile.classList.add('noti-pofile');
-                    notiProfile.href = "/account/profile/"+data.from.id
-                    notiProfile.innerHTML = '<div style="background-image: url('+ data.from.profile_img +');"></div>'
+                    if (data.from == null) {
+                        notiProfile.classList.add('noti-pofile');
+                        notiProfile.innerHTML = '<div style="background-image: url({% static "images/logo.png" %});"></div>'
+                    } else {
+                        notiProfile.href = "/account/profile/"+data.from.id
+                        notiProfile.innerHTML = '<div style="background-image: url('+ data.from.profile_img +');"></div>'
+                    }
+                    
 
                     notiBox.classList.add('noti-box');
                     notiBox.id = "noti-box-"+data.messageId
@@ -430,7 +436,7 @@
                 })
                 .catch(error => {
                     console.log(error);
-                }) 
+                })
             }
 
             function getSuggest(userId) {
