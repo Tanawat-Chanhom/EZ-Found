@@ -120,6 +120,7 @@
     <form  class="sign-up-container">
         <div class="sign-up-title"><p>Sign Up</p></div>
         <div class="sign-up-form">
+            {% csrf_token %}
             <div style="margin-right: 10px; margin-left: 10px;">
                 <input type="text" class="form-control input-style" id="usernmae" name="usernmae" placeholder="Enter username" required="true">
             </div>

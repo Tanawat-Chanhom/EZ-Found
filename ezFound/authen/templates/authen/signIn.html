@@ -161,6 +161,7 @@
 
 <body data-aos="zoom-out-up" data-aos-duration="1000">
     <form class="sign-in-container">
+        {%csrf_token%}
         <div class="login-container">
             <div class="sign-in-title"><p class="ml13">Sign In</p></div>
                 <input type="text" class="form-control sign-in-username" placeholder="Username" id="form-sign-in-username" required="Ture">

@@ -37,6 +37,7 @@
     <div class="container bg-white"
         style="width: 60%; text-align: center; margin-top: 50px; padding: 10px; border-radius: 8px;">
         <form action="{% url 'reset_password' %}" method="POST">
+            {%csrf_token%}
             <h3 style="font-weight: bold;">Reset Password</h3>
             <p>We have sent OTP through your email. Please enter OTP and your new password.</p>
             <p>Your refCode is: {{ref_code}}.</p>

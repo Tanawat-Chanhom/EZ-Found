@@ -36,6 +36,7 @@
     <div class="container bg-white"
         style="width: 60%; text-align: center; margin-top: 50px; padding: 10px; border-radius: 8px;">
         <form action="{% url 'forget_password' %}" method="POST">
+            {%csrf_token%}
             <h3 style="font-weight: bold;">Reset Password</h3>
             <p>Please enter your email to proceed to the next step.</p>
             <label for="email">Email</label>
